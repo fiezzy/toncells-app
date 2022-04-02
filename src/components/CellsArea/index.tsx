@@ -1,35 +1,34 @@
-import { VFC } from "react";
-import Cell from "../Cell";
-import { Wrapper } from "./style";
+import { VFC, memo } from "react";
+import { Wrapper, StyledCell } from "./style";
 
-type cellLocation = {
-  x: number;
-  y: number;
-  z: number;
+const cellsCollection: any[] = [];
+
+for (let i = 0; i < 16; i++) {
+  cellsCollection.push({
+    id: i + 1,
+  });
+}
+
+type Props = {
+  toggleBuyMode: () => void;
+  handleCellClick: (id: number) => void;
 };
 
-type CellType = {
-  id: number;
-  location: cellLocation;
-  nft: string;
-};
+const CellsArea: VFC<Props> = memo((props) => {
+  const { toggleBuyMode, handleCellClick } = props;
 
-const CellsArea: VFC = () => {
-  const handleClick = (id: number) => console.log(`Cell id: ${id}`);
-
-  const cellsCollection: CellType[] = [];
-
-  // for (let i = 0; i < 16; i++) {
-  //   cellsCollection.push({});
-  // }
+  const handleClick = (id: number) => {
+    toggleBuyMode();
+    handleCellClick(id);
+  };
 
   return (
     <Wrapper>
       {cellsCollection.map(({ id }) => (
-        <Cell key={id} handleClick={handleClick} id={id} />
+        <StyledCell key={id} handleClick={() => handleClick(id)} id={id} />
       ))}
     </Wrapper>
   );
-};
+});
 
 export default CellsArea;

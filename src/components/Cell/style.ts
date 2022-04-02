@@ -7,9 +7,4 @@ export const Wrapper = styled.div`
   border: 1px solid ${theme.color.mainBlue};
   cursor: pointer;
   background: #fff;
-
-  &:hover {
-    background-color: ${theme.color.mainBlue};
-    opacity: 0.6;
-  }
 `;

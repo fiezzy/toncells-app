@@ -1,14 +1,20 @@
 import styled from "styled-components";
+import Cell from "../Cell";
 
 export const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 64px;
+  width: 485px;
+  height: 476px;
+`;
+
+export const StyledCell = styled(Cell)`
+  width: 119px;
+  height: 119px;
   transition: 0.3s;
-  cursor: pointer;
 
   &:hover {
-    transform: scale(1.15);
-    box-shadow: 0px 0px 10px 5px rgba(34, 60, 80, 0.36);
+    transform: scale(1.1);
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
   }
 `;
