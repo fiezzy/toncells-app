@@ -62,3 +62,22 @@ export const InfoText = styled.p`
     font-weight: 900;
   }
 `;
+
+export const BuyFewBtn = styled.button`
+  margin-top: 50px;
+  border: none;
+  outline: none;
+  padding: 10px 65px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 400;
+  background-color: #000;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    transform: scale(0.95);
+    opacity: 0.6;
+  }
+`;

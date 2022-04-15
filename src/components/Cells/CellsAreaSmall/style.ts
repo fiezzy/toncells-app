@@ -1,24 +1,24 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  width: 1650px;
-  height: 1600px;
-  margin: 0 auto 20px auto;
   display: flex;
   flex-wrap: wrap;
-  margin-right: 120px;
-`;
-
-export const CellsArea = styled.div`
+  width: 62px;
+  height: 62px;
+  border: 1px solid #000;
   transition: 0.3s;
+  background-color: #fff;
   cursor: pointer;
-  height: 64px;
-  width: 64px;
-  display: flex;
-  flex: wrap;
 
   &:hover {
     transform: scale(1.1);
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
   }
+`;
+
+export const Cell = styled.div`
+  width: 14px;
+  height: 14px;
+  border: 1px solid #000;
+  background-color: #fff;
 `;

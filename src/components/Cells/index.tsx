@@ -1,12 +1,19 @@
-import { VFC, useContext, useState, useCallback } from "react";
+import {
+  VFC,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  Fragment,
+} from "react";
 import { CellModalContext } from "../../context";
-import { CELLS_AREA } from "../../constants/images";
-import { Wrapper, CellsAreaImg } from "./style";
+import { Wrapper } from "./style";
 import CellModalDefault from "../CellModalDefault";
 import CellModalBuy from "../CellModalBuy";
 import CellModalEdit from "../CellModalEdit";
+import CellAreaSmall from "./CellsAreaSmall";
 
-const EDITABLE_CELL_ID = 6;
+// const EDITABLE_CELL_ID = 6;
 
 type CellsAreaType = {
   id: number;
@@ -55,8 +62,23 @@ const Cells: VFC = () => {
   const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [activeCellId, setActiveCellId] = useState<number>(0);
+  const [locationZ, setLocationZ] = useState<number>(0);
+  const [cellsData, setCellsData] = useState();
+  // const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
 
-  const handleClick = (
+  const toggleBuyMode = useCallback(() => {
+    setIsBuyMode((prev) => !prev);
+  }, []);
+
+  // const toggleEditMode = useCallback(() => {
+  //   setIsEditMode((prev) => !prev);
+
+  //   if (activeCellId === EDITABLE_CELL_ID && !isEditMode) {
+  //     setIsBuyMode(false);
+  //   }
+  // }, [activeCellId, isEditMode]);
+
+  const handleCellsAreaClick = (
     id: number,
     x: number,
     y: number,
@@ -74,55 +96,71 @@ const Cells: VFC = () => {
     });
   };
 
-  const toggleBuyMode = useCallback(() => {
-    setIsBuyMode((prev) => !prev);
-  }, []);
-
-  const toggleEditMode = useCallback(() => {
-    setIsEditMode((prev) => !prev);
-
-    if (activeCellId === EDITABLE_CELL_ID && !isEditMode) {
-      setIsBuyMode(false);
-    }
-  }, []);
-
-  const handleCellClick = useCallback((id: number) => {
+  const handleCellClick = useCallback((locationZ: number, id: number) => {
+    setLocationZ(locationZ);
     setActiveCellId(id);
 
-    if (id === EDITABLE_CELL_ID) {
-      setIsEditMode(true);
+    // if (locationZ === EDITABLE_CELL_ID) {
+    //   setIsEditMode(true);
+    // }
+  }, []);
+
+  useEffect(() => {
+    try {
+      fetch("data.json")
+        .then((res) => res.json())
+        .then((data) => setCellsData(data));
+    } catch (error) {
+      console.log(`Error: ${error}`);
     }
   }, []);
 
-  console.log(isEditMode);
+  const activeAreaCollection: any[] = [];
+
+  for (
+    let id = activeAreaData.firstCellId!;
+    id < activeAreaData.lastCellId! + 1;
+    id++
+  ) {
+    activeAreaCollection.push({
+      id: id,
+    });
+  }
 
   return (
     <>
       <Wrapper>
         {cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
-          <CellsAreaImg
+          <div
             key={id}
-            src={CELLS_AREA}
-            alt="#"
-            onClick={() => handleClick(id, x, y, firstCellId, lastCellId)}
-          />
+            onClick={() =>
+              handleCellsAreaClick(id, x, y, firstCellId, lastCellId)
+            }
+          >
+            <CellAreaSmall
+              key={id}
+              firstCellId={firstCellId!}
+              lastCellId={lastCellId!}
+            />
+          </div>
         ))}
       </Wrapper>
-      {isEditMode ? (
+      {/* {isEditMode ? (
         <CellModalEdit
           isVisible={isCellModalActive}
           locationX={activeAreaData.x}
           locationY={activeAreaData.y}
           activeCellId={activeCellId}
           onClose={toggleEditMode}
-        />
-      ) : isBuyMode ? (
+        /> */}
+      {isBuyMode ? (
         <CellModalBuy
           isVisible={isCellModalActive}
           onClose={toggleCellModal}
           id={activeAreaData.id}
           locationX={activeAreaData.x}
           locationY={activeAreaData.y}
+          locationZ={locationZ}
           toggleBuyMode={toggleBuyMode}
           activeCellId={activeCellId}
         />
@@ -137,6 +175,7 @@ const Cells: VFC = () => {
           lastCellId={activeAreaData.lastCellId!}
           toggleBuyMode={toggleBuyMode}
           handleCellClick={handleCellClick}
+          activeAreaCollection={activeAreaCollection}
         />
       )}
     </>
