@@ -4,6 +4,7 @@ import App from "./App";
 import { CellModalProvider } from "./context/CellModalContext";
 import reportWebVitals from "./reportWebVitals";
 import { createGlobalStyle } from "styled-components";
+import "antd/dist/antd.css";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -14,13 +15,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 ReactDOM.render(
-  <React.StrictMode>
-    <CellModalProvider>
-      <GlobalStyle />
-      <App />
-    </CellModalProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+	<React.StrictMode>
+		<CellModalProvider>
+			<GlobalStyle />
+			<App />
+		</CellModalProvider>
+	</React.StrictMode>,
+	document.getElementById("root")
 );
 
 reportWebVitals();

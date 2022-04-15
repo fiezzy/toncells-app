@@ -33,6 +33,13 @@ export const CloseBtn = styled.button`
   }
 `;
 
+export const Cell = styled.div`
+  width: 485px;
+  height: 476px;
+  background-color: #fff;
+  filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.5));
+`;
+
 export const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -45,24 +52,26 @@ export const InfoBlock = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 43%;
+  gap: 30px;
 `;
 
-export const InfoLabel = styled.span`
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 36px;
+export const InfoLabel = styled.p`
+  font-weight: 900;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
 `;
 
 export const InfoText = styled.p`
   font-weight: 400;
-  font-size: 30px;
-  line-height: 36px;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
 
   span {
     font-weight: 900;
   }
 `;
-
 
 export const BuyButton = styled.button`
   border: none;

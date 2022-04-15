@@ -9,6 +9,19 @@ export const Wrapper = styled.div`
   margin-right: 50px;
 `;
 
+export const CellInfo = styled.div`
+  position: absolute;
+  img {
+    width: 24px;
+    height: 24px;
+  }
+  margin: -32px -12px 32px 12px;
+  border-radius: 10px;
+  z-index: 10000;
+  background: #fff;
+  padding: 8px;
+`
+
 export const CellsAreaImg = styled.img`
   transition: 0.3s;
   cursor: pointer;
