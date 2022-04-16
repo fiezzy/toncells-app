@@ -54,14 +54,14 @@ const CellModalBuy: VFC<Props> = memo(
 		cellIds,
 	}) => {
 		const [reserved, setReserved] = useState<boolean>(false);
-		cellIds = [10]; // IDS
+		console.log(cellIds);
 		const NFTcost = 0.1;
 
 		const setIsload = (a: any) => {};
 		const link = `ton://transfer/${
 			process.env.REACT_APP_BACK_TON_WALLET
 		}?amount=${TonWeb.utils.toNano(
-			cellIds.length * NFTcost
+			(cellIds.length * NFTcost).toFixed(3)
 		)}&text=${hexString}${cellIds.join(".")}`;
 
 		useEffect(() => {
@@ -93,7 +93,10 @@ const CellModalBuy: VFC<Props> = memo(
 					</CloseBtn>
 					<LabelId>#{CELL_ID}</LabelId>
 					<FlexWrapper>
-						<QRCode value={reserved ? link : "NFTS ALREADY RESERVED"} />
+						{reserved ? (
+							<QRCode value={reserved ? link : "NFTS ALREADY RESERVED"} />
+						) : null}
+
 						<InfoBlock>
 							<InfoLabel>
 								TONCELL #{CELL_ID}
@@ -104,14 +107,17 @@ const CellModalBuy: VFC<Props> = memo(
 								<span>Description: </span>
 								Do u really wanna buy cells?
 							</InfoText>
-							<BuyButton
-								onClick={() =>
-									reserved
-										? MakeTrx(setIsload, hexString, cellIds, NFTcost)
-										: null
-								}>
-								BUY WITH TONWEB
-							</BuyButton>
+							{reserved ? (
+								<BuyButton
+									onClick={() =>
+										reserved
+											? MakeTrx(setIsload, hexString, cellIds, NFTcost)
+											: null
+									}>
+									BUY WITH TONWEB
+								</BuyButton>
+							) : null}
+
 							{reserved ? (
 								<a href={link}>
 									<BuyButton onClick={() => alert(`Buy Cell # ${CELL_ID}`)}>

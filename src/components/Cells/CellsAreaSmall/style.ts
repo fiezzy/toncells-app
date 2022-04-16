@@ -3,15 +3,12 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 62px;
-  height: 62px;
-  border: 1px solid #000;
+  width: 64px;
+  height: 64px;
+  outline: 1px solid #000;
   transition: 0.3s;
-  background-color: #fff;
-  cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
   }
 `;

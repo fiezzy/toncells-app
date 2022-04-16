@@ -119,6 +119,10 @@ type Props = {
 	activeAreaCollection: any[];
 	setSelectedIds: any;
 	selectedIds: number[];
+	setnftIdfun: any;
+	nftId: number[];
+	selectedCells: any;
+	setSelectedCells: any;
 };
 
 const CellModal: VFC<Props> = (props) => {
@@ -136,9 +140,12 @@ const CellModal: VFC<Props> = (props) => {
 		toggleInvoiceMode,
 		setSelectedIds,
 		selectedIds,
+		setnftIdfun,
+		selectedCells,
+		setSelectedCells,
+		nftId,
 	} = props;
 	const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
-	const [selectedCells, setSelectedCells] = useState<number[]>([]);
 
 	const handleCloseModalClick = useCallback(() => {
 		if (isSelectMode) {
@@ -149,16 +156,20 @@ const CellModal: VFC<Props> = (props) => {
 	}, [isSelectMode, onClose]);
 
 	const handleSelectCellClick = useCallback((id: number) => {
-		setSelectedCells((prev) => [...prev, id]);
+		setSelectedCells((prev: any) => [...prev, id]);
 	}, []);
 
 	const toggleSelectMode = useCallback(() => {
 		setIsSelectMode((prev) => !prev);
 	}, []);
+	console.log(selectedCells);
 
 	const handleBuyBtnClick = () => {
 		if (isSelectMode) {
 			alert("Success!");
+			toggleInvoiceMode();
+
+			console.log(selectedCells);
 		}
 
 		toggleSelectMode();
@@ -181,6 +192,8 @@ const CellModal: VFC<Props> = (props) => {
 						activeAreaCollection={activeAreaCollection}
 						handleCellClick={handleCellClick}
 						toggleBuyMode={toggleBuyMode}
+						setnftIdfun={setnftIdfun}
+						nftId={nftId}
 					/>
 					<InfoBlock>
 						<InfoLabel>
@@ -190,7 +203,7 @@ const CellModal: VFC<Props> = (props) => {
 							X: <span>{locationX}</span>, Y: <span>{locationY}</span>
 						</InfoText>
 						<BuyFewBtn onClick={handleBuyBtnClick}>
-							{isSelectMode ? "BUY" : "BUY A FEW"}
+							{isSelectMode ? "Pay" : "BUY A FEW"}
 						</BuyFewBtn>
 					</InfoBlock>
 				</FlexWrapper>

@@ -7,6 +7,7 @@ import {
 	useRef,
 	Fragment,
 } from "react";
+import { Img } from "react-image";
 import { CellModalContext } from "../../context";
 import { CELLS_AREA } from "../../constants/images";
 import { Wrapper, CellInfo } from "./style";
@@ -16,6 +17,7 @@ import CellModalInvoice from "../CellModalInvoice";
 import CellModalEdit from "../CellModalEdit";
 import CellAreaSmall from "./CellsAreaSmall";
 import * as _ from "lodash";
+import img from "../../test1.png";
 
 import png1 from "../../nftitems/1.png";
 import png2 from "../../nftitems/2.png";
@@ -149,7 +151,7 @@ const Cells: VFC = () => {
 	const [locationZ, setLocationZ] = useState<number>(0);
 	const [cellsData, setCellsData] = useState();
 	const [selectedIds, setSelectedIds] = useState<number[]>([]);
-	const [nftId, setnftId] = useState<number[]>([1, 1]);
+	const [nftId, setnftId] = useState<number[]>([0, 0, 0]);
 	// const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
 
 	const toggleBuyMode = useCallback(() => {
@@ -197,6 +199,7 @@ const Cells: VFC = () => {
 
 	console.log(nftId);
 	const setnftIdfun = _.debounce((e) => setnftId(e), 100);
+	const [selectedCells, setSelectedCells] = useState<number[]>([]);
 
 	const ref = useRef(null);
 
@@ -231,19 +234,34 @@ const Cells: VFC = () => {
 		});
 	}
 
+	// const refc = useRef(null);
+
+	// // ctx.moveTo(0, 0);
+	// // ctx.lineTo(200, 100);
+	// // ctx.stroke();
+	// useEffect(() => {}, [refc.current]);
+	//@ts-ignore
+	// document.getElementById("IDIDIID").getContext("2d").drawImage(img, 0, 0);
+
 	return (
 		<>
-			<CellInfo ref={ref} style={{ opacity: !!nftId[0] ? "1" : "0" }}>
-				<img src={imgs[nftId[0] - 1]} />
-				<img src={imgs[nftId[1] - 1]} />
+			<CellInfo
+				ref={ref}
+				style={{ opacity: !!nftId.filter((e) => e)[0] ? "1" : "0" }}>
+				{nftId[0] ? <img src={imgs[nftId[0] - 1]} /> : null}
+				{nftId[1] ? <img src={imgs[nftId[1] - 1]} /> : null}
+				{nftId[2] ? <img src={imgs[nftId[2] - 1]} /> : null}
 			</CellInfo>
+
 			<Wrapper
 				onMouseOut={() => {
-					setnftIdfun([0, 0]);
+					setnftIdfun([0, 0, 0]);
 				}}
 				onMouseEnter={() => {
-					setnftIdfun([1, 1]);
+					setnftIdfun([1, 1, 0]);
 				}}>
+				{/* <canvas id={"IDIDIID"} width={100} height={100}></canvas> */}
+				<img src={img} />
 				{cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
 					<div
 						key={id}
@@ -253,11 +271,12 @@ const Cells: VFC = () => {
 								: null
 						}
 						style={{
-							filter: checkAreaId(id) ? "" : "blur(0.5px) brightness(75%)",
+							background: checkAreaId(id) ? "" : "grey",
 							cursor: checkAreaId(id) ? "pointer" : "not-allowed",
+							zIndex: "10",
 						}}
 						onMouseOver={() => {
-							setnftIdfun([x, y]);
+							setnftIdfun([x, y, 0]);
 						}}>
 						<CellAreaSmall
 							key={id}
@@ -286,6 +305,7 @@ const Cells: VFC = () => {
 					toggleBuyMode={toggleBuyMode}
 					activeCellId={activeCellId}
 					cellIds={selectedIds}
+					setnftIdfun={setnftIdfun}
 				/>
 			) : isInvoiceMode ? (
 				<CellModalInvoice
@@ -296,7 +316,7 @@ const Cells: VFC = () => {
 					locationY={activeAreaData.y}
 					toggleInvoiceMode={toggleInvoiceMode}
 					activeCellId={activeCellId}
-					cellIds={selectedIds}
+					cellIds={selectedCells}
 				/>
 			) : (
 				<CellModalDefault
@@ -313,6 +333,10 @@ const Cells: VFC = () => {
 					toggleInvoiceMode={toggleInvoiceMode}
 					setSelectedIds={setSelectedIds}
 					selectedIds={selectedIds}
+					setnftIdfun={setnftIdfun}
+					nftId={nftId}
+					selectedCells={selectedCells}
+					setSelectedCells={setSelectedCells}
 				/>
 			)}
 		</>

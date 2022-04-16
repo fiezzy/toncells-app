@@ -44,6 +44,8 @@ type Props = {
 	toggleBuyMode: () => void;
 	handleCellClick: (locationZ: number, id: number) => void;
 	activeAreaCollection: any[];
+	setnftIdfun: any;
+	nftId: number[];
 };
 
 const CellsArea: VFC<Props> = memo((props) => {
@@ -54,6 +56,8 @@ const CellsArea: VFC<Props> = memo((props) => {
 		activeAreaCollection,
 		toggleBuyMode,
 		handleCellClick,
+		setnftIdfun,
+		nftId,
 	} = props;
 
 	// const [isCellSelected, setIsCellSelected] = useState<boolean>(false);
@@ -74,14 +78,26 @@ const CellsArea: VFC<Props> = memo((props) => {
 	};
 
 	return (
-		<Wrapper isSelectMode={isSelectMode}>
+		<Wrapper
+			isSelectMode={isSelectMode}
+			onMouseOut={() => {
+				setnftIdfun([nftId[0], nftId[1], 0]);
+			}}
+			onMouseEnter={() => {
+				setnftIdfun([1, 1, 1]);
+			}}>
 			{activeAreaCollection.map((cell, idx) => {
 				return (
 					<StyledCell
 						key={cell.id}
 						isCellSelected={false}
-						handleClick={() => handleClick(idx + 1, cell.id)}
+						handleClick={() => {
+							handleClick(idx + 1, cell.id);
+							setnftIdfun([nftId[0], nftId[1], 0]);
+						}}
 						id={idx + 1}
+						selectedCells={selectedCells}
+						onMouseOver={() => setnftIdfun([nftId[0], nftId[1], idx + 1])}
 					/>
 				);
 			})}

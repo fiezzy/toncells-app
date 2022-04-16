@@ -1,12 +1,21 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  width: 1650px;
+  width: 1600px;
   height: 1600px;
   margin: 0 auto 20px auto;
   display: flex;
   flex-wrap: wrap;
   margin-right: 120px;
+  /* background-image: url('../../test1.png'); */
+  /* border: 1px solid #000; */
+  img {
+    width: 1600px;
+    height: 1600px;
+    position: absolute;
+    /* resize-mode: contain; */
+    z-index: 9;
+  }
 `;
 
 export const CellInfo = styled.div`
@@ -17,9 +26,11 @@ export const CellInfo = styled.div`
   }
   margin: -32px -12px 32px 12px;
   border-radius: 10px;
-  z-index: 10000;
+  z-index: 99999;
   background: #fff;
   padding: 8px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+
 `
 
 export const CellsArea = styled.div`
@@ -31,7 +42,7 @@ export const CellsArea = styled.div`
   flex: wrap;
 
   &:hover {
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
   }
 `;
