@@ -50,7 +50,7 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
 
 const MintNFTs = (hexString:any ) => {
   fetch(
-    `https://localhost:9966/API/mintNfts`
+    `https://app.toncells.org:9966/API/mintNfts`
     , {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },

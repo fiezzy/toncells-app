@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from "react";
+import { VFC, useState, useCallback, useEffect } from "react";
 import { Modal } from "../Modal";
 import CellsArea from "../CellsArea";
 import { CLOSE_ICON } from "../../constants/images";
@@ -147,6 +147,10 @@ const CellModal: VFC<Props> = (props) => {
 	} = props;
 	const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
 
+	useEffect(() => {
+		if (!isSelectMode) setSelectedIds([]);
+	}, [isSelectMode]);
+
 	const handleCloseModalClick = useCallback(() => {
 		if (isSelectMode) {
 			setIsSelectMode(false);
@@ -157,6 +161,10 @@ const CellModal: VFC<Props> = (props) => {
 
 	const handleSelectCellClick = useCallback((id: number) => {
 		setSelectedCells((prev: any) => [...prev, id]);
+	}, []);
+
+	const removeSelectCellItem = useCallback((id: number) => {
+		setSelectedCells((prev: any) => [...prev.filter((e: number) => e !== id)]);
 	}, []);
 
 	const toggleSelectMode = useCallback(() => {
@@ -194,6 +202,7 @@ const CellModal: VFC<Props> = (props) => {
 						toggleBuyMode={toggleBuyMode}
 						setnftIdfun={setnftIdfun}
 						nftId={nftId}
+						removeSelectCellItem={removeSelectCellItem}
 					/>
 					<InfoBlock>
 						<InfoLabel>

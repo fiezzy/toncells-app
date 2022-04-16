@@ -8,24 +8,30 @@ type Props = {
 	onMouseOver: any;
 	onMouseOut?: any;
 	selectedCells: any;
+	cellId: number;
 	// isSelected: boolean;
 };
 
 const Cell: VFC<any> = (props) => {
-	const { handleClick, id, className, onMouseOver, onMouseOut, selectedCells } =
-		props;
-
+	const {
+		handleClick,
+		id,
+		cellId,
+		className,
+		onMouseOver,
+		onMouseOut,
+		selectedCells,
+	} = props;
+	console.log(selectedCells);
+	console.log(id);
+	console.log(!!selectedCells.filter((e: number) => e === cellId)[0]);
 	return (
 		<Wrapper
 			className={className}
 			onClick={() => handleClick(id)}
 			onMouseOver={onMouseOver}
 			onMouseOut={onMouseOut}
-			style={{
-				filter: !selectedCells.filter((e: number) => e === id)[0]
-					? ""
-					: "blur(0.5px) brightness(75%)",
-			}}
+			selected={!!selectedCells.filter((e: number) => e === cellId)[0]}
 		/>
 	);
 };

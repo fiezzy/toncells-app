@@ -1,7 +1,7 @@
 
 const GetStatus = async () => {
     fetch(
-      `https://localhost:9966/API/getStatus`
+      `https://app.toncells.org:9966/API/getStatus`
       , {
         method: "get",
       }

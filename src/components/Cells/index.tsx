@@ -17,7 +17,7 @@ import CellModalInvoice from "../CellModalInvoice";
 import CellModalEdit from "../CellModalEdit";
 import CellAreaSmall from "./CellsAreaSmall";
 import * as _ from "lodash";
-import img from "../../test1.png";
+// import img from "MAP.png";
 
 import png1 from "../../nftitems/1.png";
 import png2 from "../../nftitems/2.png";
@@ -154,6 +154,10 @@ const Cells: VFC = () => {
 	const [nftId, setnftId] = useState<number[]>([0, 0, 0]);
 	// const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
 
+	useEffect(() => {
+		if (!isCellModalActive) setSelectedIds([]);
+	}, [isCellModalActive]);
+
 	const toggleBuyMode = useCallback(() => {
 		setIsBuyMode((prev) => !prev);
 	}, []);
@@ -185,6 +189,15 @@ const Cells: VFC = () => {
 	};
 
 	const handleCellClick = useCallback((locationZ: number, id: number) => {
+		setLocationZ(locationZ);
+		setActiveCellId(id);
+
+		// if (locationZ === EDITABLE_CELL_ID) {
+		//   setIsEditMode(true);
+		// }
+	}, []);
+
+	const removeSelectCellItem = useCallback((locationZ: number, id: number) => {
 		setLocationZ(locationZ);
 		setActiveCellId(id);
 
@@ -248,8 +261,8 @@ const Cells: VFC = () => {
 			<CellInfo
 				ref={ref}
 				style={{ opacity: !!nftId.filter((e) => e)[0] ? "1" : "0" }}>
-				{nftId[0] ? <img src={imgs[nftId[0] - 1]} /> : null}
 				{nftId[1] ? <img src={imgs[nftId[1] - 1]} /> : null}
+				{nftId[0] ? <img src={imgs[nftId[0] - 1]} /> : null}
 				{nftId[2] ? <img src={imgs[nftId[2] - 1]} /> : null}
 			</CellInfo>
 
@@ -261,7 +274,7 @@ const Cells: VFC = () => {
 					setnftIdfun([1, 1, 0]);
 				}}>
 				{/* <canvas id={"IDIDIID"} width={100} height={100}></canvas> */}
-				<img src={img} />
+				<img src={"/MAP.png"} />
 				{cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
 					<div
 						key={id}

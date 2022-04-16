@@ -46,6 +46,7 @@ type Props = {
 	activeAreaCollection: any[];
 	setnftIdfun: any;
 	nftId: number[];
+	removeSelectCellItem: any;
 };
 
 const CellsArea: VFC<Props> = memo((props) => {
@@ -57,6 +58,7 @@ const CellsArea: VFC<Props> = memo((props) => {
 		toggleBuyMode,
 		handleCellClick,
 		setnftIdfun,
+		removeSelectCellItem,
 		nftId,
 	} = props;
 
@@ -66,15 +68,15 @@ const CellsArea: VFC<Props> = memo((props) => {
 		if (!isSelectMode) {
 			toggleBuyMode();
 			handleCellClick(locationZ, id);
+		} else {
+			const isExist = selectedCells.includes(id);
+
+			if (!isExist) {
+				handleSelectCellClick(id);
+			} else {
+				removeSelectCellItem(id);
+			}
 		}
-
-		handleSelectCellClick(id);
-
-		const isExist = selectedCells.includes(id);
-
-		// if (isExist) {
-		//   selectedCells.filter((cellId) => cellId !== id);
-		// }
 	};
 
 	return (
@@ -95,6 +97,7 @@ const CellsArea: VFC<Props> = memo((props) => {
 							handleClick(idx + 1, cell.id);
 							setnftIdfun([nftId[0], nftId[1], 0]);
 						}}
+						cellId={cell.id}
 						id={idx + 1}
 						selectedCells={selectedCells}
 						onMouseOver={() => setnftIdfun([nftId[0], nftId[1], idx + 1])}
