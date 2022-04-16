@@ -114,8 +114,11 @@ type Props = {
 	firstCellId: number;
 	lastCellId: number;
 	toggleBuyMode: () => void;
+	toggleInvoiceMode: () => void;
 	handleCellClick: (locationZ: number, id: number) => void;
 	activeAreaCollection: any[];
+	setSelectedIds: any;
+	selectedIds: number[];
 };
 
 const CellModal: VFC<Props> = (props) => {
@@ -130,6 +133,9 @@ const CellModal: VFC<Props> = (props) => {
 		toggleBuyMode,
 		handleCellClick,
 		activeAreaCollection,
+		toggleInvoiceMode,
+		setSelectedIds,
+		selectedIds,
 	} = props;
 	const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
 	const [selectedCells, setSelectedCells] = useState<number[]>([]);

@@ -5,7 +5,7 @@ type Props = {
 	className?: string;
 	handleClick: (id: number) => void;
 	id: number;
-	isSelected: boolean;
+	// isSelected: boolean;
 };
 
 const Cell: VFC<Props> = (props) => {
@@ -15,9 +15,11 @@ const Cell: VFC<Props> = (props) => {
 		<Wrapper
 			className={className}
 			onClick={() => handleClick(id)}
-			style={{
-				filter: !props.isSelected ? "" : "blur(0.5px) brightness(75%)",
-			}}
+			style={
+				{
+					// filter: !props.isSelected ? "" : "blur(0.5px) brightness(75%)",
+				}
+			}
 		/>
 	);
 };

@@ -23,6 +23,7 @@ type Props = {
 	locationZ: number;
 	toggleBuyMode: () => void;
 	activeCellId: number;
+	cellIds: number[];
 };
 
 const CellModalBuy: VFC<Props> = memo((props) => {
@@ -34,6 +35,7 @@ const CellModalBuy: VFC<Props> = memo((props) => {
 		locationZ,
 		toggleBuyMode,
 		activeCellId,
+		cellIds,
 	} = props;
 
 	return (

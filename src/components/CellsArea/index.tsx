@@ -79,7 +79,7 @@ const CellsArea: VFC<Props> = memo((props) => {
 				return (
 					<StyledCell
 						key={cell.id}
-						// isCellSelected={isCellSelected}
+						isCellSelected={false}
 						handleClick={() => handleClick(idx + 1, cell.id)}
 						id={idx + 1}
 					/>
