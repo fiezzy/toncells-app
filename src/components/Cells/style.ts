@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   margin: 0 auto 20px auto;
   display: flex;
   flex-wrap: wrap;
-  margin-right: 50px;
+  margin-right: 120px;
 `;
 
 export const CellInfo = styled.div`
@@ -22,9 +22,13 @@ export const CellInfo = styled.div`
   padding: 8px;
 `
 
-export const CellsAreaImg = styled.img`
+export const CellsArea = styled.div`
   transition: 0.3s;
   cursor: pointer;
+  height: 64px;
+  width: 64px;
+  display: flex;
+  flex: wrap;
 
   &:hover {
     transform: scale(1.1);

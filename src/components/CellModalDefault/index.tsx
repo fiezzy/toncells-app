@@ -3,6 +3,98 @@ import { Modal } from "../Modal";
 import CellsArea from "../CellsArea";
 import { CLOSE_ICON } from "../../constants/images";
 import {
+	// 	Wrapper,
+	// 	LabelId,
+	// 	CloseBtn,
+	// 	FlexWrapper,
+	// 	InfoBlock,
+	// 	InfoLabel,
+	// 	InfoText,
+	// 	BuyButton,
+	// } from "./style";
+
+	// type Props = {
+	// 	isVisible: boolean;
+	// 	onClose: () => void;
+	// 	id: number;
+	// 	locationX: number;
+	// 	locationY: number;
+	// 	firstCellId: number;
+	// 	lastCellId: number;
+	// 	toggleBuyMode: () => void;
+	// 	toggleInvoiceMode: () => void;
+	// 	handleCellClick: (id: number) => void;
+	// 	setSelectedIds: any;
+	// 	selectedIds: number[];
+	// };
+
+	// const CellModal: VFC<Props> = (props) => {
+	// 	const {
+	// 		isVisible,
+	// 		onClose,
+	// 		id,
+	// 		locationX,
+	// 		locationY,
+	// 		firstCellId,
+	// 		lastCellId,
+	// 		toggleBuyMode,
+	// 		handleCellClick,
+	// 		toggleInvoiceMode,
+	// 		selectedIds,
+	// 		setSelectedIds,
+	// 	} = props;
+
+	// 	const [select, setselect] = useState(false);
+
+	// 	const selectId = (id: number) => {
+	// 		if (!!selectedIds.filter((e) => e === id)[0]) {
+	// 			setSelectedIds([...selectedIds, id]);
+	// 		} else {
+	// 			setSelectedIds(selectedIds.filter((e) => e !== id));
+	// 		}
+	// 	};
+
+	// 	return (
+	// 		<Modal isVisible={isVisible} onClose={onClose}>
+	// 			<Wrapper>
+	// 				<CloseBtn onClick={onClose}>
+	// 					<img src={CLOSE_ICON} alt="Close" />
+	// 				</CloseBtn>
+	// 				<LabelId>#{id}</LabelId>
+	// 				<FlexWrapper>
+	// 					<CellsArea
+	// 						handleCellClick={(id) => {
+	// 							select ? selectId(id) : handleCellClick(id);
+	// 						}}
+	// 						selectedIds={selectedIds}
+	// 						toggleBuyMode={() => {}}
+	// 					/>
+	// 					<InfoBlock>
+	// 						<InfoLabel>
+	// 							CELLS: {firstCellId} - {lastCellId}
+	// 						</InfoLabel>
+	// 						<InfoText>
+	// 							X: <span>{locationX}</span>, Y: <span>{locationY}</span>
+	// 						</InfoText>
+	// 					</InfoBlock>
+
+	// 					{/* <BuyButton
+	// 						onClick={() => {
+	// 							setselect(true);
+	// 						}}>
+	// 						Select
+	// 					</BuyButton> */}
+
+	// 					<BuyButton
+	// 						onClick={() => {
+	// 							toggleInvoiceMode();
+	// 						}}>
+	// 						BUY
+	// 					</BuyButton>
+	// 				</FlexWrapper>
+	// 			</Wrapper>
+	// 		</Modal>
+	// 	);
 	Wrapper,
 	LabelId,
 	CloseBtn,
@@ -10,7 +102,7 @@ import {
 	InfoBlock,
 	InfoLabel,
 	InfoText,
-	BuyButton,
+	BuyFewBtn,
 } from "./style";
 
 type Props = {
@@ -22,10 +114,8 @@ type Props = {
 	firstCellId: number;
 	lastCellId: number;
 	toggleBuyMode: () => void;
-	toggleInvoiceMode: () => void;
-	handleCellClick: (id: number) => void;
-	setSelectedIds: any;
-	selectedIds: number[];
+	handleCellClick: (locationZ: number, id: number) => void;
+	activeAreaCollection: any[];
 };
 
 const CellModal: VFC<Props> = (props) => {
@@ -39,35 +129,52 @@ const CellModal: VFC<Props> = (props) => {
 		lastCellId,
 		toggleBuyMode,
 		handleCellClick,
-		toggleInvoiceMode,
-		selectedIds,
-		setSelectedIds,
+		activeAreaCollection,
 	} = props;
+	const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
+	const [selectedCells, setSelectedCells] = useState<number[]>([]);
 
-	const [select, setselect] = useState(false);
-
-	const selectId = (id: number) => {
-		if (!!selectedIds.filter((e) => e === id)[0]) {
-			setSelectedIds([...selectedIds, id]);
-		} else {
-			setSelectedIds(selectedIds.filter((e) => e !== id));
+	const handleCloseModalClick = useCallback(() => {
+		if (isSelectMode) {
+			setIsSelectMode(false);
+			onClose();
 		}
+		onClose();
+	}, [isSelectMode, onClose]);
+
+	const handleSelectCellClick = useCallback((id: number) => {
+		setSelectedCells((prev) => [...prev, id]);
+	}, []);
+
+	const toggleSelectMode = useCallback(() => {
+		setIsSelectMode((prev) => !prev);
+	}, []);
+
+	const handleBuyBtnClick = () => {
+		if (isSelectMode) {
+			alert("Success!");
+		}
+
+		toggleSelectMode();
 	};
+
+	console.log(selectedCells);
 
 	return (
 		<Modal isVisible={isVisible} onClose={onClose}>
 			<Wrapper>
-				<CloseBtn onClick={onClose}>
+				<CloseBtn onClick={handleCloseModalClick}>
 					<img src={CLOSE_ICON} alt="Close" />
 				</CloseBtn>
 				<LabelId>#{id}</LabelId>
 				<FlexWrapper>
 					<CellsArea
-						handleCellClick={(id) => {
-							select ? selectId(id) : handleCellClick(id);
-						}}
-						selectedIds={selectedIds}
-						toggleBuyMode={() => {}}
+						selectedCells={selectedCells}
+						isSelectMode={isSelectMode}
+						handleSelectCellClick={handleSelectCellClick}
+						activeAreaCollection={activeAreaCollection}
+						handleCellClick={handleCellClick}
+						toggleBuyMode={toggleBuyMode}
 					/>
 					<InfoBlock>
 						<InfoLabel>
@@ -76,21 +183,10 @@ const CellModal: VFC<Props> = (props) => {
 						<InfoText>
 							X: <span>{locationX}</span>, Y: <span>{locationY}</span>
 						</InfoText>
+						<BuyFewBtn onClick={handleBuyBtnClick}>
+							{isSelectMode ? "BUY" : "BUY A FEW"}
+						</BuyFewBtn>
 					</InfoBlock>
-
-					{/* <BuyButton
-						onClick={() => {
-							setselect(true);
-						}}>
-						Select
-					</BuyButton> */}
-
-					<BuyButton
-						onClick={() => {
-							toggleInvoiceMode();
-						}}>
-						BUY
-					</BuyButton>
 				</FlexWrapper>
 			</Wrapper>
 		</Modal>

@@ -63,8 +63,8 @@ export const InfoText = styled.p`
   }
 `;
 
-
-export const BuyButton = styled.button`
+export const BuyFewBtn = styled.button`
+  margin-top: 50px;
   border: none;
   outline: none;
   padding: 10px 65px;

@@ -9,10 +9,20 @@ import {
 import { CellModalContext } from "../../context";
 import { CELLS_AREA } from "../../constants/images";
 import { Wrapper, CellsAreaImg, CellInfo } from "./style";
+  VFC,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  Fragment,
+} from "react";
+import { CellModalContext } from "../../context";
+import { Wrapper } from "./style";
 import CellModalDefault from "../CellModalDefault";
 import CellModalBuy from "../CellModalBuy";
 import CellModalInvoice from "../CellModalInvoice";
 import CellModalEdit from "../CellModalEdit";
+import CellAreaSmall from "./CellsAreaSmall";
 import * as _ from "lodash";
 
 import png1 from "../../nftitems/1.png";
@@ -69,7 +79,7 @@ const imgs = [
 	png25,
 ];
 
-const EDITABLE_CELL_ID = 6;
+// const EDITABLE_CELL_ID = 6;
 
 type CellsAreaType = {
 	id: number;
@@ -132,61 +142,67 @@ cellsCollection.forEach((cellsArea, idx) => {
 });
 
 const Cells: VFC = () => {
-	const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
-	const [activeAreaData, setActiveAreaData] = useState<CellsAreaType>({
-		id: 1,
-		x: 1,
-		y: 1,
-		firstCellId: 1,
-		lastCellId: 16,
-	});
-	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
-	const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
+  const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
+  const [activeAreaData, setActiveAreaData] = useState<CellsAreaType>({
+    id: 1,
+    x: 1,
+    y: 1,
+    firstCellId: 1,
+    lastCellId: 16,
+  });
+  const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
+  const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
 	const [isEditMode, setIsEditMode] = useState<boolean>(false);
-	const [activeCellId, setActiveCellId] = useState<number>(0);
+  const [activeCellId, setActiveCellId] = useState<number>(0);
+  const [locationZ, setLocationZ] = useState<number>(0);
+  const [cellsData, setCellsData] = useState();
 	const [selectedIds, setSelectedIds] = useState<number[]>([]);
 	const [nftId, setnftId] = useState<number[]>([1, 1]);
-	const handleClick = (
-		id: number,
-		x: number,
-		y: number,
-		firstCellId?: number,
-		lastCellId?: number
-	) => {
-		toggleCellModal();
+  // const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
 
-		setActiveAreaData({
-			id: id,
-			x: x,
-			y: y,
-			firstCellId: firstCellId!,
-			lastCellId: lastCellId!,
-		});
-	};
+  const toggleBuyMode = useCallback(() => {
+    setIsBuyMode((prev) => !prev);
+  }, []);
 
-	const toggleBuyMode = useCallback(() => {
-		setIsBuyMode((prev) => !prev);
-	}, []);
+  // const toggleEditMode = useCallback(() => {
+  //   setIsEditMode((prev) => !prev);
+
+  //   if (activeCellId === EDITABLE_CELL_ID && !isEditMode) {
+  //     setIsBuyMode(false);
+  //   }
+  // }, [activeCellId, isEditMode]);
+
+  const handleCellsAreaClick = (
+    id: number,
+    x: number,
+    y: number,
+    firstCellId?: number,
+    lastCellId?: number
+  ) => {
+    toggleCellModal();
+
+    setActiveAreaData({
+      id: id,
+      x: x,
+      y: y,
+      firstCellId: firstCellId!,
+      lastCellId: lastCellId!,
+    });
+  };
+
+  const handleCellClick = useCallback((locationZ: number, id: number) => {
+    setLocationZ(locationZ);
+    setActiveCellId(id);
+
+    // if (locationZ === EDITABLE_CELL_ID) {
+    //   setIsEditMode(true);
+    // }
+  }, []);
 
 	const toggleInvoiceMode = useCallback(() => {
 		setIsInvoiceMode((prev) => !prev);
 	}, []);
 
-	const toggleEditMode = useCallback(() => {
-		setIsEditMode((prev) => !prev);
-
-		if (activeCellId === EDITABLE_CELL_ID && !isEditMode) {
-			setIsBuyMode(false);
-		}
-	}, []);
-
-	const handleCellClick = useCallback((id: number) => {
-		setActiveCellId(id);
-
-		if (id === EDITABLE_CELL_ID) {
-			setIsEditMode(true);
-		}
-	}, []);
 
 	console.log(nftId);
 	const setnftIdfun = _.debounce((e) => setnftId(e), 100);
@@ -202,24 +218,47 @@ const Cells: VFC = () => {
 		});
 	}, [ref.current]);
 
-	return (
-		<>
+  useEffect(() => {
+    try {
+      fetch("data.json")
+        .then((res) => res.json())
+        .then((data) => setCellsData(data));
+    } catch (error) {
+      console.log(`Error: ${error}`);
+    }
+  }, []);
+
+  const activeAreaCollection: any[] = [];
+
+  for (
+    let id = activeAreaData.firstCellId!;
+    id < activeAreaData.lastCellId! + 1;
+    id++
+  ) {
+    activeAreaCollection.push({
+      id: id,
+    });
+  }
+
+  return (
+    <>
 			<CellInfo ref={ref} style={{ opacity: !!nftId[0] ? "1" : "0" }}>
 				<img src={imgs[nftId[0] - 1]} />
 				<img src={imgs[nftId[1] - 1]} />
 			</CellInfo>
-			<Wrapper
+      <Wrapper
 				onMouseOut={() => {
 					setnftIdfun([0, 0]);
 				}}
 				onMouseEnter={() => {
 					setnftIdfun([1, 1]);
 				}}>
-				{cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
-					<CellsAreaImg
-						key={id}
-						src={CELLS_AREA}
-						alt="#"
+        {cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
+          <div
+            key={id}
+            onClick={() =>
+              checkAreaId(id) ? handleCellsAreaClick(id, x, y, firstCellId, lastCellId) : null
+            }
 						style={{
 							filter: checkAreaId(id) ? "" : "blur(0.5px) brightness(75%)",
 							cursor: checkAreaId(id) ? "pointer" : "not-allowed",
@@ -227,34 +266,36 @@ const Cells: VFC = () => {
 						onMouseOver={() => {
 							setnftIdfun([x, y]);
 						}}
-						onClick={() =>
-							checkAreaId(id)
-								? handleClick(id, x, y, firstCellId, lastCellId)
-								: null
-						}
-					/>
-				))}
-			</Wrapper>
-			{isEditMode ? (
-				<CellModalEdit
-					isVisible={isCellModalActive}
-					locationX={activeAreaData.x}
-					locationY={activeAreaData.y}
-					activeCellId={activeCellId}
-					onClose={toggleEditMode}
-				/>
-			) : isBuyMode ? (
-				<CellModalBuy
-					isVisible={isCellModalActive}
-					onClose={toggleCellModal}
-					id={activeAreaData.id}
-					locationX={activeAreaData.x}
-					locationY={activeAreaData.y}
-					toggleBuyMode={toggleBuyMode}
-					activeCellId={activeCellId}
+          >
+            <CellAreaSmall
+              key={id}
+              firstCellId={firstCellId!}
+              lastCellId={lastCellId!}
+            />
+          </div>
+        ))}
+      </Wrapper>
+      {/* {isEditMode ? (
+        <CellModalEdit
+          isVisible={isCellModalActive}
+          locationX={activeAreaData.x}
+          locationY={activeAreaData.y}
+          activeCellId={activeCellId}
+          onClose={toggleEditMode}
+        /> */}
+      {isBuyMode ? (
+        <CellModalBuy
+          isVisible={isCellModalActive}
+          onClose={toggleCellModal}
+          id={activeAreaData.id}
+          locationX={activeAreaData.x}
+          locationY={activeAreaData.y}
+          locationZ={locationZ}
+          toggleBuyMode={toggleBuyMode}
+          activeCellId={activeCellId}
 					cellIds={selectedIds}
-				/>
-			) : isInvoiceMode ? (
+        />
+      ) : isInvoiceMode ? (
 				<CellModalInvoice
 					isVisible={isCellModalActive}
 					onClose={toggleCellModal}
@@ -264,25 +305,25 @@ const Cells: VFC = () => {
 					toggleInvoiceMode={toggleInvoiceMode}
 					activeCellId={activeCellId}
 					cellIds={selectedIds}
-				/>
-			) : (
-				<CellModalDefault
-					isVisible={isCellModalActive}
-					onClose={toggleCellModal}
-					id={activeAreaData.id}
-					locationX={activeAreaData.x}
-					locationY={activeAreaData.y}
-					firstCellId={activeAreaData.firstCellId!}
-					lastCellId={activeAreaData.lastCellId!}
-					toggleBuyMode={toggleBuyMode}
-					handleCellClick={handleCellClick}
+				/>): (
+        <CellModalDefault
+          isVisible={isCellModalActive}
+          onClose={toggleCellModal}
+          id={activeAreaData.id}
+          locationX={activeAreaData.x}
+          locationY={activeAreaData.y}
+          firstCellId={activeAreaData.firstCellId!}
+          lastCellId={activeAreaData.lastCellId!}
+          toggleBuyMode={toggleBuyMode}
+          handleCellClick={handleCellClick}
+          activeAreaCollection={activeAreaCollection}
 					toggleInvoiceMode={toggleInvoiceMode}
 					setSelectedIds={setSelectedIds}
 					selectedIds={selectedIds}
-				/>
-			)}
-		</>
-	);
+        />
+      )}
+    </>
+  );
 };
 
 export default Cells;
