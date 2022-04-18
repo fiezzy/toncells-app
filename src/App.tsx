@@ -1,4 +1,4 @@
-import { VFC, useEffect } from "react";
+import { VFC, useEffect, useState } from "react";
 import Cells from "./components/Cells";
 import Container from "./components/Container";
 import DockBar from "./components/DockBar";
@@ -9,47 +9,48 @@ import { NftIcon, CellsWrapperX, IconsX, CellsWrapperY, IconsY } from "./style";
 import GetStatus from "./logic/GetStatus";
 
 type NftIconsType = {
-	id: number;
-	src: string;
+  id: number;
+  src: string;
 };
 
 export const nftIcons: NftIconsType[] = [];
 
 for (let i = 1; i < 26; i++) {
-	nftIcons.push({
-		id: i + 1,
-		src: `${NFT_ICONS + i}.png`,
-	});
+  nftIcons.push({
+    id: i + 1,
+    src: `${NFT_ICONS + i}.png`,
+  });
 }
 
 const App: VFC = () => {
-	useEffect(() => {
-		GetStatus();
-	}, []);
-	const { width } = useWindowDimensions();
+  useEffect(() => {
+    GetStatus();
+  }, []);
 
-	const nftItems = nftIcons.map(({ id, src }) => (
-		<NftIcon key={id} src={src} alt="#" />
-	));
+  const { width } = useWindowDimensions();
 
-	if (width < 768) {
-		return <OpenOnDesktop />;
-	}
+  const nftItems = nftIcons.map(({ id, src }) => (
+    <NftIcon key={id} src={src} alt="#" />
+  ));
 
-	return (
-		<>
-			<Container>
-				<CellsWrapperX>
-					<IconsX>{nftItems}</IconsX>
-					<CellsWrapperY>
-						<IconsY>{nftItems}</IconsY>
-						<Cells />
-					</CellsWrapperY>
-				</CellsWrapperX>
-				<DockBar />
-			</Container>
-		</>
-	);
+  if (width < 768) {
+    return <OpenOnDesktop />;
+  }
+
+  return (
+    <>
+      <Container>
+        <DockBar />
+        <CellsWrapperX>
+          <IconsX>{nftItems}</IconsX>
+          <CellsWrapperY>
+            <IconsY>{nftItems}</IconsY>
+            <Cells />
+          </CellsWrapperY>
+        </CellsWrapperX>
+      </Container>
+    </>
+  );
 };
 
 export default App;
