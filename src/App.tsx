@@ -26,7 +26,7 @@ for (let i = 1; i < 26; i++) {
 
 const App: VFC = () => {
 	const [bigArr, setBigArr] = useState();
-	const [isBuyMode, setIsBuyMode] = useState<boolean>(true);
+	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
 
 	const toggleBuyMode = useCallback(() => {
 		setIsBuyMode((prev) => !prev);
