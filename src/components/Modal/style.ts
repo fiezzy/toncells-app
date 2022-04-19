@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -15,3 +15,4 @@ export const Wrapper = styled.div`
   animation-name: appear;
   animation-duration: 300ms;
 `;
+
