@@ -16,6 +16,7 @@ export const Wrapper = styled.div`
   padding: 15px 0px;
   opacity: 0.7;
   transition: 0.3s;
+  z-index: 99;
 
   a {
     text-decoration: none;

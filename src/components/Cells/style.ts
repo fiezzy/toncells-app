@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   margin: 0 auto 20px auto;
   display: flex;
   flex-wrap: wrap;
-  margin-right: 120px;
+  margin-right: 160px;
   /* background-image: url('../../test1.png'); */
   /* border: 1px solid #000; */
   img {
@@ -30,8 +30,7 @@ export const CellInfo = styled.div`
   background: #fff;
   padding: 8px;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
-
-`
+`;
 
 export const CellsArea = styled.div`
   transition: 0.3s;
