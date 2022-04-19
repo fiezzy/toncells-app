@@ -42,19 +42,19 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
           clearInterval(int);
           message.success("Done trx!", 10);
           setIsload(false);
-          MintNFTs(hexString)
+          MintNFTs(cellIds,hexString)
         }
       });
   }, 10000);
 };
 
-const MintNFTs = (hexString:any ) => {
+const MintNFTs = (cellIds:any,hexString:any ) => {
   fetch(
-    `https://app.toncells.org:9966/API/mintNfts`
+    `https://app.toncells.org:9966/API/payedIds`
     , {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({invoiceId: hexString})
+      body: JSON.stringify({ids:cellIds, hash: hexString})
     }
   )
     .then((e: any) => e.json())
@@ -65,9 +65,9 @@ const MintNFTs = (hexString:any ) => {
       if (e.status === 'ok'){
         message.success("Done minting!", 10);
 
-        e.nfthashes.forEach((element: any) => {
-        message.success(`NFT #${element.id} hash: ${element.hash}`, 10);
-        });
+        // e.nfthashes.forEach((element: any) => {
+        // // message.success(`NFT #${element.id} hash: ${element.hash}`, 10);
+        // });
       }else{
         message.error(`Some error here :/`, 10);
 
