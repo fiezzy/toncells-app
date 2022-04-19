@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 120px;
-  height: 450px;
+  height: 400px;
   position: fixed;
   top: 23vh;
   right: 20px;
@@ -78,7 +78,10 @@ export const Available = styled.div`
   justify-content: center;
   text-align: center;
   flex-direction: column;
-
+  &:hover {
+    transform: scale(1.06);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  }
   span {
     color: #0088cc;
   }
