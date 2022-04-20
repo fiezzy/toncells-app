@@ -276,7 +276,12 @@ const Cells = (props: any) => {
 	// useEffect(() => {}, [refc.current]);
 	//@ts-ignore
 	// document.getElementById("IDIDIID").getContext("2d").drawImage(img, 0, 0);
-
+	let map =
+		props.map === 0
+			? "/MAP.png"
+			: props.map === 1
+			? "/MAPFREE.png"
+			: "/MAPMINTED.png";
 	return (
 		<>
 			<CellInfo
@@ -303,7 +308,7 @@ const Cells = (props: any) => {
 					setnftIdfun([1, 1, 0]);
 				}}>
 				{/* <canvas id={"IDIDIID"} width={100} height={100}></canvas> */}
-				<img src={"/MAP.png"} alt="#" />
+				<img src={map} alt="#" />
 				{cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
 					<div
 						key={id}

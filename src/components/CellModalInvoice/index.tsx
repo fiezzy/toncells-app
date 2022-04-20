@@ -3,6 +3,7 @@ import { Modal } from "../Modal";
 import { CLOSE_ICON } from "../../constants/images";
 import CellModalEdit from "../CellModalEdit";
 import QRCode from "react-qr-code";
+import { CloseOutlined } from "@ant-design/icons";
 import {
 	Wrapper,
 	LabelId,
@@ -89,24 +90,23 @@ const CellModalBuy: VFC<Props> = memo(
 			<Modal isVisible={isVisible} onClose={onClose}>
 				<Wrapper>
 					<CloseBtn onClick={toggleInvoiceMode}>
-						<img src={CLOSE_ICON} alt="Close" />
+						<CloseOutlined />
 					</CloseBtn>
-					<LabelId>#{CELL_ID}</LabelId>
+					<LabelId>Invoice #{hexString}</LabelId>
+					{reserved ? null : <LabelId>ERROR</LabelId>}
+
 					<FlexWrapper>
 						{reserved ? (
 							<QRCode value={reserved ? link : "NFTS ALREADY RESERVED"} />
 						) : null}
-
 						<InfoBlock>
-							<InfoLabel>
-								TONCELL #{CELL_ID}
-								<br />
-								X: {locationX} | Y: {locationY} | Z: {activeCellId}
-							</InfoLabel>
-							<InfoText>
-								<span>Description: </span>
-								Do u really wanna buy cells?
-							</InfoText>
+							{reserved ? (
+								<InfoText>
+									<span>Description: </span>
+									Do u really wanna buy cells?
+								</InfoText>
+							) : null}
+
 							{reserved ? (
 								<BuyButton
 									onClick={() =>
@@ -114,7 +114,7 @@ const CellModalBuy: VFC<Props> = memo(
 											? MakeTrx(setIsload, hexString, cellIds, NFTcost)
 											: null
 									}>
-									BUY WITH TONWEB
+									TONWEB
 								</BuyButton>
 							) : null}
 
@@ -122,7 +122,7 @@ const CellModalBuy: VFC<Props> = memo(
 								<a href={link}>
 									<BuyButton
 										onClick={() => console.log(`Buy Cell # ${CELL_ID}`)}>
-										BUY WITH LINK
+										LINK
 									</BuyButton>
 								</a>
 							) : null}

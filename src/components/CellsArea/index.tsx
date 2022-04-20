@@ -66,8 +66,9 @@ const CellsArea: VFC<Props> = memo((props) => {
 
 	const handleClick = (locationZ: number, id: number) => {
 		if (!isSelectMode) {
-			toggleBuyMode();
-			handleCellClick(locationZ, id);
+			// TODO create modal for BUY
+			// toggleBuyMode();
+			// handleCellClick(locationZ, id);
 		} else {
 			const isExist = selectedCells.includes(id);
 

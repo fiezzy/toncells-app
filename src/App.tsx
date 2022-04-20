@@ -36,9 +36,17 @@ const App: VFC = () => {
 	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
 	const [zoom, togglezoom] = useState<boolean>(false);
 	const [onSideBar, setonSideBar] = useState<boolean>(false);
+	const [map, setmap] = useState<number>(0);
+
 	const toggleBuyMode = useCallback(() => {
 		setIsBuyMode((prev) => !prev);
 	}, []);
+
+	const toggleMap = (mapold: any) => {
+		let newmap = mapold + 1;
+		if (newmap === 3) newmap = 0;
+		setmap(newmap);
+	};
 
 	useEffect(() => {
 		(async () => {
@@ -66,6 +74,7 @@ const App: VFC = () => {
 					togglezoom={togglezoom}
 					zoom={zoom}
 					setonSideBar={setonSideBar}
+					toggleMap={() => toggleMap(map)}
 				/>
 				{isBuyMode && (
 					<NftViewer
@@ -79,7 +88,7 @@ const App: VFC = () => {
 						<IconsX>{nftItems}</IconsX>
 						<CellsWrapperY>
 							<IconsY>{nftItems}</IconsY>
-							<Cells zoom={zoom} onSideBar={onSideBar} />
+							<Cells zoom={zoom} onSideBar={onSideBar} map={map} />
 						</CellsWrapperY>
 					</CellsWrapperX>
 				</ZoomWrapper>

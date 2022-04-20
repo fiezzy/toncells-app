@@ -138,3 +138,6 @@ export const LabelId = styled.p`
   line-height: 32px;
   text-align: center;
 `;
+
+// MAPFREE
+// MAPMINTED
