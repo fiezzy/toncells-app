@@ -1,4 +1,5 @@
 import { VFC, useCallback, useState, useEffect } from "react";
+import * as dayjs from "dayjs";
 import {
 	Wrapper,
 	Wrapper2,
@@ -6,11 +7,12 @@ import {
 	SearchBox,
 	Result,
 	ResultWrapper,
+	LabelId,
 } from "./style";
 import { Modal } from "../Modal";
 import { CLOSE_ICON } from "../../constants/images";
 import { Input, Table } from "antd";
-import { AudioOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
@@ -37,6 +39,10 @@ const columns = [
 		title: "Time",
 		dataIndex: "Time",
 		key: "Time",
+		render: (text: string) => (
+			//@ts-ignore
+			<>{text === 10 ? "" : dayjs(text).format("DD/M/YYYY (HH:MM:ss)")}</>
+		),
 	},
 
 	// {
@@ -88,8 +94,9 @@ const columns = [
 const NftViewer = (props: any) => {
 	// const onSearch = (value) => console.log(value);
 	const [search, setSearch] = useState("");
+	const [search1, setSearch1] = useState("");
+	const [search2, setSearch2] = useState("");
 	const [res, setRes] = useState([]);
-
 	useEffect(() => {
 		if (props.bigArr?.status) {
 			if (search)
@@ -98,19 +105,41 @@ const NftViewer = (props: any) => {
 		}
 	}, [search, props.bigArr?.status]);
 
+	useEffect(() => {
+		if (props.bigArr?.status) {
+			if (search1)
+				setRes(
+					props.bigArr?.status.filter(
+						(e: any) => Number(e.ID) === Number(search1)
+					)
+				);
+			if (!search1) setRes(props.bigArr?.status);
+		}
+	}, [search1, props.bigArr?.status]);
+
+	useEffect(() => {
+		if (props.bigArr?.status) {
+			if (search2)
+				setRes(props.bigArr?.status.filter((e: any) => e.Status === search2));
+			if (!search2) setRes(props.bigArr?.status);
+		}
+	}, [search2, props.bigArr?.status]);
+
 	return (
 		<Modal isVisible={props.isBuyMode} onClose={props.toggleBuyMode}>
 			{/* <Wrapper onClick={props.toggleBuyMode}> */}
 			<Wrapper2>
 				<CloseBtn onClick={props.toggleBuyMode}>
-					<img src={CLOSE_ICON} alt="Close" />
+					<CloseOutlined />
 				</CloseBtn>
+				<LabelId>Toncells viewer</LabelId>
+
 				<SearchBox>
-					<Search
-						placeholder="input search text"
-						onSearch={setSearch}
-						enterButton
-					/>
+					<p>
+						<Search placeholder="WALLET" onSearch={setSearch} enterButton />
+						<Search placeholder="ID" onSearch={setSearch1} enterButton />
+						<Search placeholder="STATUS" onSearch={setSearch2} enterButton />
+					</p>
 					<ResultWrapper>
 						Total: {res.length}
 						{/* {res?.map((e: any) => (
@@ -121,8 +150,8 @@ const NftViewer = (props: any) => {
 						<Table
 							columns={columns}
 							size="middle"
+							pagination={{ pageSize: 5, pageSizeOptions: [5] }}
 							dataSource={res}
-							pagination={{ pageSize: 10 }}
 						/>
 					</ResultWrapper>
 				</SearchBox>

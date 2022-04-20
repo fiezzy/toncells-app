@@ -14,29 +14,40 @@ export const Wrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.25);
   animation-name: appear;
   animation-duration: 300ms;
+
+
+
 `;
 
 export const Wrapper2 = styled.div`
   width: 65%;
   position: fixed;
-  max-height: 800px;
+  /* max-height: 800px; */
   /* overflow-y: scroll; */
   background-color: #fff;
   border-radius: 25px;
   padding: 35px 67px 115px 67px;
   position: relative;
+    width: 920px;
+  /* max-height: 520px; */
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 38px;
+  position: relative;
+
 `;
 
-export const CloseBtn = styled.button`
-  border: none;
-  outline: none;
-  background: none;
+export const CloseBtn = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   position: absolute;
-  right: 67px;
-  top: 46px;
-
+  right: 0;
+  top: 0;
+  margin: 38px;
+  svg {
+    width: 28px;
+    height: 28px;
+  }
   &:hover {
     transform: scale(0.95);
     opacity: 0.5;
@@ -102,7 +113,13 @@ export const Available = styled.div`
 
 
 export const SearchBox = styled.div`
-  margin: 100px 0 0 0;
+  margin: 40px 0 0 0;
+  > p {
+    display: flex;
+    > * {
+      margin: 10px
+    }
+  }
 `
 
 export const Result = styled.div`
@@ -110,6 +127,14 @@ export const Result = styled.div`
 `
 
 export const ResultWrapper = styled.div`
-  margin: 24px 0 100px 0;
+  margin: 24px 0 0 0;
+  /* min-height: 40px; */
   /* padding: 0 0 100px 0; */
 `
+
+export const LabelId = styled.p`
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 32px;
+  text-align: center;
+`;
