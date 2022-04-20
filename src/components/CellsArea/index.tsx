@@ -86,7 +86,7 @@ const CellsArea: VFC<Props> = memo((props) => {
 				setnftIdfun([nftId[0], nftId[1], 0]);
 			}}
 			onMouseEnter={() => {
-				setnftIdfun([1, 1, 1]);
+				setnftIdfun([nftId[0], nftId[1], 0]);
 			}}>
 			{activeAreaCollection.map((cell, idx) => {
 				return (

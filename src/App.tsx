@@ -5,7 +5,14 @@ import DockBar from "./components/DockBar";
 import OpenOnDesktop from "./components/OpenOnDesktop";
 import { useWindowDimensions } from "./hooks/useWindowDimensions";
 import { NFT_ICONS } from "./constants/images";
-import { NftIcon, CellsWrapperX, IconsX, CellsWrapperY, IconsY } from "./style";
+import {
+	NftIcon,
+	CellsWrapperX,
+	IconsX,
+	CellsWrapperY,
+	IconsY,
+	ZoomWrapper,
+} from "./style";
 import GetStatus from "./logic/GetStatus";
 import { Modal } from "./components/Modal";
 import NftViewer from "./components/NftViewer";
@@ -27,6 +34,7 @@ for (let i = 1; i < 26; i++) {
 const App: VFC = () => {
 	const [bigArr, setBigArr] = useState();
 	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
+	const [zoom, togglezoom] = useState<boolean>(false);
 
 	const toggleBuyMode = useCallback(() => {
 		setIsBuyMode((prev) => !prev);
@@ -55,6 +63,8 @@ const App: VFC = () => {
 					bigArr={bigArr}
 					isBuyMode={isBuyMode}
 					toggleBuyMode={toggleBuyMode}
+					togglezoom={togglezoom}
+					zoom={zoom}
 				/>
 				{isBuyMode && (
 					<NftViewer
@@ -63,13 +73,15 @@ const App: VFC = () => {
 						toggleBuyMode={toggleBuyMode}
 					/>
 				)}
-				<CellsWrapperX>
-					<IconsX>{nftItems}</IconsX>
-					<CellsWrapperY>
-						<IconsY>{nftItems}</IconsY>
-						<Cells />
-					</CellsWrapperY>
-				</CellsWrapperX>
+				<ZoomWrapper zoom={zoom}>
+					<CellsWrapperX>
+						<IconsX>{nftItems}</IconsX>
+						<CellsWrapperY>
+							<IconsY>{nftItems}</IconsY>
+							<Cells zoom={zoom} />
+						</CellsWrapperY>
+					</CellsWrapperX>
+				</ZoomWrapper>
 			</Container>
 		</>
 	);

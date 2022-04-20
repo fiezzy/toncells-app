@@ -220,14 +220,6 @@ const Cells = (props: any) => {
 
 	useEffect(() => {
 		window.addEventListener("mousemove", (e) => {
-			console.log(e.pageX, e.pageY);
-			// console.log(ref.current.clientHeight);
-			// console.log(e.clientWidth);
-			// console.log(props.refImg.current.offsetLeft / 2);
-			// console.log(ref1);
-			// console.log(ref1);
-			// console.log(ref1.current.clientWidth);
-			// console.log(ref.current.offsetLeft / 2);
 			//@ts-ignore
 			ref.current.style.left = e.pageX + "px";
 			//@ts-ignore
@@ -289,7 +281,9 @@ const Cells = (props: any) => {
 		<>
 			<CellInfo
 				ref={ref}
-				style={{ opacity: !!nftId.filter((e) => e)[0] ? "1" : "0" }}>
+				style={{
+					opacity: !!nftId.filter((e) => e)[0] && props.zoom ? "1" : "0",
+				}}>
 				{nftId[1] ? <img src={imgs[nftId[1] - 1]} alt="#" /> : null}
 				{nftId[0] ? <img src={imgs[nftId[0] - 1]} alt="#" /> : null}
 				{nftId[2] ? <img src={imgs[nftId[2] - 1]} alt="#" /> : null}
@@ -298,7 +292,7 @@ const Cells = (props: any) => {
 			<Wrapper
 				ref={ref1}
 				onMouseOut={() => {
-					setnftIdfun([0, 0, 0]);
+					if (isCellModalActive) setnftIdfun([0, 0, 0]);
 				}}
 				onMouseEnter={() => {
 					setnftIdfun([1, 1, 0]);

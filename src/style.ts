@@ -9,8 +9,6 @@ export const CellsWrapperX = styled.div`
   left: 0; 
   display: flex;
   gap: 20px;
-  /* transform: scale(0.5) translate(-25%, -50%); */
-  /* transform: ; */
   position: absolute;
   
 
@@ -47,3 +45,10 @@ export const NftIcon = styled.img`
   width: 40px;
   height: 40px;
 `;
+
+export const ZoomWrapper = styled.div<({zoom: boolean})>`
+  transform: ${({zoom})=> !zoom ? "scale(0.5) translate(-25%, -25%)" : ""};
+  /* position: ${({zoom})=> !zoom ? "absolute" : ""}; */
+  /* top: ${({zoom})=> !zoom ? "50%" : ""}; */
+  /* left: ${({zoom})=> !zoom ? "50%" : ""}; */
+`

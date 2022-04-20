@@ -9,7 +9,13 @@ import {
 import { Modal } from "../Modal";
 import NftViewer from "../NftViewer";
 import { message } from "antd";
-import { WalletTwoTone, TeamOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+	WalletTwoTone,
+	TeamOutlined,
+	SearchOutlined,
+	FullscreenOutlined,
+	FullscreenExitOutlined,
+} from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
 
@@ -47,9 +53,18 @@ const DockBar = (props: any) => {
 				</SupportButton>
 			</a>
 
+			<Search onClick={() => props.togglezoom(!props.zoom)}>
+				{props.zoom ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
+			</Search>
+
 			<Available>
-				Minted: <br />
-				{2944 - numberMinted}/2944
+				Free cells: <br />
+				{((2944 - numberMinted) / 1000).toFixed(2)}k/10k
+			</Available>
+
+			<Available>
+				Version: <br />
+				0.0.1 (alfa)
 			</Available>
 		</Wrapper>
 	);
