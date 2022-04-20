@@ -282,7 +282,12 @@ const Cells = (props: any) => {
 			<CellInfo
 				ref={ref}
 				style={{
-					opacity: !!nftId.filter((e) => e)[0] && props.zoom ? "1" : "0",
+					opacity:
+						!!nftId.filter((e) => e)[0] &&
+						(props.zoom || isCellModalActive) &&
+						!props.onSideBar
+							? "1"
+							: "0",
 				}}>
 				{nftId[1] ? <img src={imgs[nftId[1] - 1]} alt="#" /> : null}
 				{nftId[0] ? <img src={imgs[nftId[0] - 1]} alt="#" /> : null}

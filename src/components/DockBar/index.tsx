@@ -35,7 +35,9 @@ const DockBar = (props: any) => {
 	const [key, setTONwalletKey] = useState("");
 
 	return (
-		<Wrapper>
+		<Wrapper
+			onMouseEnter={() => props.setonSideBar(true)}
+			onMouseLeave={() => props.setonSideBar(false)}>
 			<ConnectButton onClick={() => connectWalletTON(setTONwalletKey)}>
 				{!key ? (
 					<WalletTwoTone />

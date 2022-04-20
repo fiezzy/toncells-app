@@ -1,32 +1,33 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  width: 70%;
-  max-height: 725px;
+  width: 920px;
+  /* max-height: 520px; */
   background-color: #fff;
-  border-radius: 25px;
-  padding: 35px 67px 115px 67px;
+  border-radius: 12px;
+  padding: 38px;
   position: relative;
 `;
 
 export const LabelId = styled.p`
   font-weight: 700;
-  font-size: 50px;
-  line-height: 59px;
+  font-size: 32px;
+  line-height: 32px;
   text-align: center;
-  margin-bottom: 40px;
+  /* margin-bottom: 40px; */
 `;
 
-export const CloseBtn = styled.button`
-  border: none;
-  outline: none;
-  background: none;
+export const CloseBtn = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   position: absolute;
-  right: 67px;
-  top: 46px;
-
+  right: 0;
+  top: 0;
+  margin: 38px;
+  svg {
+    width: 28px;
+    height: 28px;
+  }
   &:hover {
     transform: scale(0.95);
     opacity: 0.5;
@@ -44,19 +45,23 @@ export const InfoBlock = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 43%;
+  width: 380px;
+
+  /* width: 43%; */
+  /* background: green; */
+  margin: 0 auto;
 `;
 
 export const InfoLabel = styled.span`
   font-weight: 300;
-  font-size: 20px;
-  line-height: 36px;
+  font-size: 16px;
+  line-height: 24px;
 `;
 
 export const InfoText = styled.p`
   font-weight: 400;
-  font-size: 30px;
-  line-height: 36px;
+  font-size: 16px;
+  line-height: 24px;
 
   span {
     font-weight: 900;
@@ -64,13 +69,13 @@ export const InfoText = styled.p`
 `;
 
 export const BuyFewBtn = styled.button`
-  margin-top: 50px;
+  /* /* margin-top: 50px; * */
   border: none;
   outline: none;
   padding: 10px 65px;
   color: #fff;
-  font-size: 20px;
-  font-weight: 400;
+  font-size: 16px;
+  /* font-weight: 400; */
   background-color: #000;
   border-radius: 20px;
   cursor: pointer;

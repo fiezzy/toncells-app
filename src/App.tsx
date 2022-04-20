@@ -35,7 +35,7 @@ const App: VFC = () => {
 	const [bigArr, setBigArr] = useState();
 	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
 	const [zoom, togglezoom] = useState<boolean>(false);
-
+	const [onSideBar, setonSideBar] = useState<boolean>(false);
 	const toggleBuyMode = useCallback(() => {
 		setIsBuyMode((prev) => !prev);
 	}, []);
@@ -65,6 +65,7 @@ const App: VFC = () => {
 					toggleBuyMode={toggleBuyMode}
 					togglezoom={togglezoom}
 					zoom={zoom}
+					setonSideBar={setonSideBar}
 				/>
 				{isBuyMode && (
 					<NftViewer
@@ -78,7 +79,7 @@ const App: VFC = () => {
 						<IconsX>{nftItems}</IconsX>
 						<CellsWrapperY>
 							<IconsY>{nftItems}</IconsY>
-							<Cells zoom={zoom} />
+							<Cells zoom={zoom} onSideBar={onSideBar} />
 						</CellsWrapperY>
 					</CellsWrapperX>
 				</ZoomWrapper>

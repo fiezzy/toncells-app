@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   gap: 12px;
   padding: 12px 0px;
-  opacity: 0.7;
+  /* opacity: 0.7; */
   transition: 0.3s;
   z-index: 99;
   

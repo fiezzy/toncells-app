@@ -120,7 +120,8 @@ const CellModalBuy: VFC<Props> = memo(
 
 							{reserved ? (
 								<a href={link}>
-									<BuyButton onClick={() => alert(`Buy Cell # ${CELL_ID}`)}>
+									<BuyButton
+										onClick={() => console.log(`Buy Cell # ${CELL_ID}`)}>
 										BUY WITH LINK
 									</BuyButton>
 								</a>
