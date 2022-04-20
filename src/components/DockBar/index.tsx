@@ -1,8 +1,15 @@
 import { VFC, useState, useCallback } from "react";
-import { Wrapper, ConnectButton, SupportButton, Available } from "./style";
+import {
+	Wrapper,
+	ConnectButton,
+	SupportButton,
+	Available,
+	Search,
+} from "./style";
 import { Modal } from "../Modal";
 import NftViewer from "../NftViewer";
-import { message, Table } from "antd";
+import { message } from "antd";
+import { WalletTwoTone, TeamOutlined, SearchOutlined } from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
 
@@ -25,24 +32,25 @@ const DockBar = (props: any) => {
 		<Wrapper>
 			<ConnectButton onClick={() => connectWalletTON(setTONwalletKey)}>
 				{!key ? (
-					<>
-						Connect <span>Wallet</span>
-					</>
+					<WalletTwoTone />
 				) : (
-					<>
-						Connected!
-						<br />
-						<span>{`${key.slice(0, 3)}...${key.slice(-2)}`}</span>
-					</>
+					<span>{`${key.slice(0, 3)}...${key.slice(-2)}`}</span>
 				)}
 			</ConnectButton>
+			<Search onClick={props.toggleBuyMode}>
+				<SearchOutlined />
+			</Search>
+
 			<a href={SEPEZHO_LINK} target="_blank" rel="noreferrer">
-				<SupportButton>Technical Support</SupportButton>
+				<SupportButton>
+					<TeamOutlined />
+				</SupportButton>
 			</a>
+
 			<Available>
-				Available <br /> <span>{2944 - numberMinted} of 2944</span>
+				Minted: <br />
+				{2944 - numberMinted}/2944
 			</Available>
-			<Available onClick={props.toggleBuyMode}>NftViewer</Available>
 		</Wrapper>
 	);
 };

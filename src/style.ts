@@ -2,10 +2,18 @@ import styled from "styled-components";
 
 export const CellsWrapperX = styled.div`
   width: 1720px;
+    /* height: 900px; */
   height: 1700px;
-  margin: 0 auto;
+  /* margin: 0 0; */
+  top: 48px;
+  left: 0; 
   display: flex;
   gap: 20px;
+  /* transform: scale(0.5) translate(-25%, -50%); */
+  /* transform: ; */
+  position: absolute;
+  
+
 `;
 
 export const CellsWrapperY = styled.div`

@@ -67,7 +67,7 @@ const App: VFC = () => {
 					<IconsX>{nftItems}</IconsX>
 					<CellsWrapperY>
 						<IconsY>{nftItems}</IconsY>
-						{/* <Cells /> */}
+						<Cells />
 					</CellsWrapperY>
 				</CellsWrapperX>
 			</Container>
