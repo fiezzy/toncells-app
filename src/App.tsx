@@ -6,95 +6,95 @@ import OpenOnDesktop from "./components/OpenOnDesktop";
 import { useWindowDimensions } from "./hooks/useWindowDimensions";
 import { NFT_ICONS } from "./constants/images";
 import {
-	NftIcon,
-	CellsWrapperX,
-	IconsX,
-	CellsWrapperY,
-	IconsY,
-	ZoomWrapper,
+  NftIcon,
+  CellsWrapperX,
+  IconsX,
+  CellsWrapperY,
+  IconsY,
+  ZoomWrapper,
 } from "./style";
 import GetStatus from "./logic/GetStatus";
-import { Modal } from "./components/Modal";
 import NftViewer from "./components/NftViewer";
 
-type NftIconsType = {
-	id: number;
-	src: string;
-};
-
-export const nftIcons: NftIconsType[] = [];
+export const nftIcons: string[] = [];
 
 for (let i = 1; i < 26; i++) {
-	nftIcons.push({
-		id: i + 1,
-		src: `${NFT_ICONS + i}.png`,
-	});
+  nftIcons.push(`${NFT_ICONS + i}.png`);
 }
 
 const App: VFC = () => {
-	const [bigArr, setBigArr] = useState();
-	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
-	const [zoom, togglezoom] = useState<boolean>(false);
-	const [onSideBar, setonSideBar] = useState<boolean>(false);
-	const [map, setmap] = useState<number>(0);
+  const [bigArr, setBigArr] = useState();
+  const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
+  const [isZoomMode, setIsZoomMode] = useState<boolean>(false);
+  const [onSideBar, setonSideBar] = useState<boolean>(false);
+  const [mapVersion, setMapVersion] = useState<number>(0);
 
-	const toggleBuyMode = useCallback(() => {
-		setIsBuyMode((prev) => !prev);
-	}, []);
+  const toggleBuyMode = useCallback(() => {
+    setIsBuyMode((prev) => !prev);
+  }, []);
 
-	const toggleMap = (mapold: any) => {
-		let newmap = mapold + 1;
-		if (newmap === 3) newmap = 0;
-		setmap(newmap);
-	};
+  const toggleMap = (mapold: any) => {
+    let newMap = mapold + 1;
+    if (newMap === 3) newMap = 0;
+    setMapVersion(newMap);
+  };
 
-	useEffect(() => {
-		(async () => {
-			setBigArr(await GetStatus());
-		})();
-	}, []);
+  useEffect(() => {
+    (async () => {
+      setBigArr(await GetStatus());
+    })();
+  }, []);
 
-	const { width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
-	const nftItems = nftIcons.map(({ id, src }) => (
-		<NftIcon key={id} src={src} alt="#" />
-	));
+  const nftItems = nftIcons.map((src) => (
+    <NftIcon key={src} src={src} alt="#" />
+  ));
 
-	if (width < 768) {
-		return <OpenOnDesktop />;
-	}
+  if (width < 768) {
+    return <OpenOnDesktop />;
+  }
 
-	return (
-		<>
-			<Container>
-				<DockBar
-					bigArr={bigArr}
-					isBuyMode={isBuyMode}
-					toggleBuyMode={toggleBuyMode}
-					togglezoom={togglezoom}
-					zoom={zoom}
-					setonSideBar={setonSideBar}
-					toggleMap={() => toggleMap(map)}
-				/>
-				{isBuyMode && (
-					<NftViewer
-						isBuyMode={isBuyMode}
-						bigArr={bigArr}
-						toggleBuyMode={toggleBuyMode}
-					/>
-				)}
-				<ZoomWrapper zoom={zoom}>
-					<CellsWrapperX>
-						<IconsX>{nftItems}</IconsX>
-						<CellsWrapperY>
-							<IconsY>{nftItems}</IconsY>
-							<Cells zoom={zoom} onSideBar={onSideBar} map={map} />
-						</CellsWrapperY>
-					</CellsWrapperX>
-				</ZoomWrapper>
-			</Container>
-		</>
-	);
+  console.log(bigArr);
+
+  return (
+    <>
+      <Container>
+        <DockBar
+          bigArr={bigArr}
+          isBuyMode={isBuyMode}
+          toggleBuyMode={toggleBuyMode}
+          toggleZoomMode={(isZoom: boolean) => setIsZoomMode(isZoom)}
+          isZoomMode={isZoomMode}
+          setonSideBar={(isSideBarActive: boolean) =>
+            setonSideBar(isSideBarActive)
+          }
+          toggleMap={() => toggleMap(mapVersion)}
+        />
+        {isBuyMode && (
+          <NftViewer
+            isBuyMode={isBuyMode}
+            bigArr={bigArr}
+            toggleBuyMode={toggleBuyMode}
+          />
+        )}
+        <ZoomWrapper isZoomMode={isZoomMode}>
+          <CellsWrapperX>
+            <IconsX>{nftItems}</IconsX>
+            <CellsWrapperY>
+              <IconsY>{nftItems}</IconsY>
+              <Cells
+                isZoomMode={isZoomMode}
+                onSideBar={onSideBar}
+                mapVersion={mapVersion}
+                nftImgs={nftIcons}
+              />
+            </CellsWrapperY>
+          </CellsWrapperX>
+        </ZoomWrapper>
+      </Container>
+    </>
+  );
 };
 
 export default App;
