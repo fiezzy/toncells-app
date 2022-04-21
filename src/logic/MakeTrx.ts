@@ -24,6 +24,7 @@ export const MakeTrx = async (
 export const listener = (hexString: any, setIsload: any, cellIds: any) => {
   const int = setInterval(() => {
     message.success("Wait trx pending...", 2);
+    setIsload(true)
     fetch(
       `https://testnet.toncenter.com/api/v2/getTransactions?address=${process.env.REACT_APP_BACK_TON_WALLET}&limit=40&to_lt=0&archival=false`
     )
@@ -39,13 +40,16 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
           clearInterval(int);
           message.success("Done trx!", 10);
           setIsload(false);
-          MintNFTs(cellIds,hexString)
+          MintNFTs(cellIds,hexString, setIsload)
+
         }
       });
   }, 10000);
 };
 
-const MintNFTs = (cellIds:any,hexString:any ) => {
+const MintNFTs = (cellIds:any,hexString:any, setIsload:any ) => {
+  setIsload(true)
+
   fetch(
     `https://testnet.app.toncells.org:9966/API/payedIds`
     , {
@@ -60,6 +64,7 @@ const MintNFTs = (cellIds:any,hexString:any ) => {
 
       if (e.status === "ok") {
         message.success("Done minting!", 10);
+        setIsload(false)
 
         // e.nfthashes.forEach((element: any) => {
         // // message.success(`NFT #${element.id} hash: ${element.hash}`, 10);

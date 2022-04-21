@@ -16,6 +16,8 @@ import {
 	FullscreenOutlined,
 	FullscreenExitOutlined,
 	MenuOutlined,
+	MessageOutlined,
+	QuestionCircleOutlined,
 } from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
@@ -54,9 +56,13 @@ const DockBar = (props: any) => {
 				<MenuOutlined />
 			</Search>
 
+			<Search onClick={props.toggleDescMode}>
+				<QuestionCircleOutlined />
+			</Search>
+
 			<a href={SEPEZHO_LINK} target="_blank" rel="noreferrer">
 				<SupportButton>
-					<TeamOutlined />
+					<MessageOutlined />
 				</SupportButton>
 			</a>
 

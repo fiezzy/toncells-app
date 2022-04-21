@@ -16,6 +16,7 @@ import {
 import GetStatus from "./logic/GetStatus";
 import { Modal } from "./components/Modal";
 import NftViewer from "./components/NftViewer";
+import DescModeModal from "./components/DescModeModal";
 
 type NftIconsType = {
 	id: number;
@@ -34,6 +35,7 @@ for (let i = 1; i < 26; i++) {
 const App: VFC = () => {
 	const [bigArr, setBigArr] = useState();
 	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
+	const [isDescMode, toggleDescMode] = useState<boolean>(false);
 	const [zoom, togglezoom] = useState<boolean>(false);
 	const [onSideBar, setonSideBar] = useState<boolean>(false);
 	const [map, setmap] = useState<number>(0);
@@ -76,12 +78,19 @@ const App: VFC = () => {
 					zoom={zoom}
 					setonSideBar={setonSideBar}
 					toggleMap={() => toggleMap(map)}
+					toggleDescMode={() => toggleDescMode((prev) => !prev)}
 				/>
 				{isBuyMode && (
 					<NftViewer
 						isBuyMode={isBuyMode}
 						bigArr={bigArr}
 						toggleBuyMode={toggleBuyMode}
+					/>
+				)}
+				{isDescMode && (
+					<DescModeModal
+						isDescMode={isDescMode}
+						toggleDescMode={() => toggleDescMode((prev) => !prev)}
 					/>
 				)}
 				<ZoomWrapper zoom={zoom}>
