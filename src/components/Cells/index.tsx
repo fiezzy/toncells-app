@@ -19,61 +19,12 @@ import CellAreaSmall from "./CellsAreaSmall";
 import * as _ from "lodash";
 // import img from "MAP.png";
 
-import png1 from "../../nftitems/1.png";
-import png2 from "../../nftitems/2.png";
-import png3 from "../../nftitems/3.png";
-import png4 from "../../nftitems/4.png";
-import png5 from "../../nftitems/5.png";
-import png6 from "../../nftitems/6.png";
-import png7 from "../../nftitems/7.png";
-import png8 from "../../nftitems/8.png";
-import png9 from "../../nftitems/9.png";
-import png10 from "../../nftitems/10.png";
-import png11 from "../../nftitems/11.png";
-import png12 from "../../nftitems/12.png";
-import png13 from "../../nftitems/13.png";
-import png14 from "../../nftitems/14.png";
-import png15 from "../../nftitems/15.png";
-import png16 from "../../nftitems/16.png";
-import png17 from "../../nftitems/17.png";
-import png18 from "../../nftitems/18.png";
-import png19 from "../../nftitems/19.png";
-import png20 from "../../nftitems/20.png";
-import png21 from "../../nftitems/21.png";
-import png22 from "../../nftitems/22.png";
-import png23 from "../../nftitems/23.png";
-import png24 from "../../nftitems/24.png";
-import png25 from "../../nftitems/25.png";
-
-const imgs = [
-	png1,
-	png2,
-	png3,
-	png4,
-	png5,
-	png6,
-	png7,
-	png8,
-	png9,
-	png10,
-	png11,
-	png12,
-	png13,
-	png14,
-	png15,
-	png16,
-	png17,
-	png18,
-	png19,
-	png20,
-	png21,
-	png22,
-	png23,
-	png24,
-	png25,
-];
-
-// const EDITABLE_CELL_ID = 6;
+type Props = {
+	isZoomMode: boolean;
+	onSideBar: boolean;
+	mapVersion: number;
+	nftImgs: string[];
+};
 
 type CellsAreaType = {
 	id: number;
@@ -135,7 +86,9 @@ cellsCollection.forEach((cellsArea, idx) => {
 	cellsArea.firstCellId = cellsArea.lastCellId - 16 + 1;
 });
 
-const Cells = (props: any) => {
+const Cells: VFC<Props> = (props) => {
+	const { isZoomMode, onSideBar, mapVersion, nftImgs } = props;
+
 	const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
 	const [activeAreaData, setActiveAreaData] = useState<CellsAreaType>({
 		id: 1,
@@ -146,7 +99,7 @@ const Cells = (props: any) => {
 	});
 	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
 	const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
-	const [isEditMode, setIsEditMode] = useState<boolean>(false);
+	//   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 	const [activeCellId, setActiveCellId] = useState<number>(0);
 	const [locationZ, setLocationZ] = useState<number>(0);
 	const [cellsData, setCellsData] = useState();
@@ -252,34 +205,12 @@ const Cells = (props: any) => {
 		});
 	}
 
-	// if(isSuccess) {
-	//   for (let i = 0; i < 10000; i++) {
-	//     for (let j = 0; j < activeAreaCollection.length; j++) {
-	//       if (cellsData![i].status === "Minted") {
-	//         activeAreaCollection[i] = { ...activeAreaCollection, status: "Minted" };
-	//       }
-	//       if (cellsData![i].status === "Reserved") {
-	//         activeAreaCollection[i] = {
-	//           ...activeAreaCollection,
-	//           status: "Reserved",
-	//         };
-	//       }
-	//     }
-	//   }
-	// }
-
-	// const refc = useRef(null);
-
-	// // ctx.moveTo(0, 0);
-	// // ctx.lineTo(200, 100);
-	// // ctx.stroke();
-	// useEffect(() => {}, [refc.current]);
 	//@ts-ignore
 	// document.getElementById("IDIDIID").getContext("2d").drawImage(img, 0, 0);
 	let map =
-		props.map === 0
+		mapVersion === 0
 			? "/MAP.png"
-			: props.map === 1
+			: mapVersion === 1
 			? "/MAPFREE.png"
 			: "/MAPMINTED.png";
 	return (
@@ -289,14 +220,14 @@ const Cells = (props: any) => {
 				style={{
 					opacity:
 						!!nftId.filter((e) => e)[0] &&
-						(props.zoom || isCellModalActive) &&
-						!props.onSideBar
+						(isZoomMode || isCellModalActive) &&
+						!onSideBar
 							? "1"
 							: "0",
 				}}>
-				{nftId[1] ? <img src={imgs[nftId[1] - 1]} alt="#" /> : null}
-				{nftId[0] ? <img src={imgs[nftId[0] - 1]} alt="#" /> : null}
-				{nftId[2] ? <img src={imgs[nftId[2] - 1]} alt="#" /> : null}
+				{nftId[1] ? <img src={nftImgs[nftId[1] - 1]} alt="#" /> : null}
+				{nftId[0] ? <img src={nftImgs[nftId[0] - 1]} alt="#" /> : null}
+				{nftId[2] ? <img src={nftImgs[nftId[2] - 1]} alt="#" /> : null}
 			</CellInfo>
 
 			<Wrapper

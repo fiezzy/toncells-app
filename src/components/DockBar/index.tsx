@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from "react";
+import { VFC, useState } from "react";
 import {
 	Wrapper,
 	ConnectButton,
@@ -6,8 +6,6 @@ import {
 	Available,
 	Search,
 } from "./style";
-import { Modal } from "../Modal";
-import NftViewer from "../NftViewer";
 import { message } from "antd";
 import {
 	WalletTwoTone,
@@ -22,25 +20,37 @@ import {
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
 
-const DockBar = (props: any) => {
-	const numberMinted = props.bigArr?.status.filter(
+type Props = {
+	bigArr: any;
+	setonSideBar: (isSideBarActive: boolean) => void;
+	isBuyMode: boolean;
+	toggleBuyMode: () => void;
+	toggleZoomMode: (isZoom: boolean) => void;
+	isZoomMode: boolean;
+	toggleMap: () => void;
+	toggleDescMode: () => void;
+};
+
+const DockBar: VFC<Props> = (props) => {
+	const {
+		bigArr,
+		setonSideBar,
+		toggleBuyMode,
+		toggleZoomMode,
+		isZoomMode,
+		toggleMap,
+	} = props;
+
+	const numberMinted = bigArr?.status.filter(
 		(e: any) => e.Status !== "Free"
 	).length;
-
-	// const conWal = () => {
-	// 	//@ts-ignore
-	// 	if (!window.ton) {
-	// 		message.error("Install TonWeb", 10);
-	// 	} else {
-	// 	}
-	// };
 
 	const [key, setTONwalletKey] = useState("");
 
 	return (
 		<Wrapper
-			onMouseEnter={() => props.setonSideBar(true)}
-			onMouseLeave={() => props.setonSideBar(false)}>
+			onMouseEnter={() => setonSideBar(true)}
+			onMouseLeave={() => setonSideBar(false)}>
 			<ConnectButton onClick={() => connectWalletTON(setTONwalletKey)}>
 				{!key ? (
 					<WalletTwoTone />
@@ -48,11 +58,11 @@ const DockBar = (props: any) => {
 					<span>{`${key.slice(0, 3)}...${key.slice(-2)}`}</span>
 				)}
 			</ConnectButton>
-			<Search onClick={props.toggleBuyMode}>
+			<Search onClick={toggleBuyMode}>
 				<SearchOutlined />
 			</Search>
 
-			<Search onClick={props.toggleMap}>
+			<Search onClick={toggleMap}>
 				<MenuOutlined />
 			</Search>
 
@@ -66,8 +76,8 @@ const DockBar = (props: any) => {
 				</SupportButton>
 			</a>
 
-			<Search onClick={() => props.togglezoom(!props.zoom)}>
-				{props.zoom ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
+			<Search onClick={() => toggleZoomMode(!isZoomMode)}>
+				{isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
 			</Search>
 
 			<Available>

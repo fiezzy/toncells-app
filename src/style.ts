@@ -2,18 +2,17 @@ import styled from "styled-components";
 
 export const CellsWrapperX = styled.div`
   width: 1720px;
-    /* height: 900px; */
+  /* height: 900px; */
   height: 1700px;
   /* margin: 0 0; */
   /* top: 48px; */
-  left: 0; 
+  left: 0;
   display: flex;
   gap: 20px;
   position: absolute;
   justify-content: center;
   align-items: center;
   padding: 0 0 0 160px;
-
 `;
 
 export const CellsWrapperY = styled.div`
@@ -48,10 +47,10 @@ export const NftIcon = styled.img`
   height: 40px;
 `;
 
-export const ZoomWrapper = styled.div<({zoom: boolean})>`
-  transform: ${({zoom})=> !zoom ? "scale(0.45) " : ""};
-  /* position: ${({zoom})=> !zoom ? "flex" : ""};
-  top: ${({zoom})=> !zoom ? "50%" : ""};
-  left: ${({zoom})=> !zoom ? "50%" : ""}; */
+export const ZoomWrapper = styled.div<{ isZoomMode: boolean }>`
+  transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.45) " : "")};
+  /* position: ${({ isZoomMode }) => (!isZoomMode ? "flex" : "")};
+  top: ${({ isZoomMode }) => (!isZoomMode ? "50%" : "")};
+  left: ${({ isZoomMode }) => (!isZoomMode ? "50%" : "")}; */
   /* display: flex; */
-`
+`;

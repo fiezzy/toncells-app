@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   /* height: 400px; */
   position: fixed;
   top: 50%;
-  transform: translate(0,-50%);
+  transform: translate(0, -50%);
   right: 10px;
   border-radius: 10px;
   background-color: #fff;
@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   /* opacity: 0.7; */
   transition: 0.3s;
   z-index: 99;
-  
+
   svg {
     width: 18px;
     height: 18px;
@@ -93,6 +93,7 @@ export const Search = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 9px;
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.06);
@@ -102,7 +103,6 @@ export const Search = styled.div`
     color: #0088cc;
   }
 `;
-
 
 export const Available = styled.div`
   width: 50px;
@@ -125,4 +125,3 @@ export const Available = styled.div`
     color: #0088cc;
   }
 `;
-
