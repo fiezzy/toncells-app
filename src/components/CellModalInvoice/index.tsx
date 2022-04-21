@@ -39,11 +39,6 @@ enum Location {
 	Z = 4,
 }
 
-const hexString = Array(16)
-	.fill("")
-	.map(() => Math.round(Math.random() * 0xf).toString(16))
-	.join("");
-
 const CellModalBuy: VFC<Props> = memo(
 	({
 		isVisible,
@@ -55,6 +50,7 @@ const CellModalBuy: VFC<Props> = memo(
 		cellIds,
 	}) => {
 		const [reserved, setReserved] = useState<boolean>(false);
+		const [hex, setHex] = useState<string>("");
 		console.log(cellIds);
 		const NFTcost = 0.1;
 
@@ -63,7 +59,7 @@ const CellModalBuy: VFC<Props> = memo(
 			process.env.REACT_APP_BACK_TON_WALLET
 		}?amount=${TonWeb.utils.toNano(
 			(cellIds.length * NFTcost).toFixed(3)
-		)}&text=${hexString}${cellIds.join(".")}`;
+		)}&text=${hex}${cellIds.join(".")}`;
 
 		useEffect(() => {
 			message.success("Reserving NFTs...", 10);
@@ -78,7 +74,14 @@ const CellModalBuy: VFC<Props> = memo(
 					if (e.status === "ok") {
 						message.success("Reserved!", 10);
 						setReserved(e.status === "ok");
-						listener(hexString, setIsload, cellIds);
+						setHex(
+							Array(16)
+								.fill("")
+								.map(() => Math.round(Math.random() * 0xf).toString(16))
+								.join("")
+						);
+
+						// listener(hexString, setIsload, cellIds);
 					} else {
 						message.error("Already reserved!", 10);
 						setReserved(e.status === "ok");
@@ -92,8 +95,8 @@ const CellModalBuy: VFC<Props> = memo(
 					<CloseBtn onClick={toggleInvoiceMode}>
 						<CloseOutlined />
 					</CloseBtn>
-					<LabelId>Invoice #{hexString}</LabelId>
-					{reserved ? null : <LabelId>ERROR</LabelId>}
+					<LabelId>Invoice #{hex}</LabelId>
+					{reserved ? null : <LabelId>NFTs already reserved</LabelId>}
 
 					<FlexWrapper>
 						{reserved ? (
@@ -103,16 +106,14 @@ const CellModalBuy: VFC<Props> = memo(
 							{reserved ? (
 								<InfoText>
 									<span>Description: </span>
-									Do u really wanna buy cells?
+									Buy IDs {cellIds.map((e) => e + "; ")}
 								</InfoText>
 							) : null}
 
 							{reserved ? (
 								<BuyButton
 									onClick={() =>
-										reserved
-											? MakeTrx(setIsload, hexString, cellIds, NFTcost)
-											: null
+										reserved ? MakeTrx(setIsload, hex, cellIds, NFTcost) : null
 									}>
 									TONWEB
 								</BuyButton>
@@ -120,11 +121,14 @@ const CellModalBuy: VFC<Props> = memo(
 
 							{reserved ? (
 								<a href={link}>
-									<BuyButton
-										onClick={() => console.log(`Buy Cell # ${CELL_ID}`)}>
-										LINK
-									</BuyButton>
+									<BuyButton onClick={() => {}}>LINK</BuyButton>
 								</a>
+							) : null}
+
+							{reserved ? (
+								<BuyButton onClick={() => listener(hex, setIsload, cellIds)}>
+									Im payed
+								</BuyButton>
 							) : null}
 						</InfoBlock>
 					</FlexWrapper>
