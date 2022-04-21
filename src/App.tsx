@@ -49,8 +49,8 @@ const App: VFC = () => {
 
 	const { width } = useWindowDimensions();
 
-	const nftItems = nftIcons.map(({ id, src }) => (
-		<NftIcon key={id} src={src} alt="#" />
+	const nftItems = nftIcons.map((src) => (
+		<NftIcon key={src} src={src} alt="#" />
 	));
 	// return <OpenOnDesktop />;
 	if (width < 768) {
