@@ -73,6 +73,7 @@ const CellModalBuy: VFC<Props> = memo(
 			})
 				.then((e: any) => e.json())
 				.then((e: any) => {
+					setIsload(false);
 					console.log(e);
 					if (e.status === "ok") {
 						message.success("Reserved!", 10);
@@ -83,7 +84,6 @@ const CellModalBuy: VFC<Props> = memo(
 								.map(() => Math.round(Math.random() * 0xf).toString(16))
 								.join("")
 						);
-						setIsload(false);
 
 						// listener(hexString, setIsload, cellIds);
 					} else {
@@ -100,7 +100,6 @@ const CellModalBuy: VFC<Props> = memo(
 						<CloseOutlined />
 					</CloseBtn>
 					<LabelId>Invoice #{hex}</LabelId>
-					{reserved ? null : <LabelId>NFTs already reserved</LabelId>}
 					{isLoad ? (
 						<Spin
 							indicator={<LoadingOutlined style={{ fontSize: 56 }} spin />}
@@ -111,42 +110,47 @@ const CellModalBuy: VFC<Props> = memo(
 							}}
 						/>
 					) : (
-						<FlexWrapper>
-							{reserved ? (
-								<QRCode value={reserved ? link : "NFTS ALREADY RESERVED"} />
-							) : null}
-							<InfoBlock>
-								{reserved ? (
-									<InfoText>
-										<span>Description: </span>
-										Buy IDs {cellIds.map((e) => e + "; ")}
-									</InfoText>
-								) : null}
+						<>
+							{reserved ? null : <LabelId>NFTs already reserved</LabelId>}
 
+							<FlexWrapper>
 								{reserved ? (
-									<BuyButton
-										onClick={() =>
-											reserved
-												? MakeTrx(setIsload, hex, cellIds, NFTcost)
-												: null
-										}>
-										TONWEB
-									</BuyButton>
+									<QRCode value={reserved ? link : "NFTS ALREADY RESERVED"} />
 								) : null}
+								<InfoBlock>
+									{reserved ? (
+										<InfoText>
+											<span>Description: </span>
+											Buy IDs {cellIds.map((e) => e + "; ")}
+										</InfoText>
+									) : null}
 
-								{reserved ? (
-									<a href={link}>
-										<BuyButton onClick={() => {}}>LINK</BuyButton>
-									</a>
-								) : null}
+									{reserved ? (
+										<BuyButton
+											onClick={() =>
+												reserved
+													? MakeTrx(setIsload, hex, cellIds, NFTcost)
+													: null
+											}>
+											TONWEB
+										</BuyButton>
+									) : null}
 
-								{reserved ? (
-									<BuyButton onClick={() => listener(hex, setIsload, cellIds)}>
-										Im payed
-									</BuyButton>
-								) : null}
-							</InfoBlock>
-						</FlexWrapper>
+									{reserved ? (
+										<a href={link}>
+											<BuyButton onClick={() => {}}>LINK</BuyButton>
+										</a>
+									) : null}
+
+									{reserved ? (
+										<BuyButton
+											onClick={() => listener(hex, setIsload, cellIds)}>
+											Im payed
+										</BuyButton>
+									) : null}
+								</InfoBlock>
+							</FlexWrapper>
+						</>
 					)}
 				</Wrapper>
 			</Modal>

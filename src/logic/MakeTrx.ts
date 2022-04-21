@@ -22,10 +22,10 @@ export const MakeTrx = async (
 };
 
 export const listener = (hexString: any, setIsload: any, cellIds: any) => {
-  const int = setInterval(() => {
-    message.success("Wait trx pending...", 2);
+  message.success("Wait trx pending...", 2);
     setIsload(true)
-    fetch(
+
+    const fff = ()=> fetch(
       `https://testnet.toncenter.com/api/v2/getTransactions?address=${process.env.REACT_APP_BACK_TON_WALLET}&limit=40&to_lt=0&archival=false`
     )
       .then((e: any) => e.json())
@@ -43,7 +43,11 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
           MintNFTs(cellIds,hexString, setIsload)
 
         }
-      });
+      })
+      fff()
+  const int = setInterval(() => {
+    fff()
+   
   }, 10000);
 };
 
