@@ -63,7 +63,7 @@ const CellModalBuy: VFC<Props> = memo(
 
 		useEffect(() => {
 			message.success("Reserving NFTs...", 10);
-			fetch(`https://app.toncells.org:9966/API/reserveIds`, {
+			fetch(`https://testnet.app.toncells.org:9966/API/reserveIds`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ ids: cellIds }),

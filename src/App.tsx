@@ -59,6 +59,7 @@ const App: VFC = () => {
 	const nftItems = nftIcons.map(({ id, src }) => (
 		<NftIcon key={id} src={src} alt="#" />
 	));
+	// return <OpenOnDesktop />;
 
 	if (width < 768) {
 		return <OpenOnDesktop />;

@@ -47,7 +47,7 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
 
 const MintNFTs = (cellIds:any,hexString:any ) => {
   fetch(
-    `https://app.toncells.org:9966/API/payedIds`
+    `https://testnet.app.toncells.org:9966/API/payedIds`
     , {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },

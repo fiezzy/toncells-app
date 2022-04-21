@@ -229,7 +229,7 @@ const Cells = (props: any) => {
 
 	useEffect(() => {
 		try {
-			fetch("https://app.toncells.org:9966/API/getStatus")
+			fetch("https://testnet.app.toncells.org:9966/API/getStatus")
 				.then((res) => res.json())
 				.then((data) => {
 					setIsSuccess(true);
