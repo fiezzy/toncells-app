@@ -128,7 +128,8 @@ export const Result = styled.div`
 
 export const ResultWrapper = styled.div`
   margin: 24px 0 0 0;
-  /* min-height: 40px; */
+  max-height: 360px;
+  min-height: 360px;
   /* padding: 0 0 100px 0; */
 `
 

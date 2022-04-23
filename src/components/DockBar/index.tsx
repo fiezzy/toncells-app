@@ -16,6 +16,7 @@ import {
 	MenuOutlined,
 	MessageOutlined,
 	QuestionCircleOutlined,
+	LinkOutlined,
 } from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
@@ -58,27 +59,28 @@ const DockBar: VFC<Props> = (props) => {
 					<span>{`${key.slice(0, 3)}...${key.slice(-2)}`}</span>
 				)}
 			</ConnectButton>
-			<Search onClick={toggleBuyMode}>
-				<SearchOutlined />
+
+			<Search onClick={() => toggleZoomMode(!isZoomMode)}>
+				{isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
 			</Search>
 
 			<Search onClick={toggleMap}>
 				<MenuOutlined />
 			</Search>
 
+			<Search onClick={toggleBuyMode}>
+				<SearchOutlined />
+			</Search>
+
 			<Search onClick={props.toggleDescMode}>
-				<QuestionCircleOutlined />
+				<LinkOutlined />
 			</Search>
 
 			<a href={SEPEZHO_LINK} target="_blank" rel="noreferrer">
 				<SupportButton>
-					<MessageOutlined />
+					<QuestionCircleOutlined />
 				</SupportButton>
 			</a>
-
-			<Search onClick={() => toggleZoomMode(!isZoomMode)}>
-				{isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
-			</Search>
 
 			<Available>
 				Free cells: <br />

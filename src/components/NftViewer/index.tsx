@@ -31,9 +31,22 @@ const columns = [
 		key: "Status",
 	},
 	{
+		title: "Wallet",
+		dataIndex: "Wallet",
+		key: "Wallet",
+		render: (text: string) => (
+			//@ts-ignore
+			<a href={`https://testnet.tonscan.org/address/${text}`}>{text}</a>
+		),
+	},
+	{
 		title: "Hash",
 		dataIndex: "Hash",
 		key: "Hash",
+		render: (text: string) => (
+			//@ts-ignore
+			<a href={`https://testnet.explorer.tonnft.tools/nft/${text}`}>{text}</a>
+		),
 	},
 	{
 		title: "Time",
@@ -150,8 +163,12 @@ const NftViewer = (props: any) => {
 						<Table
 							columns={columns}
 							size="middle"
-							pagination={{ pageSize: 5, pageSizeOptions: [5] }}
+							pagination={{
+								defaultPageSize: 5,
+								pageSizeOptions: [5, 10, 20, 50, 100],
+							}}
 							dataSource={res}
+							scroll={{ x: true, y: 260 }}
 						/>
 					</ResultWrapper>
 				</SearchBox>
