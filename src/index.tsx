@@ -12,6 +12,9 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
   }
+	.ant-message{
+		z-index: 9999999;
+	}
 `;
 
 ReactDOM.render(
