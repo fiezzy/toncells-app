@@ -20,15 +20,16 @@ export const Wrapper = styled.div`
 
 export const CellInfo = styled.div`
   position: absolute;
-  img {
-    width: 24px;
-    height: 24px;
+  > img {
+    width: 24px !important;
+  position: relative !important;
+    height: 24px !important;
   }
-  margin: -32px -12px 32px 12px;
-  border-radius: 10px;
+  /* margin: -32px -12px 32px 12px; */
+  border-radius: 10px !important;
   z-index: 99999;
   background: #fff;
-  padding: 8px;
+  padding: 8px !important;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
   /* transform: scale(2); */
 `;

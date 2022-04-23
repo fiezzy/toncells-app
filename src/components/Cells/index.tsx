@@ -107,6 +107,7 @@ const Cells: VFC<Props> = (props) => {
 	const [nftId, setnftId] = useState<number[]>([0, 0, 0]);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 	// const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
+	console.log(isZoomMode);
 
 	useEffect(() => {
 		if (!isCellModalActive) setSelectedIds([]);
@@ -164,21 +165,39 @@ const Cells: VFC<Props> = (props) => {
 		setIsInvoiceMode((prev) => !prev);
 	}, []);
 
+	const [opacity, setOpacity] = useState<number>(0);
 	console.log(nftId);
 	const setnftIdfun = _.debounce((e) => setnftId(e), 100);
+	const setOp = _.debounce((e) => setOpacity(e), 100);
 	const [selectedCells, setSelectedCells] = useState<number[]>([]);
-
 	const ref = useRef(null);
 	const ref1 = useRef(null);
 
 	useEffect(() => {
 		window.addEventListener("mousemove", (e) => {
-			//@ts-ignore
-			ref.current.style.left = e.pageX + "px";
-			//@ts-ignore
-			ref.current.style.top = e.pageY + "px";
+			if (isZoomMode) {
+				//@ts-ignore
+				ref.current.style.left = e.pageX + "px";
+				//@ts-ignore
+				ref.current.style.top = e.pageY + "px";
+			} else {
+				//@ts-ignore
+				ref.current.style.left = (e.pageX - 325) * 2.2222222222 + "px";
+				//@ts-ignore
+				ref.current.style.top = (e.pageY - 38) * 2.2222222222 + "px";
+			}
 		});
-	}, [ref.current]);
+	}, [ref.current, isZoomMode]);
+
+	// useEffect(() => {
+	// 	if (ref1.current)
+	// 		ref1.current.addEventListener("mousemove", (e) => {
+	// 			//@ts-ignore
+	// 			ref1.current.style.left = e.pageX + "px";
+	// 			//@ts-ignore
+	// 			ref1.current.style.top = e.pageY + "px";
+	// 		});
+	// }, [ref1.current]);
 
 	useEffect(() => {
 		try {
@@ -213,31 +232,41 @@ const Cells: VFC<Props> = (props) => {
 			: mapVersion === 1
 			? "/MAPFREE.png"
 			: "/MAPMINTED.png";
+
 	return (
 		<>
-			<CellInfo
-				ref={ref}
-				style={{
-					opacity:
-						!!nftId.filter((e) => e)[0] &&
-						(isZoomMode || isCellModalActive) &&
-						!onSideBar
-							? "1"
-							: "0",
-				}}>
-				{nftId[1] ? <img src={nftImgs[nftId[1] - 1]} alt="#" /> : null}
-				{nftId[0] ? <img src={nftImgs[nftId[0] - 1]} alt="#" /> : null}
-				{nftId[2] ? <img src={nftImgs[nftId[2] - 1]} alt="#" /> : null}
-			</CellInfo>
-
 			<Wrapper
 				ref={ref1}
 				onMouseOut={() => {
 					if (isCellModalActive) setnftIdfun([0, 0, 0]);
+					setOp(0);
 				}}
+				// on
 				onMouseEnter={() => {
 					setnftIdfun([1, 1, 0]);
+					// setOpacity(1);
+					// !!nftId.filter((e) => e)[0] &&
+					// (isZoomMode || isCellModalActive) &&
+					// !onSideBar
+					// 	? "1"
+					// 	: "0"
+				}}
+				onMouseOver={() => {
+					setOp(1);
 				}}>
+				<CellInfo
+					ref={ref}
+					style={{
+						opacity: opacity,
+						margin: isZoomMode
+							? "-32px -12px 32px 12px"
+							: "32px -102px -32px 102px",
+					}}>
+					{nftId[1] ? <img src={nftImgs[nftId[1] - 1]} alt="#" /> : null}
+					{nftId[0] ? <img src={nftImgs[nftId[0] - 1]} alt="#" /> : null}
+					{nftId[2] ? <img src={nftImgs[nftId[2] - 1]} alt="#" /> : null}
+				</CellInfo>
+
 				{/* <canvas id={"IDIDIID"} width={100} height={100}></canvas> */}
 				<img src={map} alt="#" />
 				{cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
