@@ -3,7 +3,6 @@ import Cell from "../Cell";
 
 export const Wrapper = styled.div<{ isSelectMode: boolean }>`
   display: flex;
-  margin: 0 auto;
   flex-wrap: wrap;
   width: 380px;
   height: 380px;
@@ -19,9 +18,4 @@ export const StyledCell = styled(Cell)<{ isCellSelected?: boolean }>`
   transition: 0.3s;
   transform: ${({ isCellSelected }) =>
     isCellSelected ? "scale(1.1)" : "none"};
-
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
-  }
 `;

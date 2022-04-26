@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   /* max-height: 520px; */
   background-color: #fff;
   border-radius: 12px;
-  padding: 38px;
+  padding: 38px 50px 50px 50px;
   position: relative;
 `;
 
@@ -85,4 +85,13 @@ export const BuyFewBtn = styled.button`
     transform: scale(0.95);
     opacity: 0.6;
   }
+`;
+
+export const ColumnWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 50%;
 `;

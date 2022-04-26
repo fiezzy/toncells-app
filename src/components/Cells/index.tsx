@@ -24,6 +24,7 @@ type Props = {
 	onSideBar: boolean;
 	mapVersion: number;
 	nftImgs: string[];
+	bigArr: any;
 };
 
 type CellsAreaType = {
@@ -87,7 +88,7 @@ cellsCollection.forEach((cellsArea, idx) => {
 });
 
 const Cells: VFC<Props> = (props) => {
-	const { isZoomMode, onSideBar, mapVersion, nftImgs } = props;
+	const { isZoomMode, onSideBar, mapVersion, nftImgs, bigArr } = props;
 
 	const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
 	const [activeAreaData, setActiveAreaData] = useState<CellsAreaType>({
@@ -100,12 +101,15 @@ const Cells: VFC<Props> = (props) => {
 	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
 	const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
 	//   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-	const [activeCellId, setActiveCellId] = useState<number>(0);
+	const [activeCellId, setActiveCellId] = useState<number>(1);
 	const [locationZ, setLocationZ] = useState<number>(0);
-	const [cellsData, setCellsData] = useState();
 	const [selectedIds, setSelectedIds] = useState<number[]>([]);
 	const [nftId, setnftId] = useState<number[]>([0, 0, 0]);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
+	// const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
+
+	const [cellsData, setCellsData] = useState();
+
 	// const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
 	console.log(isZoomMode);
 
@@ -146,10 +150,6 @@ const Cells: VFC<Props> = (props) => {
 	const handleCellClick = useCallback((locationZ: number, id: number) => {
 		setLocationZ(locationZ);
 		setActiveCellId(id);
-
-		// if (locationZ === EDITABLE_CELL_ID) {
-		//   setIsEditMode(true);
-		// }
 	}, []);
 
 	const removeSelectCellItem = useCallback((locationZ: number, id: number) => {
@@ -165,14 +165,16 @@ const Cells: VFC<Props> = (props) => {
 		setIsInvoiceMode((prev) => !prev);
 	}, []);
 
-	const [opacity, setOpacity] = useState<number>(0);
 	console.log(nftId);
 	const setnftIdfun = _.debounce((e) => setnftId(e), 100);
-	const setOp = _.debounce((e) => setOpacity(e), 100);
 	const [selectedCells, setSelectedCells] = useState<number[]>([]);
+
+	const [opacity, setOpacity] = useState<number>(0);
+	console.log(nftId);
+	const setOp = _.debounce((e) => setOpacity(e), 100);
 	const ref = useRef(null);
 	const ref1 = useRef(null);
-
+	const activeAreaCollection: any[] = [];
 	useEffect(() => {
 		window.addEventListener("mousemove", (e) => {
 			if (isZoomMode) {
@@ -198,21 +200,6 @@ const Cells: VFC<Props> = (props) => {
 	// 			ref1.current.style.top = e.pageY + "px";
 	// 		});
 	// }, [ref1.current]);
-
-	useEffect(() => {
-		try {
-			fetch("https://testnet.app.toncells.org:9966/API/getStatus")
-				.then((res) => res.json())
-				.then((data) => {
-					setIsSuccess(true);
-					setCellsData(data);
-				});
-		} catch (error) {
-			console.log(`Error: ${error}`);
-		}
-	}, []);
-
-	const activeAreaCollection: any[] = [];
 
 	for (
 		let id = activeAreaData.firstCellId!;
@@ -332,6 +319,7 @@ const Cells: VFC<Props> = (props) => {
 					id={activeAreaData.id}
 					locationX={activeAreaData.x}
 					locationY={activeAreaData.y}
+					locationZ={locationZ}
 					firstCellId={activeAreaData.firstCellId!}
 					lastCellId={activeAreaData.lastCellId!}
 					toggleBuyMode={toggleBuyMode}
@@ -344,7 +332,8 @@ const Cells: VFC<Props> = (props) => {
 					nftId={nftId}
 					selectedCells={selectedCells}
 					setSelectedCells={setSelectedCells}
-					cellsData={cellsData}
+					cellsData={bigArr}
+					activeCellId={activeCellId}
 				/>
 			)}
 		</>
