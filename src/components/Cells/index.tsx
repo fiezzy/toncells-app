@@ -339,6 +339,9 @@ const Cells: VFC<Props> = (props) => {
 					setSelectedCells={setSelectedCells}
 					cellsData={bigArr}
 					activeCellId={activeCellId}
+					nftImgs={nftImgs}
+					isZoomMode={isZoomMode}
+					CellInfo={CellInfo}
 				/>
 			)}
 		</>
