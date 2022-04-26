@@ -177,6 +177,9 @@ const Cells: VFC<Props> = (props) => {
 	const activeAreaCollection: any[] = [];
 	useEffect(() => {
 		window.addEventListener("mousemove", (e) => {
+			// console.log(ref);
+			console.log(document.body.clientWidth - 774 / 2);
+			console.log(e.pageX);
 			if (isZoomMode) {
 				//@ts-ignore
 				ref.current.style.left = e.pageX + "px";
@@ -184,7 +187,9 @@ const Cells: VFC<Props> = (props) => {
 				ref.current.style.top = e.pageY + "px";
 			} else {
 				//@ts-ignore
-				ref.current.style.left = (e.pageX - 325) * 2.2222222222 + "px";
+				ref.current.style.left =
+					(e.pageX - (document.body.clientWidth - 774) / 2) * 2.2222222222 +
+					"px";
 				//@ts-ignore
 				ref.current.style.top = (e.pageY - 38) * 2.2222222222 + "px";
 			}
@@ -247,7 +252,7 @@ const Cells: VFC<Props> = (props) => {
 						opacity: opacity,
 						margin: isZoomMode
 							? "-32px -12px 32px 12px"
-							: "32px -102px -32px 102px",
+							: "32px -32px -32px 32px",
 					}}>
 					{nftId[1] ? <img src={nftImgs[nftId[1] - 1]} alt="#" /> : null}
 					{nftId[0] ? <img src={nftImgs[nftId[0] - 1]} alt="#" /> : null}

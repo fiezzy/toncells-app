@@ -8,7 +8,9 @@ export const MakeTrx = async (
   NFTcost: number
 ) => {
   const ton = (window as any).ton;
+  
   if (ton) {
+    console.log(cellIds.length * NFTcost);
     ton.send("ton_sendTransaction", [
       {
         to: process.env.REACT_APP_BACK_TON_WALLET,

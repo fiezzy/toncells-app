@@ -6,13 +6,13 @@ export const CellsWrapperX = styled.div`
   height: 1700px;
   /* margin: 0 0; */
   /* top: 48px; */
-  left: 0;
+  /* left: 0; */
   display: flex;
   gap: 20px;
-  position: absolute;
+  /* position: absolute; */
   justify-content: center;
   align-items: center;
-  padding: 0 0 0 160px;
+  /* padding: 0 0 0 160px; */
 `;
 
 export const CellsWrapperY = styled.div`
@@ -48,9 +48,13 @@ export const NftIcon = styled.img`
 `;
 
 export const ZoomWrapper = styled.div<{ isZoomMode: boolean }>`
-  transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.45) " : "")};
-  /* position: ${({ isZoomMode }) => (!isZoomMode ? "flex" : "")};
-  top: ${({ isZoomMode }) => (!isZoomMode ? "50%" : "")};
-  left: ${({ isZoomMode }) => (!isZoomMode ? "50%" : "")}; */
-  /* display: flex; */
+  transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.45)" : "")};
+  min-width: ${({ isZoomMode }) => (!isZoomMode ? "1720px" : "1830px")};
+  height: 10px;
 `;
+
+export const RootContainer = styled.div<{ isZoomMode: boolean }>`
+  display: flex;
+  justify-content: ${({ isZoomMode }) => (!isZoomMode ? "center" : "")};
+  width: ${({ isZoomMode }) => (!isZoomMode ? "100vw" : "")};
+`
