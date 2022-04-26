@@ -1,7 +1,7 @@
 import { VFC, useState, useCallback, useEffect, useRef } from "react";
 import { Modal } from "../Modal";
 import CellsArea from "../CellsArea";
-import CellInfo from "./CellInfo";
+import CellInfoa from "./CellInfo";
 import { CLOSE_ICON } from "../../constants/images";
 import { CloseOutlined } from "@ant-design/icons";
 import {
@@ -192,7 +192,7 @@ const CellModalDefault: VFC<Props> = (props) => {
 					/>
 					{isCellInfoShowed ? (
 						<ColumnWrapper>
-							<CellInfo
+							<CellInfoa
 								activeCellId={activeCellId}
 								locationX={locationX}
 								locationY={locationY}

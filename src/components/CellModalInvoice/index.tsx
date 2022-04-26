@@ -99,7 +99,7 @@ const CellModalBuy: VFC<Props> = memo(
 					<CloseBtn onClick={toggleInvoiceMode}>
 						<CloseOutlined />
 					</CloseBtn>
-					<LabelId>Invoice #{hex}</LabelId>
+					<LabelId>{isLoad ? "Creating invoice" : <>Invoice #{hex}</>}</LabelId>
 					{isLoad ? (
 						<Spin
 							indicator={<LoadingOutlined style={{ fontSize: 56 }} spin />}
@@ -113,19 +113,16 @@ const CellModalBuy: VFC<Props> = memo(
 						<>
 							{reserved ? null : <LabelId>NFTs already reserved</LabelId>}
 
-							<FlexWrapper>
-								{reserved ? (
+							{reserved ? (
+								<FlexWrapper>
 									<QRCode value={reserved ? link : "NFTS ALREADY RESERVED"} />
-								) : null}
-								<InfoBlock>
-									{reserved ? (
+									<InfoBlock>
 										<InfoText>
 											<span>Description: </span>
 											Buy IDs {cellIds.map((e) => e + "; ")}
 										</InfoText>
-									) : null}
-
-									{reserved ? (
+										BUY VIA:
+										<br />
 										<BuyButton
 											onClick={() =>
 												reserved
@@ -134,22 +131,21 @@ const CellModalBuy: VFC<Props> = memo(
 											}>
 											TONWEB
 										</BuyButton>
-									) : null}
-
-									{reserved ? (
+										OR:
+										<br />
 										<a href={link}>
 											<BuyButton onClick={() => {}}>LINK</BuyButton>
 										</a>
-									) : null}
-
-									{reserved ? (
+										<br />
+										THEN CLICK:
+										<br />
 										<BuyButton
 											onClick={() => listener(hex, setIsload, cellIds)}>
 											Im payed
 										</BuyButton>
-									) : null}
-								</InfoBlock>
-							</FlexWrapper>
+									</InfoBlock>
+								</FlexWrapper>
+							) : null}
 						</>
 					)}
 				</Wrapper>
