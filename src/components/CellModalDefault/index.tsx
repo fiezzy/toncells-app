@@ -168,7 +168,7 @@ const CellModalDefault: VFC<Props> = (props) => {
 
 			<Wrapper>
 				<CloseBtn onClick={handleCloseModalClick}>
-					{isSelectMode ? "Cansel" : <CloseOutlined />}
+					{isSelectMode ? "Cancel" : <CloseOutlined />}
 				</CloseBtn>
 				<LabelId>Area #{id}</LabelId>
 				<FlexWrapper>
