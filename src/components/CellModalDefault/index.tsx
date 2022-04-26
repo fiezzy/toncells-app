@@ -15,6 +15,7 @@ import {
 	BuyFewBtn,
 	ColumnWrapper,
 } from "./style";
+import * as _ from "lodash";
 
 type Props = {
 	isVisible: boolean;
@@ -182,7 +183,7 @@ const CellModalDefault: VFC<Props> = (props) => {
 						setIsCellInfoShowed={(isShowed: boolean) =>
 							setIsCellInfoShowed(isShowed)
 						}
-						onMouseOver={(e) => {
+						onMouseOver={(e: any) => {
 							setOp(e);
 						}}
 					/>
