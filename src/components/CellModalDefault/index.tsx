@@ -133,7 +133,10 @@ const CellModalDefault: VFC<Props> = (props) => {
 
 				return ownerData;
 			} else {
-				return null;
+				return {
+					wallet: "free cell",
+					hash: "click to buy",
+				};
 			}
 		}
 	};

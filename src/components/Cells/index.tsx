@@ -256,7 +256,6 @@ const Cells: VFC<Props> = (props) => {
 					}}>
 					{nftId[1] ? <img src={nftImgs[nftId[1] - 1]} alt="#" /> : null}
 					{nftId[0] ? <img src={nftImgs[nftId[0] - 1]} alt="#" /> : null}
-					{nftId[2] ? <img src={nftImgs[nftId[2] - 1]} alt="#" /> : null}
 				</CellInfo>
 
 				{/* <canvas id={"IDIDIID"} width={100} height={100}></canvas> */}
