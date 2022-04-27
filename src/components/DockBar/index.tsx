@@ -17,6 +17,7 @@ import {
 	MessageOutlined,
 	QuestionCircleOutlined,
 	LinkOutlined,
+	InfoOutlined,
 } from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
@@ -73,7 +74,8 @@ const DockBar: VFC<Props> = (props) => {
 			</Search>
 
 			<Search onClick={props.toggleDescMode}>
-				<LinkOutlined />
+				{/* <LinkOutlined /> */}
+				<InfoOutlined />
 			</Search>
 
 			<a href={SEPEZHO_LINK} target="_blank" rel="noreferrer">
