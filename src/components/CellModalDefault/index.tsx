@@ -156,9 +156,7 @@ const CellModalDefault: VFC<Props> = (props) => {
 				ref={ref}
 				style={{
 					opacity: opacity,
-					margin: isZoomMode
-						? "-32px -12px 32px 12px"
-						: "32px -32px -32px 32px",
+					margin: "-42px -15px 42px 15px",
 					minWidth: "88px",
 				}}>
 				{nftId[1] ? <img src={nftImgs[nftId[1] - 1]} alt="#" /> : null}

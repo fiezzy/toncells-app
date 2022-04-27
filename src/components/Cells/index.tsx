@@ -160,14 +160,16 @@ const Cells: VFC<Props> = (props) => {
 		//   setIsEditMode(true);
 		// }
 	}, []);
+	const [selectedCells, setSelectedCells] = useState<number[]>([]);
 
 	const toggleInvoiceMode = useCallback(() => {
 		setIsInvoiceMode((prev) => !prev);
+		if (isInvoiceMode) setSelectedCells([]);
+		if (isInvoiceMode) setSelectedIds([]);
 	}, []);
 
 	console.log(nftId);
 	const setnftIdfun = _.debounce((e) => setnftId(e), 100);
-	const [selectedCells, setSelectedCells] = useState<number[]>([]);
 
 	const [opacity, setOpacity] = useState<number>(0);
 	console.log(nftId);
@@ -307,13 +309,14 @@ const Cells: VFC<Props> = (props) => {
 				/>
 			) : isInvoiceMode ? (
 				<CellModalInvoice
-					isVisible={isCellModalActive}
-					onClose={toggleCellModal}
+					isVisible={isInvoiceMode}
+					onClose={toggleInvoiceMode}
 					id={activeAreaData.id}
 					locationX={activeAreaData.x}
 					locationY={activeAreaData.y}
 					toggleInvoiceMode={toggleInvoiceMode}
 					activeCellId={activeCellId}
+					setSelectedCells={setSelectedCells}
 					cellIds={selectedCells}
 				/>
 			) : (

@@ -33,6 +33,7 @@ type Props = {
 	toggleInvoiceMode: () => void;
 	activeCellId: number;
 	cellIds: number[];
+	setSelectedCells: any;
 };
 
 enum Location {
@@ -50,6 +51,7 @@ const CellModalBuy: VFC<Props> = memo(
 		toggleInvoiceMode,
 		activeCellId,
 		cellIds,
+		setSelectedCells,
 	}) => {
 		const [reserved, setReserved] = useState<boolean>(false);
 		const [hex, setHex] = useState<string>("");
@@ -64,89 +66,107 @@ const CellModalBuy: VFC<Props> = memo(
 		)}&text=${hex}${cellIds.join(".")}`;
 
 		useEffect(() => {
-			message.success("Reserving NFTs...", 10);
-			setIsload(true);
-			fetch(`https://testnet.app.toncells.org:9966/API/reserveIds`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ ids: cellIds }),
-			})
-				.then((e: any) => e.json())
-				.then((e: any) => {
-					setIsload(false);
-					console.log(e);
-					if (e.status === "ok") {
-						message.success("Reserved!", 10);
-						setReserved(e.status === "ok");
-						setHex(
-							Array(16)
-								.fill("")
-								.map(() => Math.round(Math.random() * 0xf).toString(16))
-								.join("")
-						);
+			if (cellIds[0]) {
+				message.success("Reserving NFTs...", 10);
+				setIsload(true);
+				fetch(`https://testnet.app.toncells.org:9966/API/reserveIds`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ ids: cellIds }),
+				})
+					.then((e: any) => e.json())
+					.then((e: any) => {
+						setIsload(false);
+						console.log(e);
+						if (e.status === "ok") {
+							message.success("Reserved!", 10);
+							setReserved(e.status === "ok");
+							setHex(
+								Array(16)
+									.fill("")
+									.map(() => Math.round(Math.random() * 0xf).toString(16))
+									.join("")
+							);
 
-						// listener(hexString, setIsload, cellIds);
-					} else {
-						message.error("Already reserved!", 10);
-						setReserved(e.status === "ok");
-					}
-				});
+							// listener(hexString, setIsload, cellIds);
+						} else {
+							message.error("Already reserved!", 10);
+							setReserved(e.status === "ok");
+						}
+					});
+			}
 		}, [cellIds]); // TODO add ids
+
+		// useEffect(() => {
+		// 	if (!isVisible) setSelectedCells([]);
+		// 	// if (!isVisible) setSelectedCells([]);
+		// 	// if (!isVisible) setSelectedCells([]);
+		// }, [isVisible]);
 
 		return (
 			<Modal isVisible={isVisible} onClose={onClose}>
 				<Wrapper>
-					<CloseBtn onClick={toggleInvoiceMode}>
+					<CloseBtn onClick={onClose}>
 						<CloseOutlined />
 					</CloseBtn>
-					<LabelId>{isLoad ? "Creating invoice" : <>Invoice #{hex}</>}</LabelId>
-					{isLoad ? (
-						<Spin
-							indicator={<LoadingOutlined style={{ fontSize: 56 }} spin />}
-							style={{
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "center",
-							}}
-						/>
-					) : (
+					{cellIds[0] ? (
 						<>
-							{reserved ? null : <LabelId>NFTs already reserved</LabelId>}
+							<LabelId>
+								{isLoad ? "Creating invoice" : <>Invoice #{hex}</>}
+							</LabelId>
+							{isLoad ? (
+								<Spin
+									indicator={<LoadingOutlined style={{ fontSize: 56 }} spin />}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "center",
+									}}
+								/>
+							) : (
+								<>
+									{reserved ? null : <LabelId>NFTs already reserved</LabelId>}
 
-							{reserved ? (
-								<FlexWrapper>
-									<QRCode value={reserved ? link : "NFTS ALREADY RESERVED"} />
-									<InfoBlock>
-										<InfoText>
-											<span>Description: </span>
-											Buy IDs {cellIds.map((e) => e + "; ")}
-										</InfoText>
-										BUY VIA:
-										<br />
-										<BuyButton
-											onClick={() =>
-												reserved
-													? MakeTrx(setIsload, hex, cellIds, NFTcost)
-													: null
-											}>
-											TONWEB
-										</BuyButton>
-										OR:
-										<br />
-										<a href={link}>
-											<BuyButton onClick={() => {}}>LINK</BuyButton>
-										</a>
-										<br />
-										THEN CLICK:
-										<br />
-										<BuyButton
-											onClick={() => listener(hex, setIsload, cellIds)}>
-											Im payed
-										</BuyButton>
-									</InfoBlock>
-								</FlexWrapper>
-							) : null}
+									{reserved ? (
+										<FlexWrapper>
+											<QRCode
+												value={reserved ? link : "NFTS ALREADY RESERVED"}
+											/>
+											<InfoBlock>
+												<InfoText>
+													<span>Description: </span>
+													Buy IDs {cellIds.map((e) => e + "; ")}
+												</InfoText>
+												BUY VIA:
+												<br />
+												<BuyButton
+													onClick={() =>
+														reserved
+															? MakeTrx(setIsload, hex, cellIds, NFTcost)
+															: null
+													}>
+													TONWEB
+												</BuyButton>
+												OR:
+												<br />
+												<a href={link}>
+													<BuyButton onClick={() => {}}>LINK</BuyButton>
+												</a>
+												<br />
+												THEN CLICK:
+												<br />
+												<BuyButton
+													onClick={() => listener(hex, setIsload, cellIds)}>
+													Im payed
+												</BuyButton>
+											</InfoBlock>
+										</FlexWrapper>
+									) : null}
+								</>
+							)}
 						</>
+					) : (
+						<LabelId>Select some cells</LabelId>
 					)}
 				</Wrapper>
 			</Modal>
