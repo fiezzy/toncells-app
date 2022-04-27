@@ -1,5 +1,18 @@
 import styled from "styled-components";
 
+const handleStatusColorChange = (status: string) => {
+  switch (status) {
+    case "Minted":
+      return "#00FF1F";
+    case "Reserved":
+      return "red";
+    case "Payed":
+      return "Blue";
+    default:
+      return "#000";
+  }
+};
+
 export const InfoBlock = styled.div`
   display: flex;
   align-items: center;
@@ -9,11 +22,16 @@ export const InfoBlock = styled.div`
   // gap: 15px;
 `;
 
-export const InfoLabel = styled.p`
+export const InfoLabel = styled.p<{ status: string }>`
   font-weight: 900;
   font-size: 18px;
   line-height: 20px;
   text-align: center;
+
+  span {
+    font-weight: 400;
+    color: ${({ status }) => handleStatusColorChange(status)};
+  }
 `;
 
 export const InfoText = styled.div`

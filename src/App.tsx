@@ -1,113 +1,124 @@
-import { VFC, useEffect, useState, useCallback } from "react";
+import { VFC, useEffect, useState, useCallback, useContext } from "react";
 import Cells from "./components/Cells";
+import { CellModalContext } from "./context";
 import Container from "./components/Container";
 import DockBar from "./components/DockBar";
 import OpenOnDesktop from "./components/OpenOnDesktop";
 import { useWindowDimensions } from "./hooks/useWindowDimensions";
 import { NFT_ICONS } from "./constants/images";
 import {
-	NftIcon,
-	CellsWrapperX,
-	IconsX,
-	CellsWrapperY,
-	IconsY,
-	ZoomWrapper,
-	RootContainer,
+  NftIcon,
+  CellsWrapperX,
+  IconsX,
+  CellsWrapperY,
+  IconsY,
+  ZoomWrapper,
+  RootContainer,
 } from "./style";
 import GetStatus from "./logic/GetStatus";
 import DescModeModal from "./components/DescModeModal";
 import NftViewer from "./components/NftViewer";
+import { createGlobalStyle } from "styled-components";
 
 export const nftIcons: string[] = [];
 
 for (let i = 1; i < 26; i++) {
-	nftIcons.push(`${NFT_ICONS + i}.png`);
+  nftIcons.push(`${NFT_ICONS + i}.png`);
 }
 
 const App: VFC = () => {
-	const [bigArr, setBigArr] = useState();
-	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
-	const [isZoomMode, setIsZoomMode] = useState<boolean>(false);
-	const [onSideBar, setonSideBar] = useState<boolean>(false);
-	const [mapVersion, setMapVersion] = useState<number>(0);
-	const [isDescMode, toggleDescMode] = useState<boolean>(false);
+  const [bigArr, setBigArr] = useState();
+  const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
+  const [isZoomMode, setIsZoomMode] = useState<boolean>(false);
+  const [onSideBar, setonSideBar] = useState<boolean>(false);
+  const [mapVersion, setMapVersion] = useState<number>(0);
+  const [isDescMode, toggleDescMode] = useState<boolean>(false);
 
-	const toggleBuyMode = useCallback(() => {
-		setIsBuyMode((prev) => !prev);
-	}, []);
+  const { isCellModalActive } = useContext(CellModalContext);
 
-	const toggleMap = (mapold: any) => {
-		let newMap = mapold + 1;
-		if (newMap === 3) newMap = 0;
-		setMapVersion(newMap);
-	};
+  const toggleBuyMode = useCallback(() => {
+    setIsBuyMode((prev) => !prev);
+  }, []);
 
-	useEffect(() => {
-		(async () => {
-			setBigArr(await GetStatus());
-		})();
-	}, []);
+  const toggleMap = (mapold: any) => {
+    let newMap = mapold + 1;
+    if (newMap === 3) newMap = 0;
+    setMapVersion(newMap);
+  };
 
-	const { width } = useWindowDimensions();
+  useEffect(() => {
+    (async () => {
+      setBigArr(await GetStatus());
+    })();
+  }, []);
 
-	const nftItems = nftIcons.map((src) => (
-		<NftIcon key={src} src={src} alt="#" />
-	));
-	// return <OpenOnDesktop />;
-	if (width < 768) {
-		return <OpenOnDesktop />;
+  const { width } = useWindowDimensions();
+
+  const nftItems = nftIcons.map((src) => (
+    <NftIcon key={src} src={src} alt="#" />
+  ));
+  // return <OpenOnDesktop />;
+  if (width < 768) {
+    return <OpenOnDesktop />;
+  }
+
+  console.log(bigArr);
+
+  const GlobalStyle = createGlobalStyle`
+  	body {
+	  overflow: ${isCellModalActive ? "hidden" : "scroll"};
 	}
+  `;
 
-	console.log(bigArr);
-
-	return (
-		<>
-			<Container>
-				<DockBar
-					bigArr={bigArr}
-					isBuyMode={isBuyMode}
-					toggleBuyMode={toggleBuyMode}
-					toggleZoomMode={(isZoom: boolean) => setIsZoomMode(isZoom)}
-					isZoomMode={isZoomMode}
-					setonSideBar={(isSideBarActive: boolean) =>
-						setonSideBar(isSideBarActive)
-					}
-					toggleMap={() => toggleMap(mapVersion)}
-					toggleDescMode={() => toggleDescMode((prev) => !prev)}
-				/>
-				{isBuyMode && (
-					<NftViewer
-						isBuyMode={isBuyMode}
-						bigArr={bigArr}
-						toggleBuyMode={toggleBuyMode}
-					/>
-				)}
-				{isDescMode && (
-					<DescModeModal
-						isDescMode={isDescMode}
-						toggleDescMode={() => toggleDescMode((prev) => !prev)}
-					/>
-				)}
-				<RootContainer isZoomMode={isZoomMode}>
-					<ZoomWrapper isZoomMode={isZoomMode}>
-						<CellsWrapperX>
-							<IconsX>{nftItems}</IconsX>
-							<CellsWrapperY>
-								<IconsY>{nftItems}</IconsY>
-								<Cells
-									isZoomMode={isZoomMode}
-									onSideBar={onSideBar}
-									mapVersion={mapVersion}
-									nftImgs={nftIcons}
-									bigArr={bigArr}
-								/>
-							</CellsWrapperY>
-						</CellsWrapperX>
-					</ZoomWrapper>
-				</RootContainer>
-			</Container>
-		</>
-	);
+  return (
+    <>
+      <GlobalStyle />
+      <Container>
+        <DockBar
+          bigArr={bigArr}
+          isBuyMode={isBuyMode}
+          toggleBuyMode={toggleBuyMode}
+          toggleZoomMode={(isZoom: boolean) => setIsZoomMode(isZoom)}
+          isZoomMode={isZoomMode}
+          setonSideBar={(isSideBarActive: boolean) =>
+            setonSideBar(isSideBarActive)
+          }
+          toggleMap={() => toggleMap(mapVersion)}
+          toggleDescMode={() => toggleDescMode((prev) => !prev)}
+        />
+        {isBuyMode && (
+          <NftViewer
+            isBuyMode={isBuyMode}
+            bigArr={bigArr}
+            toggleBuyMode={toggleBuyMode}
+          />
+        )}
+        {isDescMode && (
+          <DescModeModal
+            isDescMode={isDescMode}
+            toggleDescMode={() => toggleDescMode((prev) => !prev)}
+          />
+        )}
+        <RootContainer isZoomMode={isZoomMode}>
+          <ZoomWrapper isZoomMode={isZoomMode}>
+            <CellsWrapperX>
+              <IconsX>{nftItems}</IconsX>
+              <CellsWrapperY>
+                <IconsY>{nftItems}</IconsY>
+                <Cells
+                  isZoomMode={isZoomMode}
+                  onSideBar={onSideBar}
+                  mapVersion={mapVersion}
+                  nftImgs={nftIcons}
+                  bigArr={bigArr}
+                />
+              </CellsWrapperY>
+            </CellsWrapperX>
+          </ZoomWrapper>
+        </RootContainer>
+      </Container>
+    </>
+  );
 };
 
 export default App;

@@ -13,17 +13,24 @@ type Props = {
       }
     | null
     | undefined;
+  status: string;
 };
 
 const CellInfo: VFC<Props> = (props) => {
-  const { activeCellId, locationX, locationY, locationZ, ownerData } = props;
+  const { activeCellId, locationX, locationY, locationZ, ownerData, status } =
+    props;
+
+  console.log(status);
 
   return (
     <InfoBlock>
-      <InfoLabel>
+      <InfoLabel status={status}>
         TONCELL #{activeCellId}
         <br />
         X: {locationX} | Y: {locationY} | Z: {locationZ}
+        <br />
+        Status:
+        <span> {status.toUpperCase()}</span>
       </InfoLabel>
       <InfoText>
         {ownerData !== null && (

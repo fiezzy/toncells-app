@@ -18,13 +18,13 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 ReactDOM.render(
-	<React.StrictMode>
-		<CellModalProvider>
-			<GlobalStyle />
-			<App />
-		</CellModalProvider>
-	</React.StrictMode>,
-	document.getElementById("root")
+  <React.StrictMode>
+    <CellModalProvider>
+      <GlobalStyle />
+      <App />
+    </CellModalProvider>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 reportWebVitals();
