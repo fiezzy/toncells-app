@@ -53,7 +53,7 @@ const CellModalBuy: VFC<Props> = memo((props) => {
 						<InfoLabel>
 							TONCELL #{activeCellId}
 							<br />
-							X: {locationX} | Y: {locationY} | Z: {locationZ}
+							X: {locationY} | Y: {locationX} | Z: {locationZ}
 						</InfoLabel>
 						<InfoText>
 							<span>Description: </span>
