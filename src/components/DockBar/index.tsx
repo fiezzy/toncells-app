@@ -16,8 +16,9 @@ import {
 	MenuOutlined,
 	MessageOutlined,
 	QuestionCircleOutlined,
-	LinkOutlined,
+	LoadingOutlined,
 	InfoOutlined,
+	TransactionOutlined,
 } from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
@@ -33,7 +34,7 @@ type Props = {
 	toggleDescMode: () => void;
 };
 
-const DockBar: VFC<Props> = (props) => {
+const DockBar: VFC<any> = (props) => {
 	const {
 		bigArr,
 		setonSideBar,
@@ -41,6 +42,8 @@ const DockBar: VFC<Props> = (props) => {
 		toggleZoomMode,
 		isZoomMode,
 		toggleMap,
+		toggleInvoiceMode,
+		hex,
 	} = props;
 
 	const numberMinted = bigArr?.status.filter(
@@ -53,13 +56,19 @@ const DockBar: VFC<Props> = (props) => {
 		<Wrapper
 			onMouseEnter={() => setonSideBar(true)}
 			onMouseLeave={() => setonSideBar(false)}>
-			<ConnectButton onClick={() => connectWalletTON(setTONwalletKey)}>
+			{/* <ConnectButton onClick={() => connectWalletTON(setTONwalletKey)}>
 				{!key ? (
 					<WalletTwoTone />
 				) : (
 					<span>{`${key.slice(0, 3)}...${key.slice(-2)}`}</span>
 				)}
-			</ConnectButton>
+			</ConnectButton> */}
+
+			{props.hex && (
+				<ConnectButton onClick={props.toggleInvoiceMode}>
+					<TransactionOutlined />
+				</ConnectButton>
+			)}
 
 			<Search onClick={() => toggleZoomMode(!isZoomMode)}>
 				{isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}

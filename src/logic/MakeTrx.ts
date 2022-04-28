@@ -23,7 +23,7 @@ export const MakeTrx = async (
   }
 };
 
-export const listener = (hexString: any, setIsload: any, cellIds: any) => {
+export const listener = (hexString: any, setIsload: any, cellIds: any,onClose:any) => {
   message.success("Wait trx pending...", 2);
     setIsload(true)
 
@@ -43,7 +43,7 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
           clearInterval(int);
           message.success("Done trx!", 10);
           setIsload(false);
-          MintNFTs(cellIds,hexString, setIsload, data[0].in_msg.source)
+          MintNFTs(cellIds,hexString, setIsload, data[0].in_msg.source,onClose)
 
         }
       })
@@ -54,7 +54,7 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
   }, 10000);
 };
 
-const MintNFTs = (cellIds:any,hexString:any, setIsload:any, wallet: string ) => {
+const MintNFTs = (cellIds:any,hexString:any, setIsload:any, wallet: string,onClose:any) => {
   setIsload(true)
 
   fetch(
@@ -72,6 +72,11 @@ const MintNFTs = (cellIds:any,hexString:any, setIsload:any, wallet: string ) => 
       if (e.status === "ok") {
         message.success("Done minting!", 10);
         setIsload(false)
+        localStorage.setItem(
+          "invoiceData",
+          JSON.stringify({})
+        );
+        onClose()
 
         // e.nfthashes.forEach((element: any) => {
         // // message.success(`NFT #${element.id} hash: ${element.hash}`, 10);

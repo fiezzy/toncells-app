@@ -42,19 +42,9 @@ enum Location {
 	Z = 4,
 }
 
-const CellModalBuy: VFC<Props> = memo(
-	({
-		isVisible,
-		onClose,
-		locationX,
-		locationY,
-		toggleInvoiceMode,
-		activeCellId,
-		cellIds,
-		setSelectedCells,
-	}) => {
+const CellModalBuy: VFC<any> = memo(
+	({ isVisible, onClose, cellIds, setHex, hex, setSelectedCells }) => {
 		const [reserved, setReserved] = useState<boolean>(false);
-		const [hex, setHex] = useState<string>("");
 		const [isLoad, setIsload] = useState<boolean>(false);
 
 		console.log(cellIds);
@@ -66,34 +56,41 @@ const CellModalBuy: VFC<Props> = memo(
 		)}&text=${hex}${cellIds.join(".")}`;
 
 		useEffect(() => {
-			if (cellIds[0]) {
-				message.success("Reserving NFTs...", 10);
-				setIsload(true);
-				fetch(`https://testnet.app.toncells.org:9966/API/reserveIds`, {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ ids: cellIds }),
-				})
-					.then((e: any) => e.json())
-					.then((e: any) => {
-						setIsload(false);
-						console.log(e);
-						if (e.status === "ok") {
-							message.success("Reserved!", 10);
-							setReserved(e.status === "ok");
-							setHex(
-								Array(16)
+			const saved = localStorage.getItem("invoiceData");
+			if (!!!JSON.parse(saved ? saved : "{}").hex) {
+				if (cellIds[0]) {
+					message.success("Reserving NFTs...", 10);
+					setIsload(true);
+					fetch(`https://testnet.app.toncells.org:9966/API/reserveIds`, {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ ids: cellIds }),
+					})
+						.then((e: any) => e.json())
+						.then((e: any) => {
+							setIsload(false);
+							console.log(e);
+							if (e.status === "ok") {
+								message.success("Reserved!", 10);
+								setReserved(e.status === "ok");
+								const afdasfdfas = Array(16)
 									.fill("")
 									.map(() => Math.round(Math.random() * 0xf).toString(16))
-									.join("")
-							);
-
-							// listener(hexString, setIsload, cellIds);
-						} else {
-							message.error("Already reserved!", 10);
-							setReserved(e.status === "ok");
-						}
-					});
+									.join("");
+								setHex(afdasfdfas);
+								localStorage.setItem(
+									"invoiceData",
+									JSON.stringify({ hex: afdasfdfas, ids: cellIds })
+								);
+								// listener(hexString, setIsload, cellIds);
+							} else {
+								message.error("Already reserved!", 10);
+								setReserved(e.status === "ok");
+							}
+						});
+				}
+			} else {
+				setReserved(true);
 			}
 		}, [cellIds]); // TODO add ids
 
@@ -103,6 +100,26 @@ const CellModalBuy: VFC<Props> = memo(
 		// 	// if (!isVisible) setSelectedCells([]);
 		// }, [isVisible]);
 
+		const cancel = () => {
+			if (cellIds[0]) {
+				message.success("Unreserving NFTs...", 10);
+				setIsload(true);
+				fetch(`https://testnet.app.toncells.org:9966/API/unreserveIds`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ ids: cellIds }),
+				})
+					.then((e: any) => e.json())
+					.then((e: any) => {
+						localStorage.setItem("invoiceData", JSON.stringify({}));
+						message.success("Canceled!", 10);
+						setIsload(false);
+						onClose();
+						setHex("");
+						setSelectedCells([]);
+					});
+			}
+		};
 		return (
 			<Modal isVisible={isVisible} onClose={onClose}>
 				<Wrapper>
@@ -135,7 +152,7 @@ const CellModalBuy: VFC<Props> = memo(
 											<InfoBlock>
 												<InfoText>
 													<span>Description: </span>
-													Buy IDs {cellIds.map((e) => e + "; ")}
+													Buy IDs {cellIds.map((e: any) => e + "; ")}
 												</InfoText>
 												BUY VIA:
 												<br />
@@ -156,9 +173,16 @@ const CellModalBuy: VFC<Props> = memo(
 												THEN CLICK:
 												<br />
 												<BuyButton
-													onClick={() => listener(hex, setIsload, cellIds)}>
+													onClick={() =>
+														listener(hex, setIsload, cellIds, onClose)
+													}>
 													Im payed
 												</BuyButton>
+												--------
+												<BuyButton onClick={() => cancel()}>
+													Cancel Payment
+												</BuyButton>
+												`
 											</InfoBlock>
 										</FlexWrapper>
 									) : null}

@@ -43,7 +43,7 @@ type Props = {
 	CellInfo: any;
 };
 
-const CellModalDefault: VFC<Props> = (props) => {
+const CellModalDefault: VFC<any> = (props) => {
 	const {
 		isVisible,
 		onClose,
@@ -68,6 +68,7 @@ const CellModalDefault: VFC<Props> = (props) => {
 		nftImgs,
 		isZoomMode,
 		CellInfo,
+		hex,
 	} = props;
 	const [isSelectMode, setIsSelectMode] = useState<boolean>(false);
 	const [isCellInfoShowed, setIsCellInfoShowed] = useState<boolean>(false);
@@ -75,8 +76,9 @@ const CellModalDefault: VFC<Props> = (props) => {
 	const setOp = _.debounce((e) => setOpacity(e), 100);
 	const ref = useRef(null);
 	const ref1 = useRef(null);
+
 	useEffect(() => {
-		if (!isSelectMode) setSelectedIds([]);
+		// if (!isSelectMode && !hex) setSelectedIds([]);
 	}, [isSelectMode]);
 
 	const currentCells: any[] = [];
@@ -90,7 +92,7 @@ const CellModalDefault: VFC<Props> = (props) => {
 	const handleCloseModalClick = useCallback(() => {
 		if (isSelectMode) {
 			setIsSelectMode(false);
-			setSelectedCells([]);
+			// setSelectedCells([]);
 		} else if (isCellInfoShowed) {
 			setIsCellInfoShowed(false);
 			onClose();
@@ -114,8 +116,8 @@ const CellModalDefault: VFC<Props> = (props) => {
 	const handleBuyBtnClick = () => {
 		if (isSelectMode) {
 			toggleInvoiceMode();
-
-			console.log(selectedCells);
+			onClose();
+			// setSelectedCells(selectedCells);
 		}
 
 		toggleSelectMode();
@@ -140,12 +142,29 @@ const CellModalDefault: VFC<Props> = (props) => {
 
 	useEffect(() => {
 		window.addEventListener("mousemove", (e) => {
-			//@ts-ignore
-			ref.current.style.left = e.pageX + "px";
-			//@ts-ignore
-			ref.current.style.top = e.pageY + "px";
+			if (ref.current) {
+				//@ts-ignore
+				ref.current.style.left = e.pageX + "px";
+				//@ts-ignore
+				ref.current.style.top = e.pageY + "px";
+			}
 		});
 	}, [ref.current, isZoomMode]);
+
+	if (hex) {
+		return (
+			<Modal isVisible={isVisible} onClose={onClose}>
+				<Wrapper>
+					<CloseBtn onClick={handleCloseModalClick}>
+						<CloseOutlined />
+					</CloseBtn>
+					<LabelId>Complete last payment pls (#{id})</LabelId>
+					<br />
+					<br />U can see btn in sidebar
+				</Wrapper>
+			</Modal>
+		);
+	}
 
 	return (
 		<Modal isVisible={isVisible} onClose={onClose}>
