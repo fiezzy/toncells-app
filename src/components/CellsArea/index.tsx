@@ -59,6 +59,10 @@ const CellsArea: VFC<Props> = memo((props) => {
 		(cell) => cell.Status === "Reserved"
 	);
 
+	const currentReservedCellsasf = currentCells.filter(
+		(cell) => cell.Status === "Payed"
+	);
+
 	return (
 		<Wrapper
 			isSelectMode={isSelectMode}
@@ -86,6 +90,7 @@ const CellsArea: VFC<Props> = memo((props) => {
 							onMouseOver={() => setnftIdfun([nftId[0], nftId[1], idx + 1])}
 							currentMintedCells={currentMintedCells}
 							currentReservedCells={currentReservedCells}
+							currentReservedCellsasf={currentReservedCellsasf}
 						/>
 					);
 				})}

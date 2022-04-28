@@ -6,6 +6,7 @@ export const Wrapper = styled.div<{
   minted?: boolean;
   reserved: boolean;
   isNotActive: boolean;
+  payed: boolean;
 }>`
   display: flex;
   align-items: center;
@@ -16,8 +17,8 @@ export const Wrapper = styled.div<{
   cursor: ${({ isNotActive }) => (isNotActive ? "not-allowed" : "pointer")};
   filter: ${({ selected }) => (selected ? "blur(0.5px) brightness(75%)" : "")};
   transition: 0.3s;
-  background: ${({ minted, reserved }) =>
-    minted ? "#00FF1F" : reserved ? "red" : "#fff"};
+  background: ${({ minted, reserved, payed }) =>
+    minted ? "#00FF1F" : reserved ? "red" : payed ? "#0080FF" : "#fff"};
 
   &:hover {
     transform: ${({ isNotActive }) => (isNotActive ? "none" : "scale(1.1)")};
