@@ -28,7 +28,7 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
     setIsload(true)
 
     const fff = ()=> fetch(
-      `https://testnet.toncenter.com/api/v2/getTransactions?address=${process.env.REACT_APP_BACK_TON_WALLET}&limit=40&to_lt=0&archival=false`
+      `https://toncenter.com/api/v2/getTransactions?address=${process.env.REACT_APP_BACK_TON_WALLET}&limit=40&to_lt=0&archival=false`
     )
       .then((e: any) => e.json())
       .then((e: any) => {
@@ -58,7 +58,7 @@ const MintNFTs = (cellIds:any,hexString:any, setIsload:any, wallet: string ) => 
   setIsload(true)
 
   fetch(
-    `https://testnet.app.toncells.org:9966/API/payedIds`
+    `https://app.toncells.org:9967/API/payedIds`
     , {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
