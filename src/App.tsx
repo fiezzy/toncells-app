@@ -1,3 +1,4 @@
+import { message } from "antd";
 import { VFC, useEffect, useState, useCallback, useContext } from "react";
 import Cells from "./components/Cells";
 import { CellModalContext } from "./context";
@@ -37,11 +38,34 @@ const App: VFC = () => {
 	const [hex, setHex] = useState<string>("");
 	const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
 	const [selectedCells, setSelectedCellsa] = useState<number[]>([]);
+	const [buyAlot, setbuyAlot] = useState<boolean>();
+	const [cellsAreaData, setSelectedAreas] = useState<any[]>([]);
+
+	const togglesetbuyAlot = useCallback(() => {
+		if (buyAlot) {
+			setSelectedCellsa([]);
+			setSelectedAreas([]);
+		}
+		if (!hex) {
+			setbuyAlot((prev) => !prev);
+		} else {
+			message.error("Finish last invoice!", 10);
+		}
+	}, [buyAlot, hex]);
+
+	const buyAreas = () => {
+		console.log("-0------");
+		setIsInvoiceMode((prev) => !prev);
+		setbuyAlot((prev) => !prev);
+		setSelectedAreas([]);
+		console.log(selectedCells);
+	};
 
 	const setSelectedCells = (e: any) => {
-		console.log(selectedCells, e);
+		// console.log(selectedCells, e);
 		setSelectedCellsa(e);
 	};
+
 	const { isCellModalActive } = useContext(CellModalContext);
 
 	const toggleBuyMode = useCallback(() => {
@@ -112,6 +136,9 @@ const App: VFC = () => {
 					toggleDescMode={() => toggleDescMode((prev) => !prev)}
 					hex={hex}
 					toggleInvoiceMode={toggleInvoiceMode}
+					buyAlot={togglesetbuyAlot}
+					buyAlotStatus={buyAlot}
+					buyAreas={buyAreas}
 				/>
 				{isBuyMode && (
 					<NftViewer
@@ -157,6 +184,9 @@ const App: VFC = () => {
 									selectedCells={selectedCells}
 									isInvoiceMode={isInvoiceMode}
 									toggleInvoiceMode={toggleInvoiceMode}
+									buyAlot={buyAlot}
+									cellsAreaData={cellsAreaData}
+									setSelectedAreas={setSelectedAreas}
 								/>
 							</CellsWrapperY>
 						</CellsWrapperX>

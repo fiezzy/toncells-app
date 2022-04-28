@@ -19,6 +19,7 @@ import {
 	LoadingOutlined,
 	InfoOutlined,
 	TransactionOutlined,
+	AppstoreAddOutlined,
 } from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
@@ -44,6 +45,8 @@ const DockBar: VFC<any> = (props) => {
 		toggleMap,
 		toggleInvoiceMode,
 		hex,
+		buyAlotStatus,
+		buyAreas,
 	} = props;
 
 	const numberMinted = bigArr?.status.filter(
@@ -86,6 +89,18 @@ const DockBar: VFC<any> = (props) => {
 				{/* <LinkOutlined /> */}
 				<InfoOutlined />
 			</Search>
+
+			<Search onClick={() => (buyAlotStatus ? buyAreas() : props.buyAlot())}>
+				{/* <LinkOutlined /> */}
+				{buyAlotStatus ? "Mint IDs!" : <AppstoreAddOutlined />}
+			</Search>
+
+			{buyAlotStatus ? (
+				<Search onClick={props.buyAlot}>
+					{/* <LinkOutlined /> */}
+					Cancel!
+				</Search>
+			) : null}
 
 			<a href={SEPEZHO_LINK} target="_blank" rel="noreferrer">
 				<SupportButton>

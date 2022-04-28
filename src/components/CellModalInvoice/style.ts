@@ -79,6 +79,12 @@ export const InfoText = styled.p`
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
+  max-width: 350px;
+  max-height: 100px;
+  overflow-y: scroll;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  padding: 16px;
 
   span {
     font-weight: 900;

@@ -101,6 +101,9 @@ const Cells: VFC<any> = (props) => {
 		selectedCells,
 		setSelectedCells,
 		toggleInvoiceMode,
+		buyAlot,
+		setSelectedAreas,
+		cellsAreaData,
 	} = props;
 
 	const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
@@ -141,6 +144,22 @@ const Cells: VFC<any> = (props) => {
 	//   }
 	// }, [activeCellId, isEditMode]);
 
+	const handleSelectCellClick = useCallback((id: number) => {
+		setSelectedCells((prev: any) => [...prev, id]);
+	}, []);
+
+	const removeSelectCellItem123 = useCallback((id: number) => {
+		setSelectedCells((prev: any) => [...prev.filter((e: number) => e !== id)]);
+	}, []);
+
+	const handleSelectCellClick123 = useCallback((id: number) => {
+		setSelectedAreas((prev: any) => [...prev, id]);
+	}, []);
+
+	const removeSelectCellItem123123 = useCallback((id: number) => {
+		setSelectedAreas((prev: any) => [...prev.filter((e: number) => e !== id)]);
+	}, []);
+
 	const handleCellsAreaClick = (
 		id: number,
 		x: number,
@@ -148,15 +167,52 @@ const Cells: VFC<any> = (props) => {
 		firstCellId?: number,
 		lastCellId?: number
 	) => {
-		toggleCellModal();
+		if (!buyAlot) {
+			toggleCellModal();
 
-		setActiveAreaData({
-			id: id,
-			x: x,
-			y: y,
-			firstCellId: firstCellId!,
-			lastCellId: lastCellId!,
-		});
+			setActiveAreaData({
+				id: id,
+				x: x,
+				y: y,
+				firstCellId: firstCellId!,
+				lastCellId: lastCellId!,
+			});
+		} else {
+			const isExist = cellsAreaData.includes(id);
+
+			// const cellIdsArr = [];
+			//@ts-ignore
+			let i = firstCellId;
+			//@ts-ignore
+			while (i <= lastCellId) {
+				// cellIdsArr.push(i);
+				if (!isExist) {
+					//@ts-ignore
+					handleSelectCellClick(i);
+				} else {
+					//@ts-ignore
+					removeSelectCellItem123(i);
+				}
+
+				//@ts-ignore
+				i++;
+			}
+
+			// if (!isExist) {
+			// 	cellIdsArr.forEach((cellIdsArre: any) => {
+			// 		handleSelectCellClick(cellIdsArre);
+			// 	});
+			// } else {
+			// 	cellIdsArr.forEach((cellIdsArre: any) => {
+			// 		removeSelectCellItem123(cellIdsArre);
+			// 	});
+			// }
+			if (!isExist) {
+				handleSelectCellClick123(id);
+			} else {
+				removeSelectCellItem123123(id);
+			}
+		}
 	};
 
 	const handleCellClick = useCallback((locationZ: number, id: number) => {
@@ -280,7 +336,11 @@ const Cells: VFC<any> = (props) => {
 								: null
 						}
 						style={{
-							background: checkAreaId(id) ? "" : "grey",
+							background: checkAreaId(id)
+								? cellsAreaData.includes(id)
+									? "red"
+									: ""
+								: "grey",
 							cursor: checkAreaId(id) ? "pointer" : "not-allowed",
 							zIndex: "10",
 						}}
