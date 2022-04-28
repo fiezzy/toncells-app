@@ -38,11 +38,12 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
           (e: any) => e.in_msg.message === `${hexString}${cellIds.join(".")}`
         );
         if (data[0]) {
+          console.log(data[0]);
           console.log(data[0].transaction_id.hash);
           clearInterval(int);
           message.success("Done trx!", 10);
           setIsload(false);
-          MintNFTs(cellIds,hexString, setIsload)
+          MintNFTs(cellIds,hexString, setIsload, data[0].in_msg.source)
 
         }
       })
@@ -53,7 +54,7 @@ export const listener = (hexString: any, setIsload: any, cellIds: any) => {
   }, 10000);
 };
 
-const MintNFTs = (cellIds:any,hexString:any, setIsload:any ) => {
+const MintNFTs = (cellIds:any,hexString:any, setIsload:any, wallet: string ) => {
   setIsload(true)
 
   fetch(
@@ -61,7 +62,7 @@ const MintNFTs = (cellIds:any,hexString:any, setIsload:any ) => {
     , {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ids:cellIds, hash: hexString})
+      body: JSON.stringify({ids:cellIds, hash: hexString, wallet: wallet})
     }
   )
     .then((e: any) => e.json())
