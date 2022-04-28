@@ -58,7 +58,7 @@ const MintNFTs = (cellIds:any,hexString:any, setIsload:any, wallet: string ) => 
   setIsload(true)
 
   fetch(
-    `https://app.toncells.org:9967/API/payedIds`
+    `https://app.toncells.org:9917/API/payedIds`
     , {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
@@ -70,7 +70,7 @@ const MintNFTs = (cellIds:any,hexString:any, setIsload:any, wallet: string ) => 
       console.log(e);
 
       if (e.status === "ok") {
-        message.success("Done minting!", 10);
+        message.success("Done paying!", 10);
         setIsload(false)
 
         // e.nfthashes.forEach((element: any) => {
