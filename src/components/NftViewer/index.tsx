@@ -36,7 +36,7 @@ const columns = [
 		key: "Wallet",
 		render: (text: string) => (
 			//@ts-ignore
-			<a href={`https://testnet.tonscan.org/address/${text}`}>{text}</a>
+			<a href={`https://tonscan.org/address/${text}`}>{text}</a>
 		),
 	},
 	{
@@ -45,7 +45,7 @@ const columns = [
 		key: "Hash",
 		render: (text: string) => (
 			//@ts-ignore
-			<a href={`https://testnet.explorer.tonnft.tools/nft/${text}`}>{text}</a>
+			<a href={`https://explorer.tonnft.tools/nft/${text}`}>{text}</a>
 		),
 	},
 	{
