@@ -77,19 +77,6 @@ const DockBar: VFC<any> = (props) => {
 				{isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
 			</Search>
 
-			<Search onClick={toggleMap}>
-				<MenuOutlined />
-			</Search>
-
-			<Search onClick={toggleBuyMode}>
-				<SearchOutlined />
-			</Search>
-
-			<Search onClick={props.toggleDescMode}>
-				{/* <LinkOutlined /> */}
-				<InfoOutlined />
-			</Search>
-
 			<Search onClick={() => (buyAlotStatus ? buyAreas() : props.buyAlot())}>
 				{/* <LinkOutlined /> */}
 				{buyAlotStatus ? "Mint IDs!" : <AppstoreAddOutlined />}
@@ -101,6 +88,19 @@ const DockBar: VFC<any> = (props) => {
 					Cancel!
 				</Search>
 			) : null}
+
+			<Search onClick={toggleBuyMode}>
+				<SearchOutlined />
+			</Search>
+
+			<Search onClick={toggleMap}>
+				<MenuOutlined />
+			</Search>
+
+			<Search onClick={props.toggleDescMode}>
+				{/* <LinkOutlined /> */}
+				<InfoOutlined />
+			</Search>
 
 			<a href={SEPEZHO_LINK} target="_blank" rel="noreferrer">
 				<SupportButton>
