@@ -113,6 +113,8 @@ export const Available = styled.div`
 
 
 export const SearchBox = styled.div`
+  max-height: 500px;
+  overflow-y: scroll;
   margin: 40px 0 0 0;
   > p {
     display: flex;
