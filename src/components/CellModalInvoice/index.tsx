@@ -99,12 +99,13 @@ const CellModalBuy: VFC<any> = memo(
 		// 	// if (!isVisible) setSelectedCells([]);
 		// 	// if (!isVisible) setSelectedCells([]);
 		// }, [isVisible]);
-
+		const [texttitle, stexttitle] = useState("Creating invoice");
 		const cancel = () => {
 			if (cellIds[0]) {
+				stexttitle("Canceling invoice");
 				message.success("Unreserving NFTs...", 10);
 				setIsload(true);
-				fetch(`https://testnet.app.toncells.org:9966/API/unreserveIds`, {
+				fetch(`https://app.toncells.org:9917/API/unreserveIds`, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ ids: cellIds }),
@@ -116,10 +117,12 @@ const CellModalBuy: VFC<any> = memo(
 						setIsload(false);
 						onClose();
 						setHex("");
+						stexttitle("Creating invoice");
 						setSelectedCells([]);
 					});
 			}
 		};
+
 		return (
 			<Modal isVisible={isVisible} onClose={onClose}>
 				<Wrapper>
@@ -128,9 +131,7 @@ const CellModalBuy: VFC<any> = memo(
 					</CloseBtn>
 					{cellIds[0] ? (
 						<>
-							<LabelId>
-								{isLoad ? "Creating invoice" : <>Invoice #{hex}</>}
-							</LabelId>
+							<LabelId>{isLoad ? texttitle : <>Invoice #{hex}</>}</LabelId>
 							{isLoad ? (
 								<Spin
 									indicator={<LoadingOutlined style={{ fontSize: 56 }} spin />}
@@ -154,35 +155,35 @@ const CellModalBuy: VFC<any> = memo(
 													<span>Description: </span>
 													Buy IDs {cellIds.map((e: any) => e + "; ")}
 												</InfoText>
-												BUY VIA:
+												#1 PAY VIA:
 												<br />
-												<BuyButton
-													onClick={() =>
-														reserved
-															? MakeTrx(setIsload, hex, cellIds, NFTcost)
-															: null
-													}>
-													TONWEB
-												</BuyButton>
-												OR:
+												<div>
+													<BuyButton
+														onClick={() =>
+															reserved
+																? MakeTrx(setIsload, hex, cellIds, NFTcost)
+																: null
+														}>
+														TONWEB
+													</BuyButton>
+
+													<a href={link}>
+														<BuyButton onClick={() => {}}>LINK</BuyButton>
+													</a>
+												</div>
 												<br />
-												<a href={link}>
-													<BuyButton onClick={() => {}}>LINK</BuyButton>
-												</a>
+												#2 WHEN U PAY CLICK ON "I paid":
 												<br />
-												THEN CLICK:
-												<br />
-												<BuyButton
-													onClick={() =>
-														listener(hex, setIsload, cellIds, onClose)
-													}>
-													Im payed
-												</BuyButton>
-												--------
-												<BuyButton onClick={() => cancel()}>
-													Cancel Payment
-												</BuyButton>
-												`
+												<div>
+													<BuyButton
+														onClick={() =>
+															listener(hex, setIsload, cellIds, onClose)
+														}>
+														I paid
+													</BuyButton>
+
+													<BuyButton onClick={() => cancel()}>Cancel</BuyButton>
+												</div>
 											</InfoBlock>
 										</FlexWrapper>
 									) : null}

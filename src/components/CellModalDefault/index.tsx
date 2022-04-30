@@ -158,9 +158,12 @@ const CellModalDefault: VFC<any> = (props) => {
 					<CloseBtn onClick={handleCloseModalClick}>
 						<CloseOutlined />
 					</CloseBtn>
-					<LabelId>Complete last payment pls (#{id})</LabelId>
+					<LabelId>Complete last payment please</LabelId>
 					<br />
-					<br />U can see btn in sidebar
+					<br />
+					<LabelId>
+						You can see new button in sidebar (click on 1st button)
+					</LabelId>
 				</Wrapper>
 			</Modal>
 		);

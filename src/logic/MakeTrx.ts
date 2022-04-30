@@ -77,11 +77,19 @@ const MintNFTs = (cellIds:any,hexString:any, setIsload:any, wallet: string,onClo
           JSON.stringify({})
         );
         onClose()
+      }else if (e.status === "error not in whitelist"){
+        message.error("You are NOT in whiteList!", 60);
+        message.error("To return money pls contact technical support!", 60);
 
-        // e.nfthashes.forEach((element: any) => {
-        // // message.success(`NFT #${element.id} hash: ${element.hash}`, 10);
-        // });
+        setIsload(false)
+        localStorage.setItem(
+          "invoiceData",
+          JSON.stringify({})
+        );
+        onClose()
       }else{
+        setIsload(false)
+        onClose()
         message.error(`Some error here :/`, 10);
       }
     });

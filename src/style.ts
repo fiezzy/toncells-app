@@ -23,6 +23,7 @@ export const CellsWrapperY = styled.div`
 
 export const IconsX = styled.div`
   width: 60px;
+  user-select:none;
   height: 1600px;
   background-color: #fff;
   margin-top: 70px;
@@ -40,6 +41,7 @@ export const IconsY = styled.div`
   align-items: center;
   justify-content: center;
   gap: 24px;
+  user-select:none;
 `;
 
 export const NftIcon = styled.img`

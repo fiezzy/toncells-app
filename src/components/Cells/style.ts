@@ -15,6 +15,7 @@ export const Wrapper = styled.div`
     position: absolute;
     /* resize-mode: contain; */
     z-index: 9;
+    user-select:none;
   }
 `;
 
@@ -48,3 +49,16 @@ export const CellsArea = styled.div`
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
   }
 `;
+
+
+export const Text = styled.div`
+  position: absolute;
+  top: 850px;
+  left: 860px;
+  transform: translate(-50%,-50%);
+  z-index: 100;
+  color: white;
+  font-size: 50px;
+  font-style: italic;
+  user-select:none;
+`

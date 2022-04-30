@@ -18,7 +18,7 @@ export const Wrapper = styled.div`
   /* opacity: 0.7; */
   transition: 0.3s;
   z-index: 99;
-
+  user-select:none;
   svg {
     width: 18px;
     height: 18px;

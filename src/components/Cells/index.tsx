@@ -10,7 +10,7 @@ import {
 import { Img } from "react-image";
 import { CellModalContext } from "../../context";
 import { CELLS_AREA } from "../../constants/images";
-import { Wrapper, CellInfo } from "./style";
+import { Wrapper, CellInfo, Text } from "./style";
 import CellModalDefault from "../CellModalDefault";
 import CellModalBuy from "../CellModalBuy";
 import CellModalInvoice from "../CellModalInvoice";
@@ -327,6 +327,7 @@ const Cells: VFC<any> = (props) => {
 
 				{/* <canvas id={"IDIDIID"} width={100} height={100}></canvas> */}
 				<img src={map} alt="#" />
+				<Text>coming soon...</Text>
 				{cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
 					<div
 						key={id}
