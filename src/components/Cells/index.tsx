@@ -186,7 +186,7 @@ const Cells: VFC<any> = (props) => {
 			//@ts-ignore
 			while (i <= lastCellId) {
 				// cellIdsArr.push(i);
-				if (!isExist) {
+				if (!cellsAreaData[0]) {
 					//@ts-ignore
 					handleSelectCellClick(i);
 				} else {
@@ -207,7 +207,7 @@ const Cells: VFC<any> = (props) => {
 			// 		removeSelectCellItem123(cellIdsArre);
 			// 	});
 			// }
-			if (!isExist) {
+			if (!cellsAreaData[0]) {
 				handleSelectCellClick123(id);
 			} else {
 				removeSelectCellItem123123(id);

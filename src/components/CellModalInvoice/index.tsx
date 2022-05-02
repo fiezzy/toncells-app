@@ -48,7 +48,7 @@ const CellModalBuy: VFC<any> = memo(
 		const [isLoad, setIsload] = useState<boolean>(false);
 
 		console.log(cellIds);
-		const NFTcost = 0.1;
+		const NFTcost = 5;
 		const link = `ton://transfer/${
 			process.env.REACT_APP_BACK_TON_WALLET
 		}?amount=${TonWeb.utils.toNano(
@@ -153,7 +153,9 @@ const CellModalBuy: VFC<any> = memo(
 											<InfoBlock>
 												<InfoText>
 													<span>Description: </span>
-													Buy IDs {cellIds.map((e: any) => e + "; ")}
+													Total: {cellIds.length * NFTcost}TON; <br />
+													<br />
+													Buy IDs: {cellIds.map((e: any) => e + "; ")}
 												</InfoText>
 												#1 PAY VIA:
 												<br />
