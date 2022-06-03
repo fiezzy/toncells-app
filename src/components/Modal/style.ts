@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
   animation-name: appear;
   animation-duration: 300ms;
 `;
-

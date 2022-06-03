@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from "../../constants/theme";
 
 export const Wrapper = styled.div`
   width: 70px;
@@ -12,13 +13,15 @@ export const Wrapper = styled.div`
   box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 12px;
   padding: 12px 0px;
   /* opacity: 0.7; */
   transition: 0.3s;
   z-index: 99;
-  user-select:none;
+  user-select: none;
+
   svg {
     width: 18px;
     height: 18px;
@@ -31,9 +34,26 @@ export const Wrapper = styled.div`
   &:hover {
     opacity: 1;
   }
+
+  @media screen and ${theme.device.tablet} {
+    top: auto;
+    right: 10vw;
+    bottom: 0;
+    height: 70px;
+    width: 80vw;
+    flex-direction: row;
+    padding: 0px 12px;
+    overflow: auto;
+    transform: translate(0, -20%);
+  }
+
+  @media screen and (max-width: 635px) {
+    justify-content: flex-start;
+  }
 `;
 
 export const ConnectButton = styled.button`
+  min-width: 50px;
   width: 50px;
   height: 50px;
   border: none;
@@ -58,6 +78,7 @@ export const ConnectButton = styled.button`
 `;
 
 export const SupportButton = styled.button`
+  min-width: 50px;
   width: 50px;
   height: 50px;
   outline: none;
@@ -77,6 +98,7 @@ export const SupportButton = styled.button`
 `;
 
 export const Search = styled.div`
+  min-width: 50px;
   width: 50px;
   height: 50px;
   background-color: #fff;
@@ -105,6 +127,7 @@ export const Search = styled.div`
 `;
 
 export const Available = styled.div`
+  min-width: 50px;
   width: 50px;
   height: 50px;
   background-color: #fff;

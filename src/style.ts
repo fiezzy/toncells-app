@@ -1,18 +1,13 @@
 import styled from "styled-components";
+import theme from "./constants/theme";
 
 export const CellsWrapperX = styled.div`
   width: 1720px;
-  /* height: 900px; */
   height: 1700px;
-  /* margin: 0 0; */
-  /* top: 48px; */
-  /* left: 0; */
   display: flex;
   gap: 20px;
-  /* position: absolute; */
   justify-content: center;
   align-items: center;
-  /* padding: 0 0 0 160px; */
 `;
 
 export const CellsWrapperY = styled.div`
@@ -23,7 +18,7 @@ export const CellsWrapperY = styled.div`
 
 export const IconsX = styled.div`
   width: 60px;
-  user-select:none;
+  user-select: none;
   height: 1600px;
   background-color: #fff;
   margin-top: 70px;
@@ -41,7 +36,7 @@ export const IconsY = styled.div`
   align-items: center;
   justify-content: center;
   gap: 24px;
-  user-select:none;
+  user-select: none;
 `;
 
 export const NftIcon = styled.img`
@@ -53,10 +48,24 @@ export const ZoomWrapper = styled.div<{ isZoomMode: boolean }>`
   transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.45)" : "")};
   min-width: ${({ isZoomMode }) => (!isZoomMode ? "1720px" : "1830px")};
   height: 10px;
+
+  @media screen and ${theme.device.tablet} {
+    transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.30)" : "")};
+    height: 375px;
+  }
+
+  @media screen and ${theme.device.mobile} {
+    transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.20)" : "")};
+  }
 `;
 
 export const RootContainer = styled.div<{ isZoomMode: boolean }>`
   display: flex;
   justify-content: ${({ isZoomMode }) => (!isZoomMode ? "center" : "")};
   width: ${({ isZoomMode }) => (!isZoomMode ? "100vw" : "")};
-`
+
+  @media screen and ${theme.device.tablet} {
+    height: 40vh;
+    align-items: center;
+  }
+`;

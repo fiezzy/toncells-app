@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from "../../constants/theme";
 
 export const Wrapper = styled.div`
   position: fixed;
@@ -14,9 +15,6 @@ export const Wrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.25);
   animation-name: appear;
   animation-duration: 300ms;
-
-
-
 `;
 
 export const Wrapper2 = styled.div`
@@ -28,13 +26,16 @@ export const Wrapper2 = styled.div`
   border-radius: 25px;
   padding: 35px 67px 115px 67px;
   position: relative;
-    width: 920px;
+  width: 920px;
   /* max-height: 520px; */
   background-color: #fff;
   border-radius: 12px;
   padding: 38px;
   position: relative;
 
+  @media screen and ${theme.device.tablet} {
+    width: 90vw;
+  }
 `;
 
 export const CloseBtn = styled.div`
@@ -53,7 +54,6 @@ export const CloseBtn = styled.div`
     opacity: 0.5;
   }
 `;
-
 
 export const ConnectButton = styled.button`
   width: 80px;
@@ -111,7 +111,6 @@ export const Available = styled.div`
   }
 `;
 
-
 export const SearchBox = styled.div`
   max-height: 500px;
   overflow-y: scroll;
@@ -119,20 +118,20 @@ export const SearchBox = styled.div`
   > p {
     display: flex;
     > * {
-      margin: 10px
+      margin: 10px;
     }
   }
-`
+`;
 
 export const Result = styled.div`
   /* margin: 100px 0 0 0; */
-`
+`;
 
 export const ResultWrapper = styled.div`
   margin: 24px 0 0 0;
   /* min-height: 40px; */
   /* padding: 0 0 100px 0; */
-`
+`;
 
 export const LabelId = styled.p`
   font-weight: 700;
