@@ -78,6 +78,18 @@ const App: VFC = () => {
     }, 30000);
   }, [getMaps]);
 
+  useEffect(() => {
+    (async () => {
+      setBigArr(await GetStatus());
+
+      setTimeout(async function fetchBigArr() {
+        setBigArr(await GetStatus());
+
+        setTimeout(fetchBigArr, 30000);
+      }, 30000);
+    })();
+  }, []);
+
   const toggleSetBuyALot = useCallback(() => {
     if (isBuyALotMode) {
       updateSelectedCells([]);
@@ -112,12 +124,6 @@ const App: VFC = () => {
 
     setMapVersion(newMap);
   };
-
-  useEffect(() => {
-    (async () => {
-      setBigArr(await GetStatus());
-    })();
-  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem("invoiceData");

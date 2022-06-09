@@ -221,8 +221,6 @@ const Cells: VFC<Props> = (props) => {
   useEffect(() => {
     if (width > DisplaySize.Tablet) {
       window.addEventListener("mousemove", (e) => {
-        console.log(document.body.clientWidth - 774 / 2);
-
         if (isZoomMode) {
           if (ref.current) {
             ref.current.style.left = e.pageX + "px";
