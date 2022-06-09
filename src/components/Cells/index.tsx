@@ -15,14 +15,6 @@ import CellAreaSmall from "./CellsAreaSmall";
 import * as _ from "lodash";
 import { Wrapper, CellInfo, Text } from "./style";
 
-type Props = {
-  isZoomMode: boolean;
-  onSideBar: boolean;
-  mapVersion: number;
-  nftImgs: string[];
-  bigArr: any;
-};
-
 type CellsAreaType = {
   id: number;
   x: number;
@@ -83,7 +75,26 @@ cellsCollection.forEach((cellsArea, idx) => {
   cellsArea.firstCellId = cellsArea.lastCellId - 16 + 1;
 });
 
-const Cells: VFC<any> = (props) => {
+type Props = {
+  isZoomMode: boolean;
+  onSideBar: boolean;
+  mapVersion: number;
+  nftImgs: string[];
+  bigArr?: any[];
+  setSelectedIds: (e: any) => void;
+  hex: string;
+  setHex: (arg: string) => void;
+  selectedCells: any[];
+  setSelectedCells: (e: any) => void;
+  toggleInvoiceMode: () => void;
+  isBuyALotMode?: boolean;
+  setSelectedAreas: (areas: any) => void;
+  cellsAreaData: any[];
+  actualMaps: string[];
+  isInvoiceMode: boolean;
+};
+
+const Cells: VFC<Props> = (props) => {
   const {
     isZoomMode,
     onSideBar,
@@ -91,15 +102,15 @@ const Cells: VFC<any> = (props) => {
     nftImgs,
     bigArr,
     setSelectedIds,
-    selectedIds,
     hex,
     setHex,
     selectedCells,
     setSelectedCells,
     toggleInvoiceMode,
-    buyAlot,
+    isBuyALotMode,
     setSelectedAreas,
     cellsAreaData,
+    actualMaps,
   } = props;
 
   const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
@@ -112,7 +123,6 @@ const Cells: VFC<any> = (props) => {
   });
   const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
   const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
-  //   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [activeCellId, setActiveCellId] = useState<number>(1);
   const [locationZ, setLocationZ] = useState<number>(0);
   const [nftId, setnftId] = useState<number[]>([0, 0, 0]);
@@ -120,8 +130,6 @@ const Cells: VFC<any> = (props) => {
   const [cellsData, setCellsData] = useState();
 
   const { width } = useWindowDimensions();
-
-  console.log(isZoomMode);
 
   useEffect(() => {
     // if (!isCellModalActive && !hex) setSelectedIds([]);
@@ -154,7 +162,7 @@ const Cells: VFC<any> = (props) => {
     firstCellId?: number,
     lastCellId?: number
   ) => {
-    if (!buyAlot) {
+    if (!isBuyALotMode) {
       toggleCellModal();
 
       setActiveAreaData({
@@ -206,46 +214,32 @@ const Cells: VFC<any> = (props) => {
   const [opacity, setOpacity] = useState<number>(0);
   console.log(nftId);
   const setOp = _.debounce((e) => setOpacity(e), 100);
-  const ref = useRef(null);
+  const ref = useRef<any>(null);
   const ref1 = useRef(null);
   const activeAreaCollection: any[] = [];
 
   useEffect(() => {
     if (width > DisplaySize.Tablet) {
       window.addEventListener("mousemove", (e) => {
-        // console.log(ref);
         console.log(document.body.clientWidth - 774 / 2);
-        console.log(e.pageX);
+
         if (isZoomMode) {
           if (ref.current) {
-            //@ts-ignore
             ref.current.style.left = e.pageX + "px";
-            //@ts-ignore
             ref.current.style.top = e.pageY + "px";
           }
         } else {
           if (ref.current) {
-            //@ts-ignore
             ref.current.style.left =
               (e.pageX - (document.body.clientWidth - 774) / 2) * 2.2222222222 +
               "px";
-            //@ts-ignore
+
             ref.current.style.top = (e.pageY - 38) * 2.2222222222 + "px";
           }
         }
       });
     }
   }, [ref.current, isZoomMode, width]);
-
-  //   useEffect(() => {
-  //     if (ref1.current)
-  //       ref1.current.addEventListener("mousemove", (e) => {
-  //         //@ts-ignore
-  //         ref1.current.style.left = e.pageX + "px";
-  //         //@ts-ignore
-  //         ref1.current.style.top = e.pageY + "px";
-  //       });
-  //   }, [ref1.current]);
 
   for (
     let id = activeAreaData.firstCellId!;
@@ -257,14 +251,12 @@ const Cells: VFC<any> = (props) => {
     });
   }
 
-  //@ts-ignore
-  // document.getElementById("IDIDIID").getContext("2d").drawImage(img, 0, 0);
   let map =
     mapVersion === 0
-      ? "/MAP.png"
+      ? actualMaps[0]
       : mapVersion === 1
-      ? "/MAPFREE.png"
-      : "/MAPMINTED.png";
+      ? actualMaps[1]
+      : actualMaps[2];
 
   return (
     <>
@@ -351,7 +343,7 @@ const Cells: VFC<any> = (props) => {
           locationZ={locationZ}
           toggleBuyMode={toggleBuyMode}
           activeCellId={activeCellId}
-          cellIds={selectedIds}
+          cellIds={selectedCells}
           setnftIdfun={setnftIdfun}
         />
       ) : !isInvoiceMode ? (
@@ -369,7 +361,7 @@ const Cells: VFC<any> = (props) => {
           activeAreaCollection={activeAreaCollection}
           toggleInvoiceMode={toggleInvoiceMode}
           setSelectedIds={setSelectedIds}
-          selectedIds={selectedIds}
+          selectedIds={selectedCells}
           setnftIdfun={setnftIdfun}
           nftId={nftId}
           selectedCells={selectedCells}

@@ -58,8 +58,6 @@ const CellModalDefault: VFC<any> = (props) => {
     handleCellClick,
     activeAreaCollection,
     toggleInvoiceMode,
-    setSelectedIds,
-    selectedIds,
     setnftIdfun,
     selectedCells,
     setSelectedCells,

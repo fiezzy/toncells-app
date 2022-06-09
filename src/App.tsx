@@ -4,8 +4,7 @@ import Cells from "./components/Cells";
 import { CellModalContext } from "./context";
 import Container from "./components/Container";
 import DockBar from "./components/DockBar";
-import OpenOnDesktop from "./components/OpenOnDesktop";
-import { useWindowDimensions } from "./hooks/useWindowDimensions";
+import { ApiMaps } from "./constants";
 import { NFT_ICONS } from "./constants/images";
 import {
   NftIcon,
@@ -37,33 +36,68 @@ const App: VFC = () => {
   const [isDescMode, toggleDescMode] = useState<boolean>(false);
   const [hex, setHex] = useState<string>("");
   const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
-  const [selectedCells, setSelectedCellsa] = useState<number[]>([]);
-  const [buyAlot, setbuyAlot] = useState<boolean>();
+  const [selectedCells, updateSelectedCells] = useState<number[]>([]);
+  const [isBuyALotMode, setBuyALotMode] = useState<boolean>();
   const [cellsAreaData, setSelectedAreas] = useState<any[]>([]);
 
-  const togglesetbuyAlot = useCallback(() => {
-    if (buyAlot) {
-      setSelectedCellsa([]);
+  const [actualMaps, setActualMaps] = useState<string[]>([
+    ApiMaps.Default,
+    ApiMaps.Free,
+    ApiMaps.Minted,
+  ]);
+
+  // TODO - ПРИВЕСТИ ЭТО ВСЕ В НОРМАЛЬНЫЙ ВИД
+  const getMaps = useCallback(async () => {
+    try {
+      const fetchDefaultMap = await fetch(ApiMaps.Default);
+      const fetchFreeMap = await fetch(ApiMaps.Free);
+      const fetchMintedMap = await fetch(ApiMaps.Minted);
+
+      const requestDefaultMap = await fetchDefaultMap.blob();
+      const requestFreetMap = await fetchFreeMap.blob();
+      const requestMintedMap = await fetchMintedMap.blob();
+
+      const defaultMapImageObjectURL = URL.createObjectURL(requestDefaultMap);
+      const freeMapImageObjectURL = URL.createObjectURL(requestFreetMap);
+      const mintedMapImageObjectURL = URL.createObjectURL(requestMintedMap);
+
+      setActualMaps([
+        defaultMapImageObjectURL,
+        freeMapImageObjectURL,
+        mintedMapImageObjectURL,
+      ]);
+    } catch (error) {
+      message.error(`${error}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    setTimeout(function fetchMaps() {
+      getMaps();
+      setTimeout(fetchMaps, 30000);
+    }, 30000);
+  }, [getMaps]);
+
+  const toggleSetBuyALot = useCallback(() => {
+    if (isBuyALotMode) {
+      updateSelectedCells([]);
       setSelectedAreas([]);
     }
     if (!hex) {
-      setbuyAlot((prev) => !prev);
+      setBuyALotMode((prev) => !prev);
     } else {
       message.error("Finish last invoice!", 10);
     }
-  }, [buyAlot, hex]);
+  }, [isBuyALotMode, hex]);
 
   const buyAreas = () => {
-    console.log("-0------");
     setIsInvoiceMode((prev) => !prev);
-    setbuyAlot((prev) => !prev);
+    setBuyALotMode((prev) => !prev);
     setSelectedAreas([]);
-    console.log(selectedCells);
   };
 
   const setSelectedCells = (e: any) => {
-    // console.log(selectedCells, e);
-    setSelectedCellsa(e);
+    updateSelectedCells(e);
   };
 
   const { isCellModalActive } = useContext(CellModalContext);
@@ -75,6 +109,7 @@ const App: VFC = () => {
   const toggleMap = (mapold: any) => {
     let newMap = mapold + 1;
     if (newMap === 3) newMap = 0;
+
     setMapVersion(newMap);
   };
 
@@ -97,15 +132,11 @@ const App: VFC = () => {
 
   const toggleInvoiceMode = useCallback(() => {
     setIsInvoiceMode((prev) => !prev);
-    // if (isInvoiceMode) setSelectedCells([]);
-    // if (isInvoiceMode) setSelectedIds([]);
   }, []);
 
   const nftItems = nftIcons.map((src) => (
     <NftIcon key={src} src={src} alt="#" />
   ));
-
-  console.log(bigArr);
 
   const GlobalStyle = createGlobalStyle`
   	body {
@@ -130,8 +161,8 @@ const App: VFC = () => {
           toggleDescMode={() => toggleDescMode((prev) => !prev)}
           hex={hex}
           toggleInvoiceMode={toggleInvoiceMode}
-          buyAlot={togglesetbuyAlot}
-          buyAlotStatus={buyAlot}
+          buyAlot={toggleSetBuyALot}
+          buyAlotStatus={isBuyALotMode}
           buyAreas={buyAreas}
         />
         {isBuyMode && (
@@ -165,6 +196,7 @@ const App: VFC = () => {
               <CellsWrapperY>
                 <IconsY>{nftItems}</IconsY>
                 <Cells
+                  actualMaps={actualMaps}
                   isZoomMode={isZoomMode}
                   onSideBar={onSideBar}
                   mapVersion={mapVersion}
@@ -172,13 +204,12 @@ const App: VFC = () => {
                   bigArr={bigArr}
                   setHex={setHex}
                   hex={hex}
-                  selectedIds={selectedCells}
                   setSelectedIds={setSelectedCells}
                   setSelectedCells={setSelectedCells}
                   selectedCells={selectedCells}
                   isInvoiceMode={isInvoiceMode}
                   toggleInvoiceMode={toggleInvoiceMode}
-                  buyAlot={buyAlot}
+                  isBuyALotMode={isBuyALotMode}
                   cellsAreaData={cellsAreaData}
                   setSelectedAreas={setSelectedAreas}
                 />

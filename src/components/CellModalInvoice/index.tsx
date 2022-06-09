@@ -65,37 +65,41 @@ const CellModalBuy: VFC<any> = memo((props) => {
         message.success("Reserving NFTs...", 10);
         setIsload(true);
 
-        fetch(`https://app.toncells.org:9917/API/reserveIds`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ids: cellIds }),
-        })
-          .then((e: any) => e.json())
-          .then((e: any) => {
-            setIsload(false);
-            console.log(e);
+        try {
+          fetch(`https://app.toncells.org:9917/API/reserveIds`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ids: cellIds }),
+          })
+            .then((e: any) => e.json())
+            .then((e: any) => {
+              setIsload(false);
+              console.log(e);
 
-            if (e.status === "ok") {
-              message.success("Reserved!", 10);
-              setReserved(e.status === "ok");
+              if (e.status === "ok") {
+                message.success("Reserved!", 10);
+                setReserved(e.status === "ok");
 
-              const afdasfdfas = Array(16)
-                .fill("")
-                .map(() => Math.round(Math.random() * 0xf).toString(16))
-                .join("");
+                const afdasfdfas = Array(16)
+                  .fill("")
+                  .map(() => Math.round(Math.random() * 0xf).toString(16))
+                  .join("");
 
-              setHex(afdasfdfas);
+                setHex(afdasfdfas);
 
-              localStorage.setItem(
-                "invoiceData",
-                JSON.stringify({ hex: afdasfdfas, ids: cellIds })
-              );
-              // listener(hexString, setIsload, cellIds);
-            } else {
-              message.error("Already reserved!", 10);
-              setReserved(e.status === "ok");
-            }
-          });
+                localStorage.setItem(
+                  "invoiceData",
+                  JSON.stringify({ hex: afdasfdfas, ids: cellIds })
+                );
+              } else {
+                message.error("Already reserved!", 10);
+                setReserved(e.status === "ok");
+              }
+            });
+        } catch (error) {
+          message.error("Something went wrong", 10);
+          console.log(error);
+        }
       }
     } else {
       setReserved(true);
