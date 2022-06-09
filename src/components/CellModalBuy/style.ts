@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from "../../constants/theme";
 
 export const Wrapper = styled.div`
   width: 65%;
@@ -7,6 +8,10 @@ export const Wrapper = styled.div`
   border-radius: 25px;
   padding: 35px 67px 115px 67px;
   position: relative;
+
+  @media screen and ${theme.device.tablet} {
+    width: 90vw;
+  }
 `;
 
 export const LabelId = styled.p`

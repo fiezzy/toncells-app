@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from "../../../constants/theme";
 
 const handleStatusColorChange = (status: string) => {
   switch (status) {
@@ -32,20 +33,33 @@ export const InfoLabel = styled.p<{ status: string }>`
     font-weight: 400;
     color: ${({ status }) => handleStatusColorChange(status)};
   }
+
+  @media screen and ${theme.device.mobile} {
+    font-size: 14px;
+  }
 `;
 
 export const InfoText = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
-  text-align: center;
+  text-align: left;
   overflow: scroll;
+  overflow-x: hidden;
   height: 242px;
   color: rgba(0, 0, 0, 0.6);
+  word-wrap: break-word;
 
   span {
     font-weight: 900;
     color: #000;
+  }
+
+  @media screen and ${theme.device.mobile} {
+    font-size: 14px;
+    max-width: 80vw;
+    height: auto;
+    overflow: auto;
   }
 `;
 

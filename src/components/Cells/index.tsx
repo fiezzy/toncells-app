@@ -5,27 +5,15 @@ import {
   useState,
   useCallback,
   useRef,
-  Fragment,
 } from "react";
-import { Img } from "react-image";
+import { useWindowDimensions } from "../../hooks/useWindowDimensions";
+import { DisplaySize } from "../../constants";
 import { CellModalContext } from "../../context";
-import { CELLS_AREA } from "../../constants/images";
-import { Wrapper, CellInfo } from "./style";
 import CellModalDefault from "../CellModalDefault";
 import CellModalBuy from "../CellModalBuy";
-import CellModalInvoice from "../CellModalInvoice";
-import CellModalEdit from "../CellModalEdit";
 import CellAreaSmall from "./CellsAreaSmall";
 import * as _ from "lodash";
-// import img from "MAP.png";
-
-type Props = {
-  isZoomMode: boolean;
-  onSideBar: boolean;
-  mapVersion: number;
-  nftImgs: string[];
-  bigArr: any;
-};
+import { Wrapper, CellInfo, Text } from "./style";
 
 type CellsAreaType = {
   id: number;
@@ -87,8 +75,43 @@ cellsCollection.forEach((cellsArea, idx) => {
   cellsArea.firstCellId = cellsArea.lastCellId - 16 + 1;
 });
 
+type Props = {
+  isZoomMode: boolean;
+  onSideBar: boolean;
+  mapVersion: number;
+  nftImgs: string[];
+  bigArr?: any[];
+  setSelectedIds: (e: any) => void;
+  hex: string;
+  setHex: (arg: string) => void;
+  selectedCells: any[];
+  setSelectedCells: (e: any) => void;
+  toggleInvoiceMode: () => void;
+  isBuyALotMode?: boolean;
+  setSelectedAreas: (areas: any) => void;
+  cellsAreaData: any[];
+  actualMaps: string[];
+  isInvoiceMode: boolean;
+};
+
 const Cells: VFC<Props> = (props) => {
-  const { isZoomMode, onSideBar, mapVersion, nftImgs, bigArr } = props;
+  const {
+    isZoomMode,
+    onSideBar,
+    mapVersion,
+    nftImgs,
+    bigArr,
+    setSelectedIds,
+    hex,
+    setHex,
+    selectedCells,
+    setSelectedCells,
+    toggleInvoiceMode,
+    isBuyALotMode,
+    setSelectedAreas,
+    cellsAreaData,
+    actualMaps,
+  } = props;
 
   const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
   const [activeAreaData, setActiveAreaData] = useState<CellsAreaType>({
@@ -100,34 +123,37 @@ const Cells: VFC<Props> = (props) => {
   });
   const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
   const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
-  //   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [activeCellId, setActiveCellId] = useState<number>(1);
   const [locationZ, setLocationZ] = useState<number>(0);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [nftId, setnftId] = useState<number[]>([0, 0, 0]);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  // const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
-
   const [cellsData, setCellsData] = useState();
 
-  // const [cellsAreaData, setCellsAreaData] = useState<any[]>([]);
-  console.log(isZoomMode);
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
-    if (!isCellModalActive) setSelectedIds([]);
+    // if (!isCellModalActive && !hex) setSelectedIds([]);
   }, [isCellModalActive]);
 
   const toggleBuyMode = useCallback(() => {
     setIsBuyMode((prev) => !prev);
   }, []);
 
-  // const toggleEditMode = useCallback(() => {
-  //   setIsEditMode((prev) => !prev);
+  const handleSelectCellClick = (id: number) => {
+    setSelectedCells((prev: any) => [...prev, id]);
+  };
 
-  //   if (activeCellId === EDITABLE_CELL_ID && !isEditMode) {
-  //     setIsBuyMode(false);
-  //   }
-  // }, [activeCellId, isEditMode]);
+  const removeSelectCellItem123 = (id: number) => {
+    setSelectedCells((prev: any) => [...prev.filter((e: number) => e !== id)]);
+  };
+
+  const handleSelectCellClick123 = (id: number) => {
+    setSelectedAreas((prev: any) => [...prev, id]);
+  };
+
+  const removeSelectCellItem123123 = (id: number) => {
+    setSelectedAreas((prev: any) => [...prev.filter((e: number) => e !== id)]);
+  };
 
   const handleCellsAreaClick = (
     id: number,
@@ -136,15 +162,40 @@ const Cells: VFC<Props> = (props) => {
     firstCellId?: number,
     lastCellId?: number
   ) => {
-    toggleCellModal();
+    if (!isBuyALotMode) {
+      toggleCellModal();
 
-    setActiveAreaData({
-      id: id,
-      x: x,
-      y: y,
-      firstCellId: firstCellId!,
-      lastCellId: lastCellId!,
-    });
+      setActiveAreaData({
+        id: id,
+        x: x,
+        y: y,
+        firstCellId: firstCellId!,
+        lastCellId: lastCellId!,
+      });
+    } else {
+      //@ts-ignore
+      let i = firstCellId;
+      //@ts-ignore
+      while (i <= lastCellId) {
+        // cellIdsArr.push(i);
+        if (!cellsAreaData[0]) {
+          //@ts-ignore
+          handleSelectCellClick(i);
+        } else {
+          //@ts-ignore
+          removeSelectCellItem123(i);
+        }
+
+        //@ts-ignore
+        i++;
+      }
+
+      if (!cellsAreaData[0]) {
+        handleSelectCellClick123(id);
+      } else {
+        removeSelectCellItem123123(id);
+      }
+    }
   };
 
   const handleCellClick = useCallback((locationZ: number, id: number) => {
@@ -155,17 +206,6 @@ const Cells: VFC<Props> = (props) => {
   const removeSelectCellItem = useCallback((locationZ: number, id: number) => {
     setLocationZ(locationZ);
     setActiveCellId(id);
-
-    // if (locationZ === EDITABLE_CELL_ID) {
-    //   setIsEditMode(true);
-    // }
-  }, []);
-  const [selectedCells, setSelectedCells] = useState<number[]>([]);
-
-  const toggleInvoiceMode = useCallback(() => {
-    setIsInvoiceMode((prev) => !prev);
-    if (isInvoiceMode) setSelectedCells([]);
-    if (isInvoiceMode) setSelectedIds([]);
   }, []);
 
   console.log(nftId);
@@ -174,39 +214,32 @@ const Cells: VFC<Props> = (props) => {
   const [opacity, setOpacity] = useState<number>(0);
   console.log(nftId);
   const setOp = _.debounce((e) => setOpacity(e), 100);
-  const ref = useRef(null);
+  const ref = useRef<any>(null);
   const ref1 = useRef(null);
   const activeAreaCollection: any[] = [];
-  useEffect(() => {
-    window.addEventListener("mousemove", (e) => {
-      // console.log(ref);
-      console.log(document.body.clientWidth - 774 / 2);
-      console.log(e.pageX);
-      if (isZoomMode) {
-        //@ts-ignore
-        ref.current.style.left = e.pageX + "px";
-        //@ts-ignore
-        ref.current.style.top = e.pageY + "px";
-      } else {
-        //@ts-ignore
-        ref.current.style.left =
-          (e.pageX - (document.body.clientWidth - 774) / 2) * 2.2222222222 +
-          "px";
-        //@ts-ignore
-        ref.current.style.top = (e.pageY - 38) * 2.2222222222 + "px";
-      }
-    });
-  }, [ref.current, isZoomMode]);
 
-  // useEffect(() => {
-  // 	if (ref1.current)
-  // 		ref1.current.addEventListener("mousemove", (e) => {
-  // 			//@ts-ignore
-  // 			ref1.current.style.left = e.pageX + "px";
-  // 			//@ts-ignore
-  // 			ref1.current.style.top = e.pageY + "px";
-  // 		});
-  // }, [ref1.current]);
+  useEffect(() => {
+    if (width > DisplaySize.Tablet) {
+      window.addEventListener("mousemove", (e) => {
+        console.log(document.body.clientWidth - 774 / 2);
+
+        if (isZoomMode) {
+          if (ref.current) {
+            ref.current.style.left = e.pageX + "px";
+            ref.current.style.top = e.pageY + "px";
+          }
+        } else {
+          if (ref.current) {
+            ref.current.style.left =
+              (e.pageX - (document.body.clientWidth - 774) / 2) * 2.2222222222 +
+              "px";
+
+            ref.current.style.top = (e.pageY - 38) * 2.2222222222 + "px";
+          }
+        }
+      });
+    }
+  }, [ref.current, isZoomMode, width]);
 
   for (
     let id = activeAreaData.firstCellId!;
@@ -218,35 +251,33 @@ const Cells: VFC<Props> = (props) => {
     });
   }
 
-  //@ts-ignore
-  // document.getElementById("IDIDIID").getContext("2d").drawImage(img, 0, 0);
   let map =
     mapVersion === 0
-      ? "/MAP.png"
+      ? actualMaps[0]
       : mapVersion === 1
-      ? "/MAPFREE.png"
-      : "/MAPMINTED.png";
+      ? actualMaps[1]
+      : actualMaps[2];
 
   return (
     <>
       <Wrapper
         ref={ref1}
         onMouseOut={() => {
-          if (isCellModalActive) setnftIdfun([0, 0, 0]);
-          setOp(0);
+          if (isCellModalActive) {
+            setnftIdfun([0, 0, 0]);
+          }
+          if (width > DisplaySize.Tablet) {
+            setOp(0);
+          }
         }}
         // on
         onMouseEnter={() => {
           setnftIdfun([1, 1, 0]);
-          // setOpacity(1);
-          // !!nftId.filter((e) => e)[0] &&
-          // (isZoomMode || isCellModalActive) &&
-          // !onSideBar
-          // 	? "1"
-          // 	: "0"
         }}
         onMouseOver={() => {
-          setOp(1);
+          if (width > DisplaySize.Tablet) {
+            setOp(1);
+          }
         }}
       >
         <CellInfo
@@ -264,6 +295,7 @@ const Cells: VFC<Props> = (props) => {
 
         {/* <canvas id={"IDIDIID"} width={100} height={100}></canvas> */}
         <img src={map} alt="#" />
+        <Text>coming soon...</Text>
         {cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
           <div
             key={id}
@@ -273,7 +305,11 @@ const Cells: VFC<Props> = (props) => {
                 : null
             }
             style={{
-              background: checkAreaId(id) ? "" : "grey",
+              background: checkAreaId(id)
+                ? cellsAreaData.includes(id)
+                  ? "red"
+                  : ""
+                : "grey",
               cursor: checkAreaId(id) ? "pointer" : "not-allowed",
               zIndex: "10",
             }}
@@ -307,22 +343,10 @@ const Cells: VFC<Props> = (props) => {
           locationZ={locationZ}
           toggleBuyMode={toggleBuyMode}
           activeCellId={activeCellId}
-          cellIds={selectedIds}
+          cellIds={selectedCells}
           setnftIdfun={setnftIdfun}
         />
-      ) : isInvoiceMode ? (
-        <CellModalInvoice
-          isVisible={isInvoiceMode}
-          onClose={toggleInvoiceMode}
-          id={activeAreaData.id}
-          locationX={activeAreaData.x}
-          locationY={activeAreaData.y}
-          toggleInvoiceMode={toggleInvoiceMode}
-          activeCellId={activeCellId}
-          setSelectedCells={setSelectedCells}
-          cellIds={selectedCells}
-        />
-      ) : (
+      ) : !isInvoiceMode ? (
         <CellModalDefault
           isVisible={isCellModalActive}
           onClose={toggleCellModal}
@@ -337,7 +361,7 @@ const Cells: VFC<Props> = (props) => {
           activeAreaCollection={activeAreaCollection}
           toggleInvoiceMode={toggleInvoiceMode}
           setSelectedIds={setSelectedIds}
-          selectedIds={selectedIds}
+          selectedIds={selectedCells}
           setnftIdfun={setnftIdfun}
           nftId={nftId}
           selectedCells={selectedCells}
@@ -347,8 +371,9 @@ const Cells: VFC<Props> = (props) => {
           nftImgs={nftImgs}
           isZoomMode={isZoomMode}
           CellInfo={CellInfo}
+          hex={hex}
         />
-      )}
+      ) : null}
     </>
   );
 };

@@ -16,8 +16,10 @@ import {
 	MenuOutlined,
 	MessageOutlined,
 	QuestionCircleOutlined,
-	LinkOutlined,
+	LoadingOutlined,
 	InfoOutlined,
+	TransactionOutlined,
+	AppstoreAddOutlined,
 } from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
@@ -33,7 +35,7 @@ type Props = {
 	toggleDescMode: () => void;
 };
 
-const DockBar: VFC<Props> = (props) => {
+const DockBar: VFC<any> = (props) => {
 	const {
 		bigArr,
 		setonSideBar,
@@ -41,6 +43,10 @@ const DockBar: VFC<Props> = (props) => {
 		toggleZoomMode,
 		isZoomMode,
 		toggleMap,
+		toggleInvoiceMode,
+		hex,
+		buyAlotStatus,
+		buyAreas,
 	} = props;
 
 	const numberMinted = bigArr?.status.filter(
@@ -53,24 +59,42 @@ const DockBar: VFC<Props> = (props) => {
 		<Wrapper
 			onMouseEnter={() => setonSideBar(true)}
 			onMouseLeave={() => setonSideBar(false)}>
-			<ConnectButton onClick={() => connectWalletTON(setTONwalletKey)}>
+			{/* <ConnectButton onClick={() => connectWalletTON(setTONwalletKey)}>
 				{!key ? (
 					<WalletTwoTone />
 				) : (
 					<span>{`${key.slice(0, 3)}...${key.slice(-2)}`}</span>
 				)}
-			</ConnectButton>
+			</ConnectButton> */}
+
+			{props.hex && (
+				<ConnectButton onClick={props.toggleInvoiceMode}>
+					<TransactionOutlined />
+				</ConnectButton>
+			)}
 
 			<Search onClick={() => toggleZoomMode(!isZoomMode)}>
 				{isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
 			</Search>
 
-			<Search onClick={toggleMap}>
-				<MenuOutlined />
+			<Search onClick={() => (buyAlotStatus ? buyAreas() : props.buyAlot())}>
+				{/* <LinkOutlined /> */}
+				{buyAlotStatus ? "Mint IDs!" : <AppstoreAddOutlined />}
 			</Search>
+
+			{buyAlotStatus ? (
+				<Search onClick={props.buyAlot}>
+					{/* <LinkOutlined /> */}
+					Cancel!
+				</Search>
+			) : null}
 
 			<Search onClick={toggleBuyMode}>
 				<SearchOutlined />
+			</Search>
+
+			<Search onClick={toggleMap}>
+				<MenuOutlined />
 			</Search>
 
 			<Search onClick={props.toggleDescMode}>
@@ -91,7 +115,7 @@ const DockBar: VFC<Props> = (props) => {
 
 			<Available>
 				Version: <br />
-				0.1.1 beta
+				0.1.2 beta
 			</Available>
 		</Wrapper>
 	);

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from "../../constants/theme";
 
 export const Wrapper = styled.div`
   width: 920px;
@@ -7,6 +8,18 @@ export const Wrapper = styled.div`
   border-radius: 12px;
   padding: 38px 50px 50px 50px;
   position: relative;
+
+  @media screen and ${theme.device.tablet} {
+    width: 95vw;
+    padding: 38px 38px 50px 38px;
+  }
+
+  @media screen and ${theme.device.mobile} {
+    padding: 38px 0px;
+    max-height: 85vh;
+    overflow: auto;
+    overflow-x: hidden;
+  }
 `;
 
 export const LabelId = styled.p`
@@ -38,6 +51,11 @@ export const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and ${theme.device.tablet} {
+    flex-direction: column;
+    gap: 30px;
+  }
 `;
 
 export const InfoBlock = styled.div`
@@ -94,4 +112,8 @@ export const ColumnWrapper = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 50%;
+
+  @media screen and ${theme.device.tablet} {
+    width: 80%;
+  }
 `;

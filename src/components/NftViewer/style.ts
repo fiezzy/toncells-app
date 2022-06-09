@@ -1,25 +1,23 @@
 import styled from "styled-components";
+import theme from "../../constants/theme";
+
+// export const Wrapper = styled.div`
+//   position: fixed;
+//   top: 0;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+//   width: 100vw;
+//   z-index: 9999;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   background-color: rgba(0, 0, 0, 0.25);
+//   animation-name: appear;
+//   animation-duration: 300ms;
+// `;
 
 export const Wrapper = styled.div`
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100vw;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.25);
-  animation-name: appear;
-  animation-duration: 300ms;
-
-
-
-`;
-
-export const Wrapper2 = styled.div`
   width: 65%;
   position: fixed;
   /* max-height: 800px; */
@@ -28,22 +26,27 @@ export const Wrapper2 = styled.div`
   border-radius: 25px;
   padding: 35px 67px 115px 67px;
   position: relative;
-    width: 920px;
+  width: 920px;
   /* max-height: 520px; */
   background-color: #fff;
   border-radius: 12px;
   padding: 38px;
   position: relative;
 
+  @media screen and ${theme.device.tablet} {
+    width: 90vw;
+    max-height: 85vh;
+    overflow: auto;
+  }
 `;
 
 export const CloseBtn = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   position: absolute;
-  right: 0;
-  top: 0;
-  margin: 38px;
+  right: 38px;
+  top: 38px;
+
   svg {
     width: 28px;
     height: 28px;
@@ -52,8 +55,12 @@ export const CloseBtn = styled.div`
     transform: scale(0.95);
     opacity: 0.5;
   }
-`;
 
+  @media screen and ${theme.device.mobile} {
+    top: 41px;
+    right: 26px;
+  }
+`;
 
 export const ConnectButton = styled.button`
   width: 80px;
@@ -111,31 +118,38 @@ export const Available = styled.div`
   }
 `;
 
-
 export const SearchBox = styled.div`
   margin: 40px 0 0 0;
+
   > p {
     display: flex;
+
     > * {
-      margin: 10px
+      margin: 10px;
     }
   }
-`
+
+  @media screen and ${theme.device.mobile} {
+    > p {
+      flex-direction: column;
+    }
+  }
+`;
 
 export const Result = styled.div`
   /* margin: 100px 0 0 0; */
-`
+`;
 
 export const ResultWrapper = styled.div`
   margin: 24px 0 0 0;
   max-height: 360px;
   min-height: 360px;
   /* padding: 0 0 100px 0; */
-`
+`;
 
 export const LabelId = styled.p`
   font-weight: 700;
-  font-size: 32px;
+  font-size: 24px;
   line-height: 32px;
   text-align: center;
 `;
