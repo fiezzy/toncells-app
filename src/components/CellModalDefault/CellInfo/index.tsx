@@ -1,5 +1,5 @@
 import { VFC } from "react";
-import { InfoBlock, InfoLabel, InfoText, BuyButton } from "./style";
+import { InfoBlock, InfoLabel, InfoText } from "./style";
 
 type Props = {
   activeCellId: number;

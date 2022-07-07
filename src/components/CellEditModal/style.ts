@@ -22,12 +22,15 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const LabelId = styled.p`
+export const Title = styled.p`
   font-weight: 700;
   font-size: 32px;
   line-height: 32px;
   text-align: center;
-  /* margin-bottom: 40px; */
+
+  span {
+    font-weight: 200;
+  }
 `;
 
 export const CloseBtn = styled.div`
@@ -51,75 +54,42 @@ export const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  @media screen and ${theme.device.tablet} {
-    flex-direction: column;
-    gap: 30px;
-  }
 `;
 
-export const InfoBlock = styled.div`
+export const EditBlockWrapper = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  width: 380px;
-
-  /* width: 43%; */
-  /* background: green; */
-  margin: 0 auto;
-`;
-
-export const InfoLabel = styled.span`
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 24px;
-`;
-
-export const InfoText = styled.p`
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-
-  span {
-    font-weight: 900;
-  }
-`;
-
-export const BuyFewBtn = styled.button`
-  /* /* margin-top: 50px; * */
-  border: none;
-  outline: none;
-  padding: 10px 65px;
-  color: #fff;
-  font-size: 16px;
-  /* font-weight: 400; */
-  background-color: #000;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.3s;
-
-  &:hover {
-    transform: scale(0.95);
-    opacity: 0.6;
-  }
-`;
-
-export const ColumnWrapper = styled.div`
-  display: flex;
+  gap: 15px;
   align-items: center;
   justify-content: center;
+  width: 50%;
+`;
+
+export const EditBlock = styled.div`
+  display: flex;
+  align-items: center;
+  justify-conent: center;
   flex-direction: column;
   gap: 20px;
-  width: 50%;
-
-  @media screen and ${theme.device.tablet} {
-    width: 80%;
-  }
+  width: 100%;
 `;
 
-export const BtnWrapper = styled.div`
+export const SubEditMenu = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
+`;
+
+export const SubMenuItem = styled.div<{ isActive: boolean }>`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: #000;
+  cursor: pointer;
+  transition: 0.3s;
+  border-bottom: ${({ isActive }) => (isActive ? "1px solid #000" : "none")};
+
+  &:hover {
+    opacity: 0.6;
+  }
 `;

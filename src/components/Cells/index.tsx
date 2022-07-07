@@ -10,7 +10,6 @@ import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { DisplaySize } from "../../constants";
 import { CellModalContext } from "../../context";
 import CellModalDefault from "../CellModalDefault";
-import CellModalBuy from "../CellModalBuy";
 import CellAreaSmall from "./CellsAreaSmall";
 import * as _ from "lodash";
 import { Wrapper, CellInfo, Text } from "./style";
@@ -81,14 +80,13 @@ type Props = {
   mapVersion: number;
   nftImgs: string[];
   bigArr?: any[];
-  setSelectedIds: (e: any) => void;
   hex: string;
   setHex: (arg: string) => void;
   selectedCells: any[];
   setSelectedCells: (e: any) => void;
   toggleInvoiceMode: () => void;
   isBuyALotMode?: boolean;
-  setSelectedAreas: (areas: any) => void;
+  setSelectedAreas: (area: any) => void;
   cellsAreaData: any[];
   actualMaps: string[];
   isInvoiceMode: boolean;
@@ -101,7 +99,6 @@ const Cells: VFC<Props> = (props) => {
     mapVersion,
     nftImgs,
     bigArr,
-    setSelectedIds,
     hex,
     setHex,
     selectedCells,
@@ -126,8 +123,6 @@ const Cells: VFC<Props> = (props) => {
   const [activeCellId, setActiveCellId] = useState<number>(1);
   const [locationZ, setLocationZ] = useState<number>(0);
   const [nftId, setnftId] = useState<number[]>([0, 0, 0]);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [cellsData, setCellsData] = useState();
 
   const { width } = useWindowDimensions();
 
@@ -208,11 +203,12 @@ const Cells: VFC<Props> = (props) => {
     setActiveCellId(id);
   }, []);
 
-  console.log(nftId);
+  // console.log(nftId);
+
   const setnftIdfun = _.debounce((e) => setnftId(e), 100);
 
   const [opacity, setOpacity] = useState<number>(0);
-  console.log(nftId);
+
   const setOp = _.debounce((e) => setOpacity(e), 100);
   const ref = useRef<any>(null);
   const ref1 = useRef(null);
@@ -323,28 +319,7 @@ const Cells: VFC<Props> = (props) => {
           </div>
         ))}
       </Wrapper>
-      {/* {isEditMode ? (
-        <CellModalEdit
-          isVisible={isCellModalActive}
-          locationX={activeAreaData.x}
-          locationY={activeAreaData.y}
-          activeCellId={activeCellId}
-          onClose={toggleEditMode}
-        /> */}
-      {isBuyMode ? (
-        <CellModalBuy
-          isVisible={isCellModalActive}
-          onClose={toggleCellModal}
-          id={activeAreaData.id}
-          locationX={activeAreaData.x}
-          locationY={activeAreaData.y}
-          locationZ={locationZ}
-          toggleBuyMode={toggleBuyMode}
-          activeCellId={activeCellId}
-          cellIds={selectedCells}
-          setnftIdfun={setnftIdfun}
-        />
-      ) : !isInvoiceMode ? (
+      {!isInvoiceMode ? (
         <CellModalDefault
           isVisible={isCellModalActive}
           onClose={toggleCellModal}
@@ -358,8 +333,6 @@ const Cells: VFC<Props> = (props) => {
           handleCellClick={handleCellClick}
           activeAreaCollection={activeAreaCollection}
           toggleInvoiceMode={toggleInvoiceMode}
-          setSelectedIds={setSelectedIds}
-          selectedIds={selectedCells}
           setnftIdfun={setnftIdfun}
           nftId={nftId}
           selectedCells={selectedCells}

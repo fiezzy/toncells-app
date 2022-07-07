@@ -40,6 +40,7 @@ export const InfoLabel = styled.p<{ status: string }>`
 `;
 
 export const InfoText = styled.div`
+  width: 100%;
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;

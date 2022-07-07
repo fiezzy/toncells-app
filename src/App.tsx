@@ -6,6 +6,13 @@ import Container from "./components/Container";
 import DockBar from "./components/DockBar";
 import { ApiMaps } from "./constants";
 import { NFT_ICONS } from "./constants/images";
+import GetStatus from "./logic/GetStatus";
+import DescModeModal from "./components/DescModeModal";
+import NftViewer from "./components/NftViewer";
+import { createGlobalStyle } from "styled-components";
+import CellModalInvoice from "./components/CellModalInvoice";
+import ConnectWalletModal from "./components/ConnectWalletModal";
+import UserModal from "./components/UserModal";
 import {
   NftIcon,
   CellsWrapperX,
@@ -15,11 +22,6 @@ import {
   ZoomWrapper,
   RootContainer,
 } from "./style";
-import GetStatus from "./logic/GetStatus";
-import DescModeModal from "./components/DescModeModal";
-import NftViewer from "./components/NftViewer";
-import { createGlobalStyle } from "styled-components";
-import CellModalInvoice from "./components/CellModalInvoice";
 
 export const nftIcons: string[] = [];
 
@@ -37,8 +39,11 @@ const App: VFC = () => {
   const [hex, setHex] = useState<string>("");
   const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
   const [selectedCells, updateSelectedCells] = useState<number[]>([]);
-  const [isBuyALotMode, setBuyALotMode] = useState<boolean>();
+  const [isBuyALotMode, setBuyALotMode] = useState<boolean>(false);
   const [cellsAreaData, setSelectedAreas] = useState<any[]>([]);
+  const [isConnectWalletMode, setIsConnectWalletMode] =
+    useState<boolean>(false);
+  const [isUserModalMode, setIsUserModalMode] = useState<boolean>(false);
 
   const [actualMaps, setActualMaps] = useState<string[]>([
     ApiMaps.Default,
@@ -90,7 +95,7 @@ const App: VFC = () => {
     })();
   }, []);
 
-  const toggleSetBuyALot = useCallback(() => {
+  const toggleBuyALotMode = useCallback(() => {
     if (isBuyALotMode) {
       updateSelectedCells([]);
       setSelectedAreas([]);
@@ -140,6 +145,14 @@ const App: VFC = () => {
     setIsInvoiceMode((prev) => !prev);
   }, []);
 
+  const toggleConnectWalletMode = useCallback(() => {
+    setIsConnectWalletMode((prev) => !prev);
+  }, []);
+
+  const toggleUserModalMode = useCallback(() => {
+    setIsUserModalMode((prev) => !prev);
+  }, []);
+
   const nftItems = nftIcons.map((src) => (
     <NftIcon key={src} src={src} alt="#" />
   ));
@@ -147,7 +160,14 @@ const App: VFC = () => {
   const GlobalStyle = createGlobalStyle`
   	body {
 	    overflow: ${isCellModalActive ? "hidden" : "scroll"};
+      overflow-x: hidden;
 	  }
+  `;
+
+  const OffScroll = createGlobalStyle<{ isOff: boolean }>`
+      body {
+        overflow: ${({ isOff }) => (isOff ? "hidden" : "scroll")};
+      }
   `;
 
   return (
@@ -156,7 +176,6 @@ const App: VFC = () => {
       <Container>
         <DockBar
           bigArr={bigArr}
-          isBuyMode={isBuyMode}
           toggleBuyMode={toggleBuyMode}
           toggleZoomMode={(isZoom: boolean) => setIsZoomMode(isZoom)}
           isZoomMode={isZoomMode}
@@ -167,34 +186,68 @@ const App: VFC = () => {
           toggleDescMode={() => toggleDescMode((prev) => !prev)}
           hex={hex}
           toggleInvoiceMode={toggleInvoiceMode}
-          buyAlot={toggleSetBuyALot}
-          buyAlotStatus={isBuyALotMode}
+          toggleBuyALotMode={toggleBuyALotMode}
+          isBuyALotMode={isBuyALotMode}
           buyAreas={buyAreas}
+          toggleConnectWalletMode={toggleConnectWalletMode}
+          toggleUserModalMode={toggleUserModalMode}
         />
+
         {isBuyMode && (
-          <NftViewer
-            isBuyMode={isBuyMode}
-            bigArr={bigArr}
-            toggleBuyMode={toggleBuyMode}
-          />
+          <>
+            <OffScroll isOff={isBuyMode} />
+            <NftViewer
+              isBuyMode={isBuyMode}
+              bigArr={bigArr}
+              toggleBuyMode={toggleBuyMode}
+            />
+          </>
         )}
+
         {isDescMode && (
           <DescModeModal
             isDescMode={isDescMode}
             toggleDescMode={() => toggleDescMode((prev) => !prev)}
           />
         )}
+
         {isInvoiceMode && (
-          <CellModalInvoice
-            isVisible={isInvoiceMode}
-            onClose={toggleInvoiceMode}
-            cellIds={selectedCells}
-            hex={hex}
-            setHex={setHex}
-            setSelectedCells={setSelectedCells}
-            // isLocal={isLocal}
-          />
+          <>
+            <OffScroll isOff={isInvoiceMode} />
+            <CellModalInvoice
+              isVisible={isInvoiceMode}
+              onClose={toggleInvoiceMode}
+              cellIds={selectedCells}
+              hex={hex}
+              setHex={setHex}
+              setSelectedCells={setSelectedCells}
+            />
+          </>
         )}
+
+        {isConnectWalletMode && (
+          <>
+            <OffScroll isOff={isConnectWalletMode} />
+            <ConnectWalletModal
+              isVisible={isConnectWalletMode}
+              onClose={toggleConnectWalletMode}
+              toggleUserModalMode={toggleUserModalMode}
+            />
+          </>
+        )}
+
+        {isUserModalMode && (
+          <>
+            <OffScroll isOff={isUserModalMode} />
+            <UserModal
+              cellsData={bigArr}
+              isVisible={isUserModalMode}
+              onClose={toggleUserModalMode}
+              toggleConnectWalletMode={toggleConnectWalletMode}
+            />
+          </>
+        )}
+
         <RootContainer isZoomMode={isZoomMode}>
           <ZoomWrapper isZoomMode={isZoomMode}>
             <CellsWrapperX>
@@ -210,7 +263,6 @@ const App: VFC = () => {
                   bigArr={bigArr}
                   setHex={setHex}
                   hex={hex}
-                  setSelectedIds={setSelectedCells}
                   setSelectedCells={setSelectedCells}
                   selectedCells={selectedCells}
                   isInvoiceMode={isInvoiceMode}

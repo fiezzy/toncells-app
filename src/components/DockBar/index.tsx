@@ -1,140 +1,131 @@
-import { VFC, useState } from "react";
+import { VFC, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import {
-	Wrapper,
-	ConnectButton,
-	SupportButton,
-	Available,
-	Search,
+  Wrapper,
+  ConnectButton,
+  SupportButton,
+  Available,
+  Search,
 } from "./style";
-import { message } from "antd";
 import {
-	WalletTwoTone,
-	TeamOutlined,
-	SearchOutlined,
-	FullscreenOutlined,
-	FullscreenExitOutlined,
-	MenuOutlined,
-	MessageOutlined,
-	QuestionCircleOutlined,
-	LoadingOutlined,
-	InfoOutlined,
-	TransactionOutlined,
-	AppstoreAddOutlined,
+  WalletTwoTone,
+  SearchOutlined,
+  FullscreenOutlined,
+  FullscreenExitOutlined,
+  MenuOutlined,
+  QuestionCircleOutlined,
+  InfoOutlined,
+  TransactionOutlined,
+  AppstoreAddOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 
 const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
 
 type Props = {
-	bigArr: any;
-	setonSideBar: (isSideBarActive: boolean) => void;
-	isBuyMode: boolean;
-	toggleBuyMode: () => void;
-	toggleZoomMode: (isZoom: boolean) => void;
-	isZoomMode: boolean;
-	toggleMap: () => void;
-	toggleDescMode: () => void;
+  bigArr: any;
+  setonSideBar: (isSideBarActive: boolean) => void;
+  toggleBuyMode: () => void;
+  toggleZoomMode: (isZoom: boolean) => void;
+  isZoomMode: boolean;
+  toggleMap: () => void;
+  toggleDescMode: () => void;
+  toggleInvoiceMode: () => void;
+  hex: string;
+  isBuyALotMode: boolean;
+  buyAreas: () => void;
+  toggleBuyALotMode: () => void;
+  toggleConnectWalletMode: () => void;
+  toggleUserModalMode: () => void;
 };
 
-const DockBar: VFC<any> = (props) => {
-	const {
-		bigArr,
-		setonSideBar,
-		toggleBuyMode,
-		toggleZoomMode,
-		isZoomMode,
-		toggleMap,
-		toggleInvoiceMode,
-		hex,
-		buyAlotStatus,
-		buyAreas,
-	} = props;
+const DockBar: VFC<Props> = (props) => {
+  const {
+    bigArr,
+    setonSideBar,
+    toggleBuyMode,
+    toggleZoomMode,
+    isZoomMode,
+    toggleMap,
+    isBuyALotMode,
+    buyAreas,
+    toggleConnectWalletMode,
+    toggleInvoiceMode,
+    toggleBuyALotMode,
+    toggleUserModalMode,
+  } = props;
 
-	const numberMinted = bigArr?.status.filter(
-		(e: any) => e.Status !== "Free"
-	).length;
+  const numberMinted = bigArr?.status.filter(
+    (e: any) => e.Status !== "Free"
+  ).length;
 
-	const [key, setTONwalletKey] = useState("");
+  return (
+    <Wrapper
+      onMouseEnter={() => setonSideBar(true)}
+      onMouseLeave={() => setonSideBar(false)}
+    >
+      {props.hex && (
+        <ConnectButton onClick={toggleInvoiceMode}>
+          <TransactionOutlined />
+        </ConnectButton>
+      )}
 
-	return (
-		<Wrapper
-			onMouseEnter={() => setonSideBar(true)}
-			onMouseLeave={() => setonSideBar(false)}>
-			{/* <ConnectButton onClick={() => connectWalletTON(setTONwalletKey)}>
-				{!key ? (
-					<WalletTwoTone />
-				) : (
-					<span>{`${key.slice(0, 3)}...${key.slice(-2)}`}</span>
-				)}
-			</ConnectButton> */}
+      <Search onClick={() => toggleZoomMode(!isZoomMode)}>
+        {isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
+      </Search>
 
-			{props.hex && (
-				<ConnectButton onClick={props.toggleInvoiceMode}>
-					<TransactionOutlined />
-				</ConnectButton>
-			)}
+      <Search onClick={toggleConnectWalletMode}>
+        <WalletTwoTone />
+      </Search>
 
-			<Search onClick={() => toggleZoomMode(!isZoomMode)}>
-				{isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
-			</Search>
+      <Search onClick={toggleUserModalMode}>
+        <UserOutlined />
+      </Search>
 
-			<Search onClick={() => (buyAlotStatus ? buyAreas() : props.buyAlot())}>
-				{/* <LinkOutlined /> */}
-				{buyAlotStatus ? "Mint IDs!" : <AppstoreAddOutlined />}
-			</Search>
+      <Search
+        onClick={() => (isBuyALotMode ? buyAreas() : toggleBuyALotMode())}
+      >
+        {/* <LinkOutlined /> */}
+        {isBuyALotMode ? "Mint IDs!" : <AppstoreAddOutlined />}
+      </Search>
 
-			{buyAlotStatus ? (
-				<Search onClick={props.buyAlot}>
-					{/* <LinkOutlined /> */}
-					Cancel!
-				</Search>
-			) : null}
+      {isBuyALotMode ? (
+        <Search onClick={toggleBuyALotMode}>
+          {/* <LinkOutlined /> */}
+          Cancel!
+        </Search>
+      ) : null}
 
-			<Search onClick={toggleBuyMode}>
-				<SearchOutlined />
-			</Search>
+      <Search onClick={toggleBuyMode}>
+        <SearchOutlined />
+      </Search>
 
-			<Search onClick={toggleMap}>
-				<MenuOutlined />
-			</Search>
+      <Search onClick={toggleMap}>
+        <MenuOutlined />
+      </Search>
 
-			<Search onClick={props.toggleDescMode}>
-				{/* <LinkOutlined /> */}
-				<InfoOutlined />
-			</Search>
+      <Search onClick={props.toggleDescMode}>
+        {/* <LinkOutlined /> */}
+        <InfoOutlined />
+      </Search>
 
-			<a href={SEPEZHO_LINK} target="_blank" rel="noreferrer">
-				<SupportButton>
-					<QuestionCircleOutlined />
-				</SupportButton>
-			</a>
+      <a href={SEPEZHO_LINK} target="_blank" rel="noreferrer">
+        <SupportButton>
+          <QuestionCircleOutlined />
+        </SupportButton>
+      </a>
 
-			<Available>
-				Free cells: <br />
-				{((2944 - numberMinted) / 1000).toFixed(2)}k/10k
-			</Available>
+      <Available>
+        Free cells: <br />
+        {((2944 - numberMinted) / 1000).toFixed(2)}k/10k
+      </Available>
 
-			<Available>
-				Version: <br />
-				0.1.2 beta
-			</Available>
-		</Wrapper>
-	);
+      <Available>
+        Version: <br />
+        0.4.9 beta
+      </Available>
+    </Wrapper>
+  );
 };
 
 export default DockBar;
-
-const connectWalletTON = async (setTONwalletKey: any) => {
-	try {
-		//@ts-ignore
-		const ton = window.ton;
-		if (ton) {
-			const accounts = await ton.send("ton_requestWallets");
-			setTONwalletKey(accounts[0].address);
-		}
-	} catch (err) {
-		message.error(
-			"Install TonWallet. Close all TonWallet windows and try again pls",
-			5
-		);
-	}
-};

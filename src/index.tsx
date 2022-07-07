@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { CellModalProvider } from "./context/CellModalContext";
+import { AuthProvider } from "./context/AuthContext";
 import reportWebVitals from "./reportWebVitals";
 import { createGlobalStyle } from "styled-components";
 import "antd/dist/antd.css";
@@ -21,8 +22,10 @@ const GlobalStyle = createGlobalStyle`
 ReactDOM.render(
   <React.StrictMode>
     <CellModalProvider>
-      <GlobalStyle />
-      <App />
+      <AuthProvider>
+        <GlobalStyle />
+        <App />
+      </AuthProvider>
     </CellModalProvider>
   </React.StrictMode>,
   document.getElementById("root")
