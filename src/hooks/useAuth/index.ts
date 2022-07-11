@@ -1,22 +1,12 @@
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { asciiToHex } from "../../utils/asciiToHex";
 import { useCookies } from "react-cookie";
 import { message } from "antd";
 
 const AUTH_TOKEN = "AUTH_TOKEN";
 
 const sessionStore = window.sessionStorage;
-
-const asciiToHex = (addressStr: string) => {
-  let arr1 = [];
-
-  for (let n = 0, l = addressStr.length; n < l; n++) {
-    let hex = Number(addressStr.charCodeAt(n)).toString(16);
-    arr1.push(hex);
-  }
-
-  return arr1.join("");
-};
 
 export const useAuth = () => {
   const { updateAuthData } = useContext<any>(AuthContext);
@@ -55,7 +45,7 @@ export const useAuth = () => {
       ]);
 
       if (walletAddress.length > 1) {
-        updateAuthData(walletAddress, hexData);
+        updateAuthData(walletAddress, signature);
       }
 
       console.log("Signature is: ", signature);

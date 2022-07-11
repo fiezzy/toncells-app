@@ -89,8 +89,7 @@ const CellModalDefault: VFC<Props> = (props) => {
   const ref = useRef(null);
 
   const { isCellEditMode, toggleCellEditMode } = useContext(CellModalContext);
-  const { isSigned } = useContext<any>(AuthContext);
-  const { tonWalletAddress } = useContext<any>(AuthContext);
+  const { isSigned, tonWalletAddress } = useContext<any>(AuthContext);
 
   const { width } = useWindowDimensions();
 
@@ -219,6 +218,7 @@ const CellModalDefault: VFC<Props> = (props) => {
           activeCellId={activeCellId}
           isVisible={isCellEditMode}
           onClose={toggleCellEditMode}
+          tonWalletAddress={tonWalletAddress}
         />
       ) : (
         <Modal isVisible={isVisible} onClose={handleCloseModalClick}>
@@ -284,9 +284,12 @@ const CellModalDefault: VFC<Props> = (props) => {
                       <BuyFewBtn onClick={toggleCellEditMode}>Edit</BuyFewBtn>
                     </BtnWrapper>
                   ) : (
-                    <BuyFewBtn onClick={handleBuyBtnClick}>
-                      {isSelectMode ? "Buy cells" : "Select cells"}
-                    </BuyFewBtn>
+                    <BtnWrapper>
+                      <BuyFewBtn onClick={handleBuyBtnClick}>
+                        {isSelectMode ? "Buy cells" : "Select cells"}
+                      </BuyFewBtn>
+                      <BuyFewBtn onClick={toggleCellEditMode}>Edit</BuyFewBtn>
+                    </BtnWrapper>
                   )}
                 </ColumnWrapper>
               ) : (

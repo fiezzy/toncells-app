@@ -12,32 +12,15 @@ import {
 
 const PRE_TG_LINK = "https://t.me/";
 
-const initialData = [
-  {
-    id: "tgName",
-    value: "toncells",
-    label: "TELEGRAM NAME:",
-    placeholder: "@name",
-    link: "https://t.me/",
-  },
-  {
-    id: "link",
-    value: "https://app.toncells.org/",
-    label: "LINK:",
-    placeholder: "https://name.com",
-    link: "https://t.me/",
-  },
-  {
-    id: "description",
-    value:
-      "This item gives you an access to edit cell #260 of TonCells Project. TonCells is a 100x100 celled field where each cell can be edited. Make your unique NFT even more unique by customizing it how you want. Draw, add pictures & videos, edit your own description and mainly do whatever you want! This item gives you x% discount for the next purchase. / This item doesn't give you any discount.",
-    label: "DESCRIPTION:",
-    placeholder: "write your description in this field",
-  },
-];
+type Props = {
+  editableInfoData: any[];
+  setEditableInfoData: any;
+  handleSaveInfoData: () => void;
+};
 
-const CellEditInfoBlock: VFC = () => {
-  const [fieldsData, setFieldsData] = useState(initialData);
+const CellEditInfoBlock: VFC<Props> = (props) => {
+  const { editableInfoData, setEditableInfoData, handleSaveInfoData } = props;
+
   const [isInfoEdit, setIsInfoEdit] = useState(false);
 
   const toggleInfoEditMode = useCallback(() => {
@@ -54,8 +37,8 @@ const CellEditInfoBlock: VFC = () => {
       },
     } = evt;
 
-    setFieldsData((prev) =>
-      prev.map((field) => {
+    setEditableInfoData((prev: any) =>
+      prev.map((field: any) => {
         if (field.id === fieldId) {
           return {
             ...field,
@@ -68,10 +51,18 @@ const CellEditInfoBlock: VFC = () => {
     );
   };
 
+  const handleSaveBtnClick = () => {
+    if (isInfoEdit) {
+      handleSaveInfoData();
+      message.success("Successful editing!");
+    }
+    toggleInfoEditMode();
+  };
+
   return (
     <>
       <Wrapper>
-        {fieldsData.map(({ id, value, label, placeholder, link }) => {
+        {editableInfoData.map(({ id, value, label, placeholder, link }) => {
           const currentLink = id === "tgName" ? PRE_TG_LINK + value : value;
 
           if (id === "description") {
@@ -90,8 +81,6 @@ const CellEditInfoBlock: VFC = () => {
               </FieldWrapper>
             );
           }
-
-          console.log(currentLink);
 
           return (
             <FieldWrapper key={id}>
@@ -120,12 +109,7 @@ const CellEditInfoBlock: VFC = () => {
           );
         })}
       </Wrapper>
-      <EditBtn
-        onClick={() => {
-          toggleInfoEditMode();
-          isInfoEdit && message.success("Successful editing!");
-        }}
-      >
+      <EditBtn onClick={handleSaveBtnClick}>
         {isInfoEdit ? "SAVE" : "EDIT"}
       </EditBtn>
     </>

@@ -4,8 +4,8 @@ import theme from "../../../../constants/theme";
 export const Wrapper = styled.div<{ isEdit: boolean }>`
   display: flex;
   flex-wrap: wrap;
-  width: 380px;
-  height: 380px;
+  width: 384px;
+  height: 384px;
   transition: 0.3s;
   transform: ${({ isEdit }) => (isEdit ? "scale(1.05)" : "scale(1)")};
   box-shadow: ${({ isEdit }) =>
@@ -23,8 +23,8 @@ export const EditablePixel = styled.div<{ hex: string; isEdit: boolean }>`
   justify-content: center;
   border: 1px solid #000;
   cursor: ${({ isEdit }) => (isEdit ? "pointer" : "auto")};
-  width: 95px;
-  height: 95px;
+  width: 24px;
+  height: 24px;
   transition: 0.3s;
   background-color: ${({ hex }) => hex};
 
