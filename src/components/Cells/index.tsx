@@ -6,41 +6,17 @@ import {
   useCallback,
   useRef,
 } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { DisplaySize } from "../../constants";
 import { CellModalContext } from "../../context";
 import CellModalDefault from "../CellModalDefault";
 import CellAreaSmall from "./CellsAreaSmall";
+import { getAreaByCellId } from "../../utils/getAreaByCellId";
+import { App } from "../../typings";
 import * as _ from "lodash";
 import { Wrapper, CellInfo, Text } from "./style";
-
-type CellsAreaType = {
-  id: number;
-  x: number;
-  y: number;
-  lastCellId?: number;
-  firstCellId?: number;
-};
-
-const cellsCollection: CellsAreaType[] = [
-  {
-    id: 1,
-    x: 1,
-    y: 1,
-    lastCellId: 16,
-    firstCellId: 1,
-  },
-];
-
-for (let x = 1; x < 26; x++) {
-  for (let y = 1; y < 26; y++) {
-    cellsCollection.push({
-      id: 1,
-      x: x,
-      y: y,
-    });
-  }
-}
+import { message } from "antd";
 
 const checkAreaId = (id: number) => {
   let i = 28;
@@ -67,13 +43,6 @@ const checkCellId = (id: number) => {
 const convertAreaIdToFirstCellId = (id: number) => (id - 1) * 16 + 1;
 const convertAreaIdToLastCellId = (id: number) => id * 16 - 1;
 
-cellsCollection.shift();
-cellsCollection.forEach((cellsArea, idx) => {
-  cellsArea.id += idx;
-  cellsArea.lastCellId = cellsArea.id * 16;
-  cellsArea.firstCellId = cellsArea.lastCellId - 16 + 1;
-});
-
 type Props = {
   isZoomMode: boolean;
   onSideBar: boolean;
@@ -90,6 +59,7 @@ type Props = {
   cellsAreaData: any[];
   actualMaps: string[];
   isInvoiceMode: boolean;
+  cellsCollection: App.CellsAreaType[];
 };
 
 const Cells: VFC<Props> = (props) => {
@@ -108,10 +78,10 @@ const Cells: VFC<Props> = (props) => {
     setSelectedAreas,
     cellsAreaData,
     actualMaps,
+    cellsCollection,
   } = props;
 
-  const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
-  const [activeAreaData, setActiveAreaData] = useState<CellsAreaType>({
+  const [activeAreaData, setActiveAreaData] = useState<App.CellsAreaType>({
     id: 1,
     x: 1,
     y: 1,
@@ -119,12 +89,16 @@ const Cells: VFC<Props> = (props) => {
     lastCellId: 16,
   });
   const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
-  const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
   const [activeCellId, setActiveCellId] = useState<number>(1);
   const [locationZ, setLocationZ] = useState<number>(0);
   const [nftId, setnftId] = useState<number[]>([0, 0, 0]);
 
+  const { toggleCellModal, isCellModalActive } = useContext(CellModalContext);
+
   const { width } = useWindowDimensions();
+
+  let navigate = useNavigate();
+  let location = useLocation();
 
   useEffect(() => {
     // if (!isCellModalActive && !hex) setSelectedIds([]);
@@ -150,12 +124,34 @@ const Cells: VFC<Props> = (props) => {
     setSelectedAreas((prev: any) => [...prev.filter((e: number) => e !== id)]);
   };
 
+  let routeCellId = Number(location.pathname.substring(1));
+
+  const cellModalHendler = useCallback(() => {
+    if (routeCellId > 0 && !isCellModalActive) {
+      let currentArea = getAreaByCellId(routeCellId, cellsCollection);
+
+      if (checkAreaId(currentArea.id)) {
+        toggleCellModal();
+
+        setActiveCellId(routeCellId);
+
+        setActiveAreaData(currentArea);
+      } else {
+        message.error("Oops, can't do that now ;(");
+      }
+    }
+  }, [cellsCollection, isCellModalActive, routeCellId, toggleCellModal]);
+
+  useEffect(() => {
+    cellModalHendler();
+  }, [cellModalHendler, routeCellId]);
+
   const handleCellsAreaClick = (
     id: number,
     x: number,
     y: number,
-    firstCellId?: number,
-    lastCellId?: number
+    firstCellId: number,
+    lastCellId: number
   ) => {
     if (!isBuyALotMode) {
       toggleCellModal();
@@ -164,24 +160,19 @@ const Cells: VFC<Props> = (props) => {
         id: id,
         x: x,
         y: y,
-        firstCellId: firstCellId!,
-        lastCellId: lastCellId!,
+        firstCellId: firstCellId,
+        lastCellId: lastCellId,
       });
     } else {
-      //@ts-ignore
-      let i = firstCellId;
-      //@ts-ignore
+      let i: number = firstCellId;
+
       while (i <= lastCellId) {
-        // cellIdsArr.push(i);
         if (!cellsAreaData[0]) {
-          //@ts-ignore
           handleSelectCellClick(i);
         } else {
-          //@ts-ignore
           removeSelectCellItem123(i);
         }
 
-        //@ts-ignore
         i++;
       }
 
@@ -191,6 +182,11 @@ const Cells: VFC<Props> = (props) => {
         removeSelectCellItem123123(id);
       }
     }
+  };
+
+  const onClose = () => {
+    navigate("/");
+    toggleCellModal();
   };
 
   const handleCellClick = useCallback((locationZ: number, id: number) => {
@@ -250,7 +246,9 @@ const Cells: VFC<Props> = (props) => {
       ? actualMaps[0]
       : mapVersion === 1
       ? actualMaps[1]
-      : actualMaps[2];
+      : mapVersion === 2
+      ? actualMaps[2]
+      : actualMaps[3];
 
   return (
     <>
@@ -287,15 +285,15 @@ const Cells: VFC<Props> = (props) => {
           {nftId[0] ? <img src={nftImgs[nftId[0] - 1]} alt="#" /> : null}
         </CellInfo>
 
-        {/* <canvas id={"IDIDIID"} width={100} height={100}></canvas> */}
         <img src={map} alt="#" />
+
         <Text>coming soon...</Text>
         {cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
           <div
             key={id}
             onClick={() =>
               checkAreaId(id)
-                ? handleCellsAreaClick(id, x, y, firstCellId, lastCellId)
+                ? handleCellsAreaClick(id, x, y, firstCellId!, lastCellId!)
                 : null
             }
             style={{
@@ -319,32 +317,31 @@ const Cells: VFC<Props> = (props) => {
           </div>
         ))}
       </Wrapper>
-      {!isInvoiceMode ? (
-        <CellModalDefault
-          isVisible={isCellModalActive}
-          onClose={toggleCellModal}
-          id={activeAreaData.id}
-          locationX={activeAreaData.x}
-          locationY={activeAreaData.y}
-          locationZ={locationZ}
-          firstCellId={activeAreaData.firstCellId!}
-          lastCellId={activeAreaData.lastCellId!}
-          toggleBuyMode={toggleBuyMode}
-          handleCellClick={handleCellClick}
-          activeAreaCollection={activeAreaCollection}
-          toggleInvoiceMode={toggleInvoiceMode}
-          setnftIdfun={setnftIdfun}
-          nftId={nftId}
-          selectedCells={selectedCells}
-          setSelectedCells={setSelectedCells}
-          cellsData={bigArr}
-          activeCellId={activeCellId}
-          nftImgs={nftImgs}
-          isZoomMode={isZoomMode}
-          CellInfo={CellInfo}
-          hex={hex}
-        />
-      ) : null}
+
+      <CellModalDefault
+        isVisible={isCellModalActive}
+        onClose={onClose}
+        id={activeAreaData.id}
+        locationX={activeAreaData.x}
+        locationY={activeAreaData.y}
+        locationZ={locationZ}
+        firstCellId={activeAreaData.firstCellId!}
+        lastCellId={activeAreaData.lastCellId!}
+        toggleBuyMode={toggleBuyMode}
+        handleCellClick={handleCellClick}
+        activeAreaCollection={activeAreaCollection}
+        toggleInvoiceMode={toggleInvoiceMode}
+        setnftIdfun={setnftIdfun}
+        nftId={nftId}
+        selectedCells={selectedCells}
+        setSelectedCells={setSelectedCells}
+        cellsData={bigArr}
+        activeCellId={activeCellId}
+        nftImgs={nftImgs}
+        isZoomMode={isZoomMode}
+        CellInfo={CellInfo}
+        hex={hex}
+      />
     </>
   );
 };

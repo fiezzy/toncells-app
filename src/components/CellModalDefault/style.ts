@@ -3,11 +3,11 @@ import theme from "../../constants/theme";
 
 export const Wrapper = styled.div`
   width: 920px;
-  /* max-height: 520px; */
   background-color: #fff;
   border-radius: 12px;
   padding: 38px 50px 50px 50px;
   position: relative;
+  transition: all 0.3s ease;
 
   @media screen and ${theme.device.tablet} {
     width: 95vw;
@@ -16,8 +16,8 @@ export const Wrapper = styled.div`
 
   @media screen and ${theme.device.mobile} {
     padding: 38px 0px;
-    max-height: 85vh;
     overflow: auto;
+    max-height: 85vh;
     overflow-x: hidden;
   }
 `;

@@ -35,7 +35,7 @@ export const EditablePixel = styled.div<{ hex: string; isEdit: boolean }>`
   }
 
   @media screen and ${theme.device.tablet} {
-    width: 80px;
-    height: 80px;
+    width: 20px;
+    height: 20px;
   }
 `;

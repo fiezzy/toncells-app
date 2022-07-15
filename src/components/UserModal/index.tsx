@@ -1,7 +1,9 @@
 import { VFC, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
 import { Modal } from "../Modal";
+import { App } from "../../typings";
 import NftItem from "./components/NftItem";
 import {
   Wrapper,
@@ -23,17 +25,8 @@ type Props = {
   isVisible: boolean;
   onClose: () => void;
   toggleConnectWalletMode: () => void;
+  cellsCollection: App.CellsAreaType[];
 };
-
-const items = [
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 },
-  { id: 6 },
-  { id: 7 },
-];
 
 const UserModal: VFC<Props> = (props) => {
   const { isVisible, onClose, toggleConnectWalletMode, cellsData } = props;
@@ -41,6 +34,8 @@ const UserModal: VFC<Props> = (props) => {
   const { isSigned, tonWalletAddress } = useContext<any>(AuthContext);
 
   const copy = useCopyToClipboard();
+
+  const navigate = useNavigate();
 
   const handleConnectWalletBtnClick = () => {
     onClose();
@@ -57,10 +52,19 @@ const UserModal: VFC<Props> = (props) => {
 
   console.log(ownerItems);
 
+  const handleNftItemClick = (cellId: number) => {
+    navigate(`/${cellId}`);
+  };
+
+  const handleCloseClick = () => {
+    onClose();
+    navigate("/");
+  };
+
   return (
-    <Modal isVisible={isVisible} onClose={onClose}>
+    <Modal isVisible={isVisible} onClose={handleCloseClick}>
       <Wrapper>
-        <CloseBtn onClick={onClose}>
+        <CloseBtn onClick={handleCloseClick}>
           <CloseOutlined />
         </CloseBtn>
         {!isSigned ? (
@@ -84,7 +88,11 @@ const UserModal: VFC<Props> = (props) => {
             <ItemsWrapper isEmpty={ownerItems.length < 1}>
               {ownerItems.length > 0 ? (
                 ownerItems.map((item: any) => (
-                  <NftItem key={item.ID} cellId={item.ID} />
+                  <NftItem
+                    key={item.ID}
+                    cellId={item.ID}
+                    handleNftItemClick={() => handleNftItemClick(item.ID)}
+                  />
                 ))
               ) : (
                 <div>No cells found..</div>

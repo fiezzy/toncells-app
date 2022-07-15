@@ -1,5 +1,5 @@
-import { message } from "antd";
 import { VFC, useEffect, useState, useCallback, useContext } from "react";
+import { Route, Routes } from "react-router-dom";
 import Cells from "./components/Cells";
 import { CellModalContext } from "./context";
 import Container from "./components/Container";
@@ -7,12 +7,14 @@ import DockBar from "./components/DockBar";
 import { ApiMaps } from "./constants";
 import { NFT_ICONS } from "./constants/images";
 import GetStatus from "./logic/GetStatus";
+import { generateCellsCollection } from "./utils/generateCellsCollection";
 import DescModeModal from "./components/DescModeModal";
 import NftViewer from "./components/NftViewer";
 import { createGlobalStyle } from "styled-components";
 import CellModalInvoice from "./components/CellModalInvoice";
 import ConnectWalletModal from "./components/ConnectWalletModal";
 import UserModal from "./components/UserModal";
+import { message } from "antd";
 import {
   NftIcon,
   CellsWrapperX,
@@ -22,6 +24,7 @@ import {
   ZoomWrapper,
   RootContainer,
 } from "./style";
+import CellModalDefault from "./components/CellModalDefault";
 
 export const nftIcons: string[] = [];
 
@@ -49,7 +52,10 @@ const App: VFC = () => {
     ApiMaps.Default,
     ApiMaps.Free,
     ApiMaps.Minted,
+    ApiMaps.Edit,
   ]);
+
+  const cellsCollection = generateCellsCollection();
 
   // TODO - ПРИВЕСТИ ЭТО ВСЕ В НОРМАЛЬНЫЙ ВИД
   const getMaps = useCallback(async () => {
@@ -57,19 +63,23 @@ const App: VFC = () => {
       const fetchDefaultMap = await fetch(ApiMaps.Default);
       const fetchFreeMap = await fetch(ApiMaps.Free);
       const fetchMintedMap = await fetch(ApiMaps.Minted);
+      const fetchEditMap = await fetch(ApiMaps.Edit);
 
       const requestDefaultMap = await fetchDefaultMap.blob();
       const requestFreetMap = await fetchFreeMap.blob();
       const requestMintedMap = await fetchMintedMap.blob();
+      const requestEditMap = await fetchEditMap.blob();
 
       const defaultMapImageObjectURL = URL.createObjectURL(requestDefaultMap);
       const freeMapImageObjectURL = URL.createObjectURL(requestFreetMap);
       const mintedMapImageObjectURL = URL.createObjectURL(requestMintedMap);
+      const editMapImageObjectURL = URL.createObjectURL(requestEditMap);
 
       setActualMaps([
         defaultMapImageObjectURL,
         freeMapImageObjectURL,
         mintedMapImageObjectURL,
+        editMapImageObjectURL,
       ]);
     } catch (error) {
       message.error(`${error}`);
@@ -125,7 +135,7 @@ const App: VFC = () => {
 
   const toggleMap = (mapold: any) => {
     let newMap = mapold + 1;
-    if (newMap === 3) newMap = 0;
+    if (newMap === 4) newMap = 0;
 
     setMapVersion(newMap);
   };
@@ -140,6 +150,8 @@ const App: VFC = () => {
       }
     }
   }, []);
+
+  console.log(bigArr);
 
   const toggleInvoiceMode = useCallback(() => {
     setIsInvoiceMode((prev) => !prev);
@@ -244,6 +256,7 @@ const App: VFC = () => {
               isVisible={isUserModalMode}
               onClose={toggleUserModalMode}
               toggleConnectWalletMode={toggleConnectWalletMode}
+              cellsCollection={cellsCollection}
             />
           </>
         )}
@@ -270,6 +283,7 @@ const App: VFC = () => {
                   isBuyALotMode={isBuyALotMode}
                   cellsAreaData={cellsAreaData}
                   setSelectedAreas={setSelectedAreas}
+                  cellsCollection={cellsCollection}
                 />
               </CellsWrapperY>
             </CellsWrapperX>

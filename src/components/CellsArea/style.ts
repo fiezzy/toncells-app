@@ -11,10 +11,18 @@ export const Wrapper = styled.div<{ isSelectMode: boolean }>`
   transform: ${({ isSelectMode }) => (isSelectMode ? "scale(1.05)" : "none")};
   box-shadow: ${({ isSelectMode }) =>
     isSelectMode ? "0px 0px 25px rgba(0, 0, 0, 0.5)" : "none"};
+  position: relative;
 
   @media screen and ${theme.device.tablet} {
     width: 320px;
     height: 320px;
+  }
+
+  img {
+    position: absolute;
+    width: 380px;
+    height: 380px;
+    z-index: 21;
   }
 `;
 
@@ -24,6 +32,7 @@ export const StyledCell = styled(Cell)<{ isCellSelected?: boolean }>`
   transition: 0.3s;
   transform: ${({ isCellSelected }) =>
     isCellSelected ? "scale(1.1)" : "none"};
+  z-index: 20;
 
   @media screen and ${theme.device.tablet} {
     width: 80px;

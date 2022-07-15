@@ -3,12 +3,13 @@ import { Wrapper, BottomBlock, BtnsWrapper, Button } from "./style";
 
 type Props = {
   cellId: number;
+  handleNftItemClick: () => void;
 };
 
 const UserItem: VFC<Props> = (props) => {
-  const { cellId } = props;
+  const { cellId, handleNftItemClick } = props;
 
-  return <Wrapper>Cell: #{cellId}</Wrapper>;
+  return <Wrapper onClick={handleNftItemClick}>Cell: #{cellId}</Wrapper>;
 };
 
 export default UserItem;

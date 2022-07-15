@@ -3,7 +3,6 @@ import theme from "../../constants/theme";
 
 export const Wrapper = styled.div`
   width: 920px;
-  /* max-height: 520px; */
   background-color: #fff;
   border-radius: 12px;
   padding: 38px 50px 50px 50px;
@@ -12,6 +11,7 @@ export const Wrapper = styled.div`
   @media screen and ${theme.device.tablet} {
     width: 95vw;
     padding: 38px 38px 50px 38px;
+    height: 92vh;
   }
 
   @media screen and ${theme.device.mobile} {
@@ -54,6 +54,11 @@ export const FlexWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and ${theme.device.tablet} {
+    flex-direction: column;
+    gap: 50px;
+  }
 `;
 
 export const EditBlockWrapper = styled.div`

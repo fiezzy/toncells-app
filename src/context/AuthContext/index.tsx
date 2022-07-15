@@ -20,13 +20,15 @@ const AuthProvider: FC = (props) => {
   const [cookies] = useCookies([AUTH_TOKEN]);
 
   const authToken = cookies.AUTH_TOKEN;
-  const [isSigned, setIsSigned] = useState(authToken && true);
+  const [isSigned, setIsSigned] = useState(
+    authToken && tonWalletAddress && true
+  );
 
   useEffect(() => {
-    if (!authToken) {
+    if (!authToken && tonWalletAddress) {
       setIsSigned(false);
     }
-  }, [authToken]);
+  }, [authToken, tonWalletAddress]);
 
   const updateAuthData = (walletAddress: string, signature: string) => {
     setTonWalletAddress(walletAddress);

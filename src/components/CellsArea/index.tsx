@@ -1,4 +1,6 @@
 import { VFC, useState, memo } from "react";
+import { useNavigate } from "react-router-dom";
+import { AREA_MOCK } from "../../constants/images";
 import { Wrapper, StyledCell } from "./style";
 
 type Props = {
@@ -15,6 +17,7 @@ type Props = {
   setIsCellInfoShowed: (isShowed: boolean) => void;
   onMouseOver: any;
   checkForEditability: (activeCell: number) => void;
+  areaImage: string;
 };
 
 const CellsArea: VFC<Props> = memo((props) => {
@@ -32,7 +35,10 @@ const CellsArea: VFC<Props> = memo((props) => {
     setIsCellInfoShowed,
     onMouseOver,
     checkForEditability,
+    areaImage,
   } = props;
+
+  const navigate = useNavigate();
 
   // const [isCellSelected, setIsCellSelected] = useState<boolean>(false);
 
@@ -41,6 +47,7 @@ const CellsArea: VFC<Props> = memo((props) => {
       checkForEditability(id);
       handleCellClick(locationZ, id);
       setIsCellInfoShowed(true);
+      navigate(`/${id}`);
     } else {
       const isExist = selectedCells.includes(id);
 
@@ -76,6 +83,7 @@ const CellsArea: VFC<Props> = memo((props) => {
       }}
       onMouseOver={() => onMouseOver(1)}
     >
+      {/* <img src={areaImage ? areaImage : ""} alt="" /> */}
       {currentCells &&
         currentCells.map((cell, idx) => {
           return (

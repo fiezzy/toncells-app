@@ -5,6 +5,7 @@ import { CellModalProvider } from "./context/CellModalContext";
 import { AuthProvider } from "./context/AuthContext";
 import reportWebVitals from "./reportWebVitals";
 import { createGlobalStyle } from "styled-components";
+import { BrowserRouter as Router } from "react-router-dom";
 import "antd/dist/antd.css";
 
 const GlobalStyle = createGlobalStyle`
@@ -21,12 +22,14 @@ const GlobalStyle = createGlobalStyle`
 
 ReactDOM.render(
   <React.StrictMode>
-    <CellModalProvider>
-      <AuthProvider>
-        <GlobalStyle />
-        <App />
-      </AuthProvider>
-    </CellModalProvider>
+    <Router>
+      <CellModalProvider>
+        <AuthProvider>
+          <GlobalStyle />
+          <App />
+        </AuthProvider>
+      </CellModalProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );

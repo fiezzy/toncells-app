@@ -1,6 +1,7 @@
-import { VFC, useContext } from "react";
+import { VFC, useContext, useCallback } from "react";
 import { Modal } from "../Modal";
 import { useAuth } from "../../hooks/useAuth";
+import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { AuthContext } from "../../context/AuthContext";
 import {
   TONWALLET_ICON,
@@ -32,6 +33,12 @@ type Props = {
   toggleUserModalMode: () => void;
 };
 
+enum Wallets {
+  TONWALLET = "TON Wallet",
+  TONKEEPER = "Tonkeeper",
+  TONHUB = "Tonhub",
+}
+
 const wallets = [
   {
     id: 1,
@@ -60,11 +67,22 @@ const ConnectWalletModal: VFC<Props> = (props) => {
 
   const { isSigned, tonWalletAddress } = useContext<any>(AuthContext);
 
-  // console.log(tonWalletAddress);
+  const { width } = useWindowDimensions();
 
   const handleOpenProfileBtn = () => {
     onClose();
     toggleUserModalMode();
+  };
+
+  const handleWalletBtnClick = (label: string) => {
+    switch (label) {
+      case Wallets.TONWALLET:
+        return logIn();
+      case Wallets.TONKEEPER:
+        return null;
+      case Wallets.TONHUB:
+        return null;
+    }
   };
 
   return (
@@ -77,12 +95,22 @@ const ConnectWalletModal: VFC<Props> = (props) => {
               <CloseBtn src={CLOSE_ICON} alt="Close Button" onClick={onClose} />
             </HeaderWrapper>
             <WalletsWrapper>
-              {wallets.map(({ id, label, img, isAvailable }) => (
-                <Wallet key={id} isAvailable={isAvailable} onClick={logIn}>
-                  <img src={img} alt="Wallet icon" />
-                  <span>{isAvailable ? label : `${label} | soon..`}</span>
-                </Wallet>
-              ))}
+              {wallets.map(({ id, label, img, isAvailable }) => {
+                if (width < 1024 && id === 1) {
+                  return null;
+                }
+
+                return (
+                  <Wallet
+                    key={id}
+                    isAvailable={isAvailable}
+                    onClick={() => handleWalletBtnClick(label)}
+                  >
+                    <img src={img} alt="Wallet icon" />
+                    <span>{isAvailable ? label : `${label} | soon..`}</span>
+                  </Wallet>
+                );
+              })}
             </WalletsWrapper>
           </>
         ) : (
