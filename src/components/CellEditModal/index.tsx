@@ -85,8 +85,6 @@ const CellEditModal: VFC<Props> = (props) => {
   const [isColorModeActive, setIsColorModeActive] = useState<boolean>(true);
   const [editableInfoData, setEditableInfoData] = useState(initialInfoData);
 
-  console.log(actualCellData);
-
   const [hexPixelsData, setHexPixelsData] = useState<string>(initialHexData);
 
   const [fullEditData, setFullEditData] = useState<any>(
@@ -138,6 +136,9 @@ const CellEditModal: VFC<Props> = (props) => {
   const createUpdateCellDataRequest = async (data: any) => {
     const requestOptions: any = {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(data),
     };
 
@@ -261,6 +262,8 @@ const CellEditModal: VFC<Props> = (props) => {
   };
 
   console.log(fullEditData);
+
+  console.log(actualCellData);
 
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
