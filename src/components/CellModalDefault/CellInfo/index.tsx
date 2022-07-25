@@ -2,7 +2,6 @@ import { VFC } from "react";
 import { InfoBlock, InfoLabel, InfoText } from "./style";
 
 type Props = {
-  activeCellId: number;
   locationX: number;
   locationY: number;
   locationZ: number;
@@ -14,18 +13,19 @@ type Props = {
     | null
     | undefined;
   status: string;
+  actualCellData: any;
 };
 
 const CellInfo: VFC<Props> = (props) => {
-  const { activeCellId, locationX, locationY, locationZ, ownerData, status } =
+  const { locationX, locationY, locationZ, ownerData, status, actualCellData } =
     props;
 
-  console.log(status);
+  console.log(actualCellData);
 
   return (
     <InfoBlock>
       <InfoLabel status={status}>
-        TONCELL #{activeCellId}
+        TONCELL #{actualCellData.ID}
         <br />
         X: {locationY} | Y: {locationX} | Z: {locationZ}
         <br />
@@ -47,19 +47,27 @@ const CellInfo: VFC<Props> = (props) => {
             <br />
           </>
         )}
+        <span>Telegram Name: </span>
+        <br />
+        <a
+          href={`https://t.me/${actualCellData.Username}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          @{actualCellData.Username}
+        </a>
+        <br />
+        <br />
+        <span>Link: </span>
+        <br />
+        <a href={actualCellData.Link} target="_blank" rel="noreferrer">
+          {actualCellData.Link}
+        </a>
+        <br />
+        <br />
         <span>Description: </span>
         <br />
-        This item gives you an access to edit cell #{activeCellId} of TonCells
-        Project.
-        <br />
-        <br />
-        TonCells is a 100x100 celled field where each cell can be edited. Make
-        your unique NFT even more unique by customizing it how you want.
-        <br />
-        <br />
-        Draw, add pictures & videos, edit your own description and mainly do
-        whatever you want! This item gives you x% discount for the next
-        purchase. / This item doesn't give you any discount.
+        {actualCellData.Text}
       </InfoText>
       {/* <BuyButton onClick={() => alert(`Buy Cell # ${activeCellId}`)}>
         BUY

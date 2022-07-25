@@ -148,6 +148,7 @@ const CellModalBuy: VFC<any> = memo((props) => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  color: "#000",
                 }}
               />
             ) : (

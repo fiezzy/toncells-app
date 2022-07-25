@@ -83,7 +83,8 @@ const CellsArea: VFC<Props> = memo((props) => {
       }}
       onMouseOver={() => onMouseOver(1)}
     >
-      {/* <img src={areaImage ? areaImage : ""} alt="" /> */}
+      <img src={areaImage} alt="" />
+
       {currentCells &&
         currentCells.map((cell, idx) => {
           return (

@@ -1,4 +1,4 @@
-import { VFC, useState, useCallback } from "react";
+import { VFC, useState, useCallback, useEffect } from "react";
 import { Modal } from "../Modal";
 import CellEditPixels from "./components/CellEditPixels";
 import CellEditColorBlock from "./components/CellEditColorBlock";
@@ -30,7 +30,9 @@ const generateEditSignHexString = (
   cellId: number,
   walletAddress: string
 ): string => {
-  let editSignString = `Edit Cell #${cellId} by ${walletAddress} wallet`;
+  let editSignString = `Edit Cell #${[cellId].join(
+    ", #"
+  )} by ${walletAddress} wallet`;
   console.log(editSignString);
 
   let editSignHexString = asciiToHex(editSignString);
@@ -39,53 +41,69 @@ const generateEditSignHexString = (
   return editSignHexString;
 };
 
-const initialInfoData = [
+const getInitialInfoData = (
+  userName: string,
+  link: string,
+  description: string
+) => [
   {
     id: "tgName",
-    value: "toncells",
+    value: userName,
     label: "TELEGRAM NAME:",
     placeholder: "@name",
     link: "https://t.me/",
   },
   {
     id: "link",
-    value: "https://app.toncells.org/",
+    value: link,
     label: "LINK:",
     placeholder: "https://name.com",
     link: "https://t.me/",
   },
   {
     id: "description",
-    value:
-      "This item gives you an access to edit cell #260 of TonCells Project. TonCells is a 100x100 celled field where each cell can be edited. Make your unique NFT even more unique by customizing it how you want. Draw, add pictures & videos, edit your own description and mainly do whatever you want! This item gives you x% discount for the next purchase. / This item doesn't give you any discount.",
+    value: description,
     label: "DESCRIPTION:",
     placeholder: "write your description in this field",
   },
 ];
 
-const editablePixels: PixelType[] = [];
+const getEditablePixels = (hexColorsString: string) => {
+  const editablePixels: any[] = [];
 
-for (let i = 1; i < 257; i++) {
-  editablePixels.push({ id: i, hex: "#FFFFFF" });
-}
+  const hexColorsArr = hexColorsString.match(/.{1,7}/g);
 
-let initialHexData = "";
+  for (let i = 0; i < hexColorsArr!.length; i++) {
+    editablePixels.push({
+      id: i + 1,
+      hex: hexColorsArr![i],
+    });
+  }
 
-for (let i = 0; i < editablePixels.length; i++) {
-  initialHexData += editablePixels[i].hex;
-}
+  return editablePixels;
+};
 
 const CellEditModal: VFC<Props> = (props) => {
   const { isVisible, onClose, activeCellId, tonWalletAddress, actualCellData } =
     props;
 
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [editablePixelsData, setEditablePixelsData] = useState(editablePixels);
+  const [isPixelsEdit, setPixelsIsEdit] = useState<boolean>(false);
+  const [isInfoEdit, setIsInfoEdit] = useState<boolean>(false);
+  const [editablePixelsData, setEditablePixelsData] = useState(
+    actualCellData && getEditablePixels(actualCellData.Image)
+  );
   const [currentHex, setCurrentHex] = useState<string>("#fff");
   const [isColorModeActive, setIsColorModeActive] = useState<boolean>(true);
-  const [editableInfoData, setEditableInfoData] = useState(initialInfoData);
+  const [editableInfoData, setEditableInfoData] = useState(
+    actualCellData &&
+      getInitialInfoData(
+        actualCellData.Username,
+        actualCellData.Link,
+        actualCellData.Text
+      )
+  );
 
-  const [hexPixelsData, setHexPixelsData] = useState<string>(initialHexData);
+  // const [hexPixelsData, setHexPixelsData] = useState<string>(initialHexData);
 
   const [fullEditData, setFullEditData] = useState<any>(
     actualCellData && {
@@ -100,14 +118,22 @@ const CellEditModal: VFC<Props> = (props) => {
     }
   );
 
+  console.log(activeCellId);
+
+  const [isGettingSignature, setIsGettingSignature] = useState<boolean>(false);
+
   const tonProvider = (window as any).ton;
 
   const handleColorClick = (hex: string) => {
     setCurrentHex(hex);
   };
 
-  const toggleIsEdit = useCallback(() => {
-    setIsEdit((prev) => !prev);
+  const toggleIsPixelsEdit = useCallback(() => {
+    setPixelsIsEdit((prev) => !prev);
+  }, []);
+
+  const toggleIsInfoEdit = useCallback(() => {
+    setIsInfoEdit((prev) => !prev);
   }, []);
 
   const getEditSignature = async () => {
@@ -147,123 +173,178 @@ const CellEditModal: VFC<Props> = (props) => {
     return await response.json();
   };
 
+  const getEditSignAndPublicKey = async () => {
+    setIsGettingSignature(true);
+
+    const receivedSignature = await getEditSignature();
+
+    const walletInfo = await tonProvider.send("ton_requestWallets");
+    const publicKey = walletInfo[0].publicKey;
+
+    setIsGettingSignature(false);
+    return { receivedSignature, publicKey };
+  };
+
+  console.log(isGettingSignature);
+
   const handleSavePixelsData = async () => {
     let pixelsDataForBackend = "";
 
-    if (isEdit) {
+    if (isPixelsEdit) {
       for (let i = 0; i < editablePixelsData.length; i++) {
         pixelsDataForBackend += editablePixelsData[i].hex;
       }
 
-      setHexPixelsData(pixelsDataForBackend);
-
-      if (fullEditData.signature !== "" && fullEditData.publicKey !== "") {
-        setFullEditData({
-          ...fullEditData,
-          image: pixelsDataForBackend,
-        });
-
-        try {
-          const { status } = await createUpdateCellDataRequest(fullEditData);
-
-          if (status === "success") {
-            toggleIsEdit();
-            message.success("Successful editing!");
-          }
-        } catch (error) {
-          toggleIsEdit();
-          message.error("Error!");
-          console.log(error);
-        }
+      if (pixelsDataForBackend === actualCellData.Image) {
+        toggleIsPixelsEdit();
 
         return;
       }
 
-      const reveivedSignature = await getEditSignature();
+      if (fullEditData.signature !== "" && fullEditData.publicKey !== "") {
+        setFullEditData((prev: any) => ({
+          ...prev,
+          image: pixelsDataForBackend,
+        }));
 
-      const walletInfo = await tonProvider.send("ton_requestWallets");
-
-      setFullEditData({
-        ...fullEditData,
-        image: pixelsDataForBackend,
-        signature: reveivedSignature,
-        publicKey: walletInfo[0].publicKey,
-      });
-
-      try {
-        const { status } = await createUpdateCellDataRequest(fullEditData);
-
-        if (status === "success") {
-          toggleIsEdit();
-          message.success("Successful editing!");
-        }
-      } catch (error) {
-        toggleIsEdit();
-        message.error("Error!");
-        console.log(error);
+        return;
       }
+
+      const { receivedSignature, publicKey } = await getEditSignAndPublicKey();
+
+      setFullEditData((prev: any) => ({
+        ...prev,
+        image: pixelsDataForBackend,
+        signature: receivedSignature,
+        publicKey: publicKey,
+      }));
+
+      // try {
+      //   const { status } = await createUpdateCellDataRequest(fullEditData);
+
+      //   if (status === "success") {
+      //     toggleIsEdit();
+      //     message.success("Successful editing!");
+      //   }
+      // } catch (error) {
+      //   toggleIsEdit();
+      //   message.error("Error!");
+      //   console.log(error);
+      // }
 
       return;
     }
 
-    toggleIsEdit();
+    toggleIsPixelsEdit();
   };
 
+  useEffect(() => {
+    (async () => {
+      if (isPixelsEdit) {
+        try {
+          const { status } = await createUpdateCellDataRequest(fullEditData);
+
+          if (status === "ok") {
+            toggleIsPixelsEdit();
+            message.success("Successful editing!");
+          }
+        } catch (error) {
+          toggleIsPixelsEdit();
+          message.error("Error!");
+          console.log(error);
+        }
+
+        console.log(fullEditData);
+      }
+    })();
+  }, [fullEditData]);
+
+  // console.log("Is ready to fetch:", isReadyToFetch);
+
   const handleSaveInfoData = async () => {
-    if (fullEditData.signature !== "" && fullEditData.publicKey !== "") {
+    if (isInfoEdit) {
+      if (
+        actualCellData.Username === editableInfoData[0].value &&
+        actualCellData.Text === editableInfoData[2].value &&
+        actualCellData.Link === editableInfoData[1].value
+      ) {
+        toggleIsInfoEdit();
+        return;
+      }
+
+      if (fullEditData.signature !== "" && fullEditData.publicKey !== "") {
+        setFullEditData({
+          ...fullEditData,
+          username: editableInfoData[0].value,
+          text: editableInfoData[2].value,
+          link: editableInfoData[1].value,
+        });
+
+        // try {
+        //   const { status } = await createUpdateCellDataRequest(fullEditData);
+
+        //   if (status === "success") {
+        //     toggleIsEdit();
+        //     message.success("Successful editing!");
+        //   }
+        // } catch (error) {
+        //   toggleIsEdit();
+        //   message.error("Error!");
+        //   console.log(error);
+        // }
+
+        return;
+      }
+
+      const { receivedSignature, publicKey } = await getEditSignAndPublicKey();
+
       setFullEditData({
         ...fullEditData,
+        signature: receivedSignature,
+        publicKey: publicKey,
         username: editableInfoData[0].value,
         text: editableInfoData[2].value,
         link: editableInfoData[1].value,
       });
 
-      try {
-        const { status } = await createUpdateCellDataRequest(fullEditData);
+      // try {
+      //   const { status } = await createUpdateCellDataRequest(fullEditData);
 
-        if (status === "success") {
-          toggleIsEdit();
-          message.success("Successful editing!");
-        }
-      } catch (error) {
-        toggleIsEdit();
-        message.error("Error!");
-        console.log(error);
-      }
-
+      //   if (status === "success") {
+      //     toggleIsEdit();
+      //     message.success("Successful editing!");
+      //   }
+      // } catch (error) {
+      //   toggleIsEdit();
+      //   message.error("Error!");
+      //   console.log(error);
+      // }
       return;
     }
 
-    const receivedSignature = await getEditSignature();
-
-    const walletInfo = await tonProvider.send("ton_requestWallets");
-
-    setFullEditData({
-      ...fullEditData,
-      signature: receivedSignature,
-      publicKey: walletInfo[0].publicKey,
-      username: editableInfoData[0].value,
-      text: editableInfoData[2].value,
-      link: editableInfoData[1].value,
-    });
-
-    try {
-      const { status } = await createUpdateCellDataRequest(fullEditData);
-
-      if (status === "success") {
-        toggleIsEdit();
-        message.success("Successful editing!");
-      }
-    } catch (error) {
-      toggleIsEdit();
-      message.error("Error!");
-      console.log(error);
-    }
+    toggleIsInfoEdit();
   };
 
-  console.log(fullEditData);
+  useEffect(() => {
+    (async () => {
+      if (isInfoEdit) {
+        try {
+          const { status } = await createUpdateCellDataRequest(fullEditData);
 
-  console.log(actualCellData);
+          if (status === "ok") {
+            toggleIsInfoEdit();
+            message.success("Successful editing!");
+          }
+        } catch (error) {
+          toggleIsInfoEdit();
+          message.error("Error!");
+          console.log(error);
+        }
+
+        console.log(fullEditData);
+      }
+    })();
+  }, [fullEditData]);
 
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
@@ -274,7 +355,7 @@ const CellEditModal: VFC<Props> = (props) => {
         </Title>
         <FlexWrapper>
           <CellEditPixels
-            isEdit={isEdit}
+            isEdit={isPixelsEdit}
             currentHex={currentHex}
             editablePixelsData={editablePixelsData}
             setEditablePixelsData={setEditablePixelsData}
@@ -297,16 +378,19 @@ const CellEditModal: VFC<Props> = (props) => {
             <EditBlock>
               {isColorModeActive ? (
                 <CellEditColorBlock
-                  isEdit={isEdit}
+                  isEdit={isPixelsEdit}
                   handleColorClick={handleColorClick}
                   currentHex={currentHex}
                   handleSavePixelsData={handleSavePixelsData}
+                  isGettingSignature={isGettingSignature}
                 />
               ) : (
                 <CellEditInfoBlock
+                  isEdit={isInfoEdit}
                   editableInfoData={editableInfoData}
                   setEditableInfoData={setEditableInfoData}
                   handleSaveInfoData={handleSaveInfoData}
+                  isGettingSignature={isGettingSignature}
                 />
               )}
             </EditBlock>

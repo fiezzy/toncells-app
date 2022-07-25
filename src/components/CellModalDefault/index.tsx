@@ -104,11 +104,13 @@ const CellModalDefault: VFC<Props> = (props) => {
         const fetchAreaImage = await fetch(ApiAreaImg, {
           method: "POST",
           headers: {
-            "Content-Type": "image/gif",
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ areaId: id }),
+          body: JSON.stringify({ areaId: id - 1 }),
         });
         const req = await fetchAreaImage.blob();
+
+        // console.log(req);
 
         const areaImageObjectURL = URL.createObjectURL(req);
 
@@ -118,6 +120,8 @@ const CellModalDefault: VFC<Props> = (props) => {
       }
     }
   }, [id]);
+
+  // console.log(areaImage);
 
   useEffect(() => {
     getAreaImage();
@@ -302,7 +306,7 @@ const CellModalDefault: VFC<Props> = (props) => {
                   {isCellInfoShowed ? (
                     <ColumnWrapper>
                       <CellInfoBlock
-                        activeCellId={activeCellId}
+                        actualCellData={actualCellData[0]}
                         locationX={locationX}
                         locationY={locationY}
                         locationZ={locationZ}

@@ -34,7 +34,7 @@ const CellEditArea: VFC<Props> = (props) => {
         <EditablePixel
           isEdit={isEdit}
           key={id}
-          onClick={() => handleEditablePixelClick(id)}
+          onClick={() => isEdit && handleEditablePixelClick(id)}
           hex={hex}
         />
       ))}

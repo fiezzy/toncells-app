@@ -23,6 +23,10 @@ export const Wrapper = styled.div<{ isSelectMode: boolean }>`
     width: 380px;
     height: 380px;
     z-index: 21;
+    top: 0;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
   }
 `;
 
@@ -32,7 +36,9 @@ export const StyledCell = styled(Cell)<{ isCellSelected?: boolean }>`
   transition: 0.3s;
   transform: ${({ isCellSelected }) =>
     isCellSelected ? "scale(1.1)" : "none"};
-  z-index: 20;
+  z-index: 22;
+  // background: none;
+  transform: scale(1);
 
   @media screen and ${theme.device.tablet} {
     width: 80px;

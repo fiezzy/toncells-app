@@ -1,5 +1,6 @@
-import { VFC, useState, useCallback, ChangeEvent } from "react";
-import { message } from "antd";
+import { VFC, ChangeEvent } from "react";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import {
   Wrapper,
   Label,
@@ -11,21 +12,24 @@ import {
 } from "./style";
 
 const PRE_TG_LINK = "https://t.me/";
+const PRE_DEFAULT_LINK = "https://";
 
 type Props = {
   editableInfoData: any[];
   setEditableInfoData: any;
   handleSaveInfoData: () => void;
+  isEdit: boolean;
+  isGettingSignature: boolean;
 };
 
 const CellEditInfoBlock: VFC<Props> = (props) => {
-  const { editableInfoData, setEditableInfoData, handleSaveInfoData } = props;
-
-  const [isInfoEdit, setIsInfoEdit] = useState(false);
-
-  const toggleInfoEditMode = useCallback(() => {
-    setIsInfoEdit((prev) => !prev);
-  }, []);
+  const {
+    editableInfoData,
+    setEditableInfoData,
+    handleSaveInfoData,
+    isEdit,
+    isGettingSignature,
+  } = props;
 
   const handleInputsChange = (
     evt: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
@@ -51,25 +55,32 @@ const CellEditInfoBlock: VFC<Props> = (props) => {
     );
   };
 
-  const handleSaveBtnClick = () => {
-    if (isInfoEdit) {
-      handleSaveInfoData();
-      message.success("Successful editing!");
-    }
-    toggleInfoEditMode();
-  };
-
   return (
     <>
       <Wrapper>
         {editableInfoData.map(({ id, value, label, placeholder, link }) => {
-          const currentLink = id === "tgName" ? PRE_TG_LINK + value : value;
+          const getDefaultLink = (value: string) => {
+            if (id === "link") {
+              if (!value.includes("https://")) {
+                return PRE_DEFAULT_LINK + value;
+              }
+
+              return value;
+            }
+
+            return value;
+          };
+
+          const currentLink =
+            id === "tgName" ? PRE_TG_LINK + value : getDefaultLink(value);
+
+          console.log(currentLink);
 
           if (id === "description") {
             return (
               <FieldWrapper key={id}>
                 <Label>{label}</Label>
-                {isInfoEdit ? (
+                {isEdit ? (
                   <DescriptionArea
                     data-field-id={id}
                     value={value}
@@ -85,14 +96,14 @@ const CellEditInfoBlock: VFC<Props> = (props) => {
           return (
             <FieldWrapper key={id}>
               <Label>{label}</Label>
-              {isInfoEdit ? (
+              {isEdit ? (
                 <Field
                   type="text"
                   placeholder={placeholder}
                   value={value}
                   data-field-id={id}
                   onChange={handleInputsChange}
-                  disabled={!isInfoEdit}
+                  disabled={!isEdit}
                 />
               ) : (
                 <div>
@@ -109,9 +120,15 @@ const CellEditInfoBlock: VFC<Props> = (props) => {
           );
         })}
       </Wrapper>
-      <EditBtn onClick={handleSaveBtnClick}>
-        {isInfoEdit ? "SAVE" : "EDIT"}
-      </EditBtn>
+      {isGettingSignature ? (
+        <EditBtn>
+          <Spin indicator={<LoadingOutlined style={{ color: "#fff" }} />} />
+        </EditBtn>
+      ) : (
+        <EditBtn onClick={handleSaveInfoData}>
+          {isEdit ? "SAVE" : "EDIT"}
+        </EditBtn>
+      )}
     </>
   );
 };

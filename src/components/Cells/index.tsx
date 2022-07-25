@@ -301,7 +301,7 @@ const Cells: VFC<Props> = (props) => {
                 ? cellsAreaData.includes(id)
                   ? "red"
                   : ""
-                : "grey",
+                : "rgba(128, 128, 128, 0.45)",
               cursor: checkAreaId(id) ? "pointer" : "not-allowed",
               zIndex: "10",
             }}
@@ -311,8 +311,8 @@ const Cells: VFC<Props> = (props) => {
           >
             <CellAreaSmall
               key={id}
-              firstCellId={firstCellId!}
-              lastCellId={lastCellId!}
+              areaId={checkAreaId(id) ? id : null}
+              isActive={checkAreaId(id)}
             />
           </div>
         ))}

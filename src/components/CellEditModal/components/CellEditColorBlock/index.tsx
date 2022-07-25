@@ -1,5 +1,7 @@
 import { VFC } from "react";
 import { colorsArr } from "../../colors";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import {
   ColorsWrapper,
   ColorBlock,
@@ -13,10 +15,17 @@ type Props = {
   handleColorClick: (hex: string) => void;
   currentHex: string;
   handleSavePixelsData: () => void;
+  isGettingSignature: boolean;
 };
 
 const CellEditColorBlock: VFC<Props> = (props) => {
-  const { isEdit, handleColorClick, currentHex, handleSavePixelsData } = props;
+  const {
+    isEdit,
+    handleColorClick,
+    currentHex,
+    handleSavePixelsData,
+    isGettingSignature,
+  } = props;
 
   return (
     <>
@@ -43,9 +52,15 @@ const CellEditColorBlock: VFC<Props> = (props) => {
           />
         </CurrentColorWrapper>
       )}
-      <SaveBtn onClick={handleSavePixelsData}>
-        {isEdit ? "SAVE" : "EDIT"}
-      </SaveBtn>
+      {isGettingSignature ? (
+        <SaveBtn>
+          <Spin indicator={<LoadingOutlined />} style={{ color: "#fff" }} />
+        </SaveBtn>
+      ) : (
+        <SaveBtn onClick={handleSavePixelsData}>
+          {isEdit ? "SAVE" : "EDIT"}
+        </SaveBtn>
+      )}
     </>
   );
 };
