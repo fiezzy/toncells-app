@@ -48,7 +48,7 @@ export const useAuth = () => {
         updateAuthData(walletAddress, signature);
       }
 
-      console.log("Signature is: ", signature);
+      //console.log("Signature is: ", signature);
       sessionStore.setItem("wallet_address", walletAddress);
       setCokies(AUTH_TOKEN, signature);
     } catch (error) {

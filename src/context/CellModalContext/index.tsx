@@ -17,7 +17,7 @@ const CellModalProvider: FC = (props) => {
     setIsCellEditMode((prev) => !prev);
   }, []);
 
-  console.log(isCellModalActive, isCellEditMode);
+  //console.log(isCellModalActive, isCellEditMode);
 
   return (
     <CellModalContext.Provider

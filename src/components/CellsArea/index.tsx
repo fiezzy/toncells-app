@@ -20,6 +20,7 @@ type Props = {
   checkForEditability: (activeCell: number) => void;
   areaImage: string;
   isAreaImgLoading: boolean;
+  activeCellId: number;
 };
 
 const CellsArea: VFC<Props> = memo((props) => {
@@ -39,6 +40,7 @@ const CellsArea: VFC<Props> = memo((props) => {
     checkForEditability,
     areaImage,
     isAreaImgLoading,
+    activeCellId,
   } = props;
 
   const navigate = useNavigate();
@@ -73,6 +75,10 @@ const CellsArea: VFC<Props> = memo((props) => {
   const currentReservedCellsasf = currentCells.filter(
     (cell) => cell.Status === "Payed"
   );
+
+  // const currentActiveCell = currentCells.filter(
+  //   (cell) => cell.ID === activeCellId
+  // );
 
   return (
     <Wrapper
@@ -109,6 +115,7 @@ const CellsArea: VFC<Props> = memo((props) => {
                   currentMintedCells={currentMintedCells}
                   currentReservedCells={currentReservedCells}
                   currentReservedCellsasf={currentReservedCellsasf}
+                  // isCurrentCell={currentActiveCell[0].ID === activeCellId}
                 />
               );
             })}

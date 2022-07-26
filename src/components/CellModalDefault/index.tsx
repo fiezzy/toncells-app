@@ -6,6 +6,7 @@ import {
   useRef,
   useContext,
 } from "react";
+import { useLocation } from "react-router-dom";
 import { useWindowDimensions } from "../../hooks/useWindowDimensions";
 import { CellModalContext } from "../../context";
 import { DisplaySize } from "../../constants";
@@ -55,6 +56,7 @@ type Props = {
   isZoomMode: boolean;
   CellInfo: StyledComponent<"div", any, {}, never>;
   hex: string;
+  setActveCellId: (id: number) => void;
 };
 
 const CellModalDefault: VFC<Props> = (props) => {
@@ -81,6 +83,7 @@ const CellModalDefault: VFC<Props> = (props) => {
     isZoomMode,
     CellInfo,
     hex,
+    setActveCellId,
   } = props;
 
   const [canEditCell, setCanEditCell] = useState<boolean>(false);
@@ -98,6 +101,19 @@ const CellModalDefault: VFC<Props> = (props) => {
   const { isSigned, tonWalletAddress } = useContext<any>(AuthContext);
 
   const { width } = useWindowDimensions();
+
+  let location = useLocation();
+  let routeCellId = Number(location.pathname.substring(1));
+
+  useEffect(() => {
+    if (isVisible && !isCellInfoShowed && routeCellId > 0) {
+      checkForEditability(routeCellId);
+      setActveCellId(routeCellId);
+      setIsCellInfoShowed(true);
+
+      return;
+    }
+  }, [isCellInfoShowed, isVisible, routeCellId, setActveCellId]);
 
   const getAreaImage = useCallback(async () => {
     setIsAreaImgLoading(true);
@@ -196,7 +212,7 @@ const CellModalDefault: VFC<Props> = (props) => {
         if (cellsData) {
           let currentOwner = cellsData.status[activeCell - 1];
 
-          console.log(currentOwner);
+          //console.log(currentOwner);
 
           if (
             currentOwner.Status === "Minted" &&
@@ -208,9 +224,9 @@ const CellModalDefault: VFC<Props> = (props) => {
           }
         }
 
-        console.log(`Cell #${activeCell} is editable: ${canEditCell}`);
+        //console.log(`Cell #${activeCell} is editable: ${canEditCell}`);
 
-        console.log("checking");
+        //console.log("checking");
       }
     },
     [canEditCell, cellsData, isSigned, tonWalletAddress]
@@ -306,6 +322,7 @@ const CellModalDefault: VFC<Props> = (props) => {
                   checkForEditability={checkForEditability}
                   areaImage={areaImage}
                   isAreaImgLoading={isAreaImgLoading}
+                  activeCellId={activeCellId}
                 />
                 {isCellInfoShowed ? (
                   <ColumnWrapper>

@@ -33,10 +33,10 @@ const generateEditSignHexString = (
   let editSignString = `Edit Cell #${[cellId].join(
     ", #"
   )} by ${walletAddress} wallet`;
-  console.log(editSignString);
+  //console.log(editSignString);
 
   let editSignHexString = asciiToHex(editSignString);
-  console.log(editSignHexString);
+  //console.log(editSignHexString);
 
   return editSignHexString;
 };
@@ -50,7 +50,7 @@ const getInitialInfoData = (
     id: "tgName",
     value: userName,
     label: "TELEGRAM NAME:",
-    placeholder: "@name",
+    placeholder: "name",
     link: "https://t.me/",
   },
   {
@@ -103,7 +103,7 @@ const CellEditModal: VFC<Props> = (props) => {
   const [editablePixelsData, setEditablePixelsData] = useState(
     actualCellData && getEditablePixels(actualCellData.Image)
   );
-  const [currentHex, setCurrentHex] = useState<string>("#fff");
+  const [currentHex, setCurrentHex] = useState<string>("#000");
   const [isColorModeActive, setIsColorModeActive] = useState<boolean>(true);
   const [editableInfoData, setEditableInfoData] = useState(
     actualCellData &&
@@ -114,7 +114,7 @@ const CellEditModal: VFC<Props> = (props) => {
       )
   );
 
-  console.log(editablePixelsData);
+  //console.log(editablePixelsData);
 
   // const [hexPixelsData, setHexPixelsData] = useState<string>(initialHexData);
 
@@ -131,7 +131,7 @@ const CellEditModal: VFC<Props> = (props) => {
     }
   );
 
-  console.log(activeCellId);
+  // console.log(actualCellData);
 
   const [isGettingSignature, setIsGettingSignature] = useState<boolean>(false);
 
@@ -165,7 +165,7 @@ const CellEditModal: VFC<Props> = (props) => {
 
         return editSignature;
       } catch (error) {
-        console.log(error);
+        //console.log(error);
       }
     } else {
       message.error("Please, install a ton wallet extension");
@@ -198,7 +198,7 @@ const CellEditModal: VFC<Props> = (props) => {
     return { receivedSignature, publicKey };
   };
 
-  console.log(isGettingSignature);
+  //console.log(isGettingSignature);
 
   const handleSavePixelsData = async () => {
     let pixelsDataForBackend = "";
@@ -251,10 +251,10 @@ const CellEditModal: VFC<Props> = (props) => {
         } catch (error) {
           toggleIsPixelsEdit();
           message.error("Error!");
-          console.log(error);
+          //console.log(error);
         }
 
-        console.log(fullEditData);
+        //console.log(fullEditData);
       }
     })();
   }, [fullEditData]);
@@ -300,6 +300,20 @@ const CellEditModal: VFC<Props> = (props) => {
     toggleIsInfoEdit();
   };
 
+  const handleCancelBtnClick = () => {
+    if (isPixelsEdit) {
+      if (isGettingSignature && fullEditData.signature === "") {
+        setIsGettingSignature(false);
+        toggleIsPixelsEdit();
+        message.error("Whoops, try sign the signature again");
+      }
+
+      return;
+    }
+
+    onClose();
+  };
+
   useEffect(() => {
     (async () => {
       if (isInfoEdit) {
@@ -313,10 +327,10 @@ const CellEditModal: VFC<Props> = (props) => {
         } catch (error) {
           toggleIsInfoEdit();
           message.error("Error!");
-          console.log(error);
+          //console.log(error);
         }
 
-        console.log(fullEditData);
+        //console.log(fullEditData);
       }
     })();
   }, [fullEditData]);
@@ -324,7 +338,7 @@ const CellEditModal: VFC<Props> = (props) => {
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
       <Wrapper>
-        <CloseBtn onClick={onClose}>Cancel</CloseBtn>
+        <CloseBtn onClick={handleCancelBtnClick}>Cancel</CloseBtn>
         <Title>
           EDIT MODE <span>(Cell: #{activeCellId})</span>
         </Title>

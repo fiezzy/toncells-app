@@ -190,7 +190,7 @@ const Cells: VFC<Props> = (props) => {
   };
 
   const handleCellClick = useCallback((locationZ: number, id: number) => {
-    setLocationZ(locationZ);
+    setLocationZ(locationZ!);
     setActiveCellId(id);
   }, []);
 
@@ -241,14 +241,7 @@ const Cells: VFC<Props> = (props) => {
     });
   }
 
-  let map =
-    mapVersion === 0
-      ? actualMaps[0]
-      : mapVersion === 1
-      ? actualMaps[1]
-      : mapVersion === 2
-      ? actualMaps[2]
-      : actualMaps[3];
+  let map = mapVersion === 0 ? actualMaps[0] : actualMaps[1];
 
   return (
     <>
@@ -341,6 +334,7 @@ const Cells: VFC<Props> = (props) => {
         isZoomMode={isZoomMode}
         CellInfo={CellInfo}
         hex={hex}
+        setActveCellId={setActiveCellId}
       />
     </>
   );

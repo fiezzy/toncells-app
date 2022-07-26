@@ -50,8 +50,6 @@ const App: VFC = () => {
 
   const [actualMaps, setActualMaps] = useState<string[]>([
     ApiMaps.Default,
-    ApiMaps.Free,
-    ApiMaps.Minted,
     ApiMaps.Edit,
   ]);
 
@@ -61,26 +59,15 @@ const App: VFC = () => {
   const getMaps = useCallback(async () => {
     try {
       const fetchDefaultMap = await fetch(ApiMaps.Default);
-      const fetchFreeMap = await fetch(ApiMaps.Free);
-      const fetchMintedMap = await fetch(ApiMaps.Minted);
       const fetchEditMap = await fetch(ApiMaps.Edit);
 
       const requestDefaultMap = await fetchDefaultMap.blob();
-      const requestFreetMap = await fetchFreeMap.blob();
-      const requestMintedMap = await fetchMintedMap.blob();
       const requestEditMap = await fetchEditMap.blob();
 
       const defaultMapImageObjectURL = URL.createObjectURL(requestDefaultMap);
-      const freeMapImageObjectURL = URL.createObjectURL(requestFreetMap);
-      const mintedMapImageObjectURL = URL.createObjectURL(requestMintedMap);
       const editMapImageObjectURL = URL.createObjectURL(requestEditMap);
 
-      setActualMaps([
-        defaultMapImageObjectURL,
-        freeMapImageObjectURL,
-        mintedMapImageObjectURL,
-        editMapImageObjectURL,
-      ]);
+      setActualMaps([defaultMapImageObjectURL, editMapImageObjectURL]);
     } catch (error) {
       message.error(`${error}`);
     }
@@ -135,7 +122,7 @@ const App: VFC = () => {
 
   const toggleMap = (mapold: any) => {
     let newMap = mapold + 1;
-    if (newMap === 4) newMap = 0;
+    if (newMap === 2) newMap = 0;
 
     setMapVersion(newMap);
   };
@@ -151,7 +138,7 @@ const App: VFC = () => {
     }
   }, []);
 
-  console.log(bigArr);
+  //console.log(bigArr);
 
   const toggleInvoiceMode = useCallback(() => {
     setIsInvoiceMode((prev) => !prev);
