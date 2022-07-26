@@ -15,11 +15,6 @@ export const Wrapper = styled.div<{
     isSelectMode ? "0px 0px 25px rgba(0, 0, 0, 0.5)" : "none"};
   position: relative;
 
-  @media screen and ${theme.device.tablet} {
-    width: 320px;
-    height: 320px;
-  }
-
   img {
     position: absolute;
     width: 380px;
@@ -29,6 +24,16 @@ export const Wrapper = styled.div<{
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
+  }
+
+  @media screen and ${theme.device.tablet} {
+    width: 320px;
+    height: 320px;
+
+    img {
+      width: 320px;
+      height: 320px;
+    }
   }
 `;
 

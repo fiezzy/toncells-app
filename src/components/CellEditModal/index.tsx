@@ -71,7 +71,7 @@ const getInitialInfoData = (
 const getEditablePixels = (hexColorsString: string) => {
   const editablePixels: any[] = [];
 
-  if (hexColorsString !== null) {
+  if (hexColorsString && hexColorsString.length > 1) {
     const hexColorsArr = hexColorsString.match(/.{1,7}/g);
 
     for (let i = 0; i < hexColorsArr!.length; i++) {
@@ -84,7 +84,7 @@ const getEditablePixels = (hexColorsString: string) => {
     return editablePixels;
   }
 
-  for (let i = 0; i < 257; i++) {
+  for (let i = 0; i < 256; i++) {
     editablePixels.push({
       id: i + 1,
       hex: "#FFFFFF",

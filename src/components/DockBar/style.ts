@@ -47,7 +47,7 @@ export const Wrapper = styled.div`
     transform: translate(0, -20%);
   }
 
-  @media screen and (max-width: 635px) {
+  @media screen and (max-width: 805px) {
     justify-content: flex-start;
   }
 `;
