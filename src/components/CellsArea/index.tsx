@@ -1,6 +1,7 @@
-import { VFC, useState, memo } from "react";
+import { VFC, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { AREA_MOCK } from "../../constants/images";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { Wrapper, StyledCell } from "./style";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
   onMouseOver: any;
   checkForEditability: (activeCell: number) => void;
   areaImage: string;
+  isAreaImgLoading: boolean;
 };
 
 const CellsArea: VFC<Props> = memo((props) => {
@@ -36,6 +38,7 @@ const CellsArea: VFC<Props> = memo((props) => {
     onMouseOver,
     checkForEditability,
     areaImage,
+    isAreaImgLoading,
   } = props;
 
   const navigate = useNavigate();
@@ -83,28 +86,34 @@ const CellsArea: VFC<Props> = memo((props) => {
       }}
       onMouseOver={() => onMouseOver(1)}
     >
-      <img src={areaImage} alt="" />
+      {isAreaImgLoading ? (
+        <Spin indicator={<LoadingOutlined style={{ color: "#000" }} />} />
+      ) : (
+        <>
+          <img src={areaImage} alt="" />
 
-      {currentCells &&
-        currentCells.map((cell, idx) => {
-          return (
-            <StyledCell
-              isSelectMode={isSelectMode}
-              key={cell.ID}
-              isCellSelected={false}
-              handleClick={(isNotActive: boolean) => {
-                handleClick(idx + 1, cell.ID, isNotActive);
-              }}
-              cellId={cell.ID}
-              id={idx + 1}
-              selectedCells={selectedCells}
-              onMouseOver={() => setnftIdfun([nftId[0], nftId[1], idx + 1])}
-              currentMintedCells={currentMintedCells}
-              currentReservedCells={currentReservedCells}
-              currentReservedCellsasf={currentReservedCellsasf}
-            />
-          );
-        })}
+          {currentCells &&
+            currentCells.map((cell, idx) => {
+              return (
+                <StyledCell
+                  isSelectMode={isSelectMode}
+                  key={cell.ID}
+                  isCellSelected={false}
+                  handleClick={(isNotActive: boolean) => {
+                    handleClick(idx + 1, cell.ID, isNotActive);
+                  }}
+                  cellId={cell.ID}
+                  id={idx + 1}
+                  selectedCells={selectedCells}
+                  onMouseOver={() => setnftIdfun([nftId[0], nftId[1], idx + 1])}
+                  currentMintedCells={currentMintedCells}
+                  currentReservedCells={currentReservedCells}
+                  currentReservedCellsasf={currentReservedCellsasf}
+                />
+              );
+            })}
+        </>
+      )}
     </Wrapper>
   );
 });

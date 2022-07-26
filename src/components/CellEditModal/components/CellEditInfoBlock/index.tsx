@@ -87,7 +87,7 @@ const CellEditInfoBlock: VFC<Props> = (props) => {
                     onChange={handleInputsChange}
                   />
                 ) : (
-                  <div>{value}</div>
+                  <pre>{value}</pre>
                 )}
               </FieldWrapper>
             );

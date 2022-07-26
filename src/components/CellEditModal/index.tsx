@@ -71,12 +71,23 @@ const getInitialInfoData = (
 const getEditablePixels = (hexColorsString: string) => {
   const editablePixels: any[] = [];
 
-  const hexColorsArr = hexColorsString.match(/.{1,7}/g);
+  if (hexColorsString !== null) {
+    const hexColorsArr = hexColorsString.match(/.{1,7}/g);
 
-  for (let i = 0; i < hexColorsArr!.length; i++) {
+    for (let i = 0; i < hexColorsArr!.length; i++) {
+      editablePixels.push({
+        id: i + 1,
+        hex: hexColorsArr![i],
+      });
+    }
+
+    return editablePixels;
+  }
+
+  for (let i = 0; i < 257; i++) {
     editablePixels.push({
       id: i + 1,
-      hex: hexColorsArr![i],
+      hex: "#FFFFFF",
     });
   }
 
@@ -102,6 +113,8 @@ const CellEditModal: VFC<Props> = (props) => {
         actualCellData.Text
       )
   );
+
+  console.log(editablePixelsData);
 
   // const [hexPixelsData, setHexPixelsData] = useState<string>(initialHexData);
 
@@ -219,19 +232,6 @@ const CellEditModal: VFC<Props> = (props) => {
         publicKey: publicKey,
       }));
 
-      // try {
-      //   const { status } = await createUpdateCellDataRequest(fullEditData);
-
-      //   if (status === "success") {
-      //     toggleIsEdit();
-      //     message.success("Successful editing!");
-      //   }
-      // } catch (error) {
-      //   toggleIsEdit();
-      //   message.error("Error!");
-      //   console.log(error);
-      // }
-
       return;
     }
 
@@ -280,19 +280,6 @@ const CellEditModal: VFC<Props> = (props) => {
           link: editableInfoData[1].value,
         });
 
-        // try {
-        //   const { status } = await createUpdateCellDataRequest(fullEditData);
-
-        //   if (status === "success") {
-        //     toggleIsEdit();
-        //     message.success("Successful editing!");
-        //   }
-        // } catch (error) {
-        //   toggleIsEdit();
-        //   message.error("Error!");
-        //   console.log(error);
-        // }
-
         return;
       }
 
@@ -307,18 +294,6 @@ const CellEditModal: VFC<Props> = (props) => {
         link: editableInfoData[1].value,
       });
 
-      // try {
-      //   const { status } = await createUpdateCellDataRequest(fullEditData);
-
-      //   if (status === "success") {
-      //     toggleIsEdit();
-      //     message.success("Successful editing!");
-      //   }
-      // } catch (error) {
-      //   toggleIsEdit();
-      //   message.error("Error!");
-      //   console.log(error);
-      // }
       return;
     }
 

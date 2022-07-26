@@ -5,20 +5,12 @@ type Props = {
   locationX: number;
   locationY: number;
   locationZ: number;
-  ownerData:
-    | {
-        wallet: string;
-        hash: string;
-      }
-    | null
-    | undefined;
   status: string;
   actualCellData: any;
 };
 
 const CellInfo: VFC<Props> = (props) => {
-  const { locationX, locationY, locationZ, ownerData, status, actualCellData } =
-    props;
+  const { locationX, locationY, locationZ, status, actualCellData } = props;
 
   console.log(actualCellData);
 
@@ -32,46 +24,55 @@ const CellInfo: VFC<Props> = (props) => {
         Status:
         <span> {status.toUpperCase()}</span>
       </InfoLabel>
+
       <InfoText>
-        {ownerData !== null && (
+        <span>Owner: </span>
+        <br />
+        {actualCellData.Wallet}
+        <br />
+        <br />
+        <span>Hash: </span>
+        <br />
+        {actualCellData.Hash}
+        <br />
+        <br />
+
+        {actualCellData.Username !== "" && (
           <>
-            <span>Owner: </span>
+            <span>Telegram Name: </span>
             <br />
-            {ownerData!.wallet}
-            <br />
-            <br />
-            <span>Hash: </span>
-            <br />
-            {ownerData!.hash}
+            <a
+              href={`https://t.me/${actualCellData.Username}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              @{actualCellData.Username}
+            </a>
             <br />
             <br />
           </>
         )}
-        <span>Telegram Name: </span>
-        <br />
-        <a
-          href={`https://t.me/${actualCellData.Username}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          @{actualCellData.Username}
-        </a>
-        <br />
-        <br />
-        <span>Link: </span>
-        <br />
-        <a href={actualCellData.Link} target="_blank" rel="noreferrer">
-          {actualCellData.Link}
-        </a>
-        <br />
-        <br />
-        <span>Description: </span>
-        <br />
-        {actualCellData.Text}
+
+        {actualCellData.Link !== "" && (
+          <>
+            <span>Link: </span>
+            <br />
+            <a href={actualCellData.Link} target="_blank" rel="noreferrer">
+              {actualCellData.Link}
+            </a>
+            <br />
+            <br />
+          </>
+        )}
+
+        {actualCellData.Text !== "" && (
+          <>
+            <span>Description: </span>
+            <br />
+            <pre>{actualCellData.Text}</pre>
+          </>
+        )}
       </InfoText>
-      {/* <BuyButton onClick={() => alert(`Buy Cell # ${activeCellId}`)}>
-        BUY
-      </BuyButton> */}
     </InfoBlock>
   );
 };

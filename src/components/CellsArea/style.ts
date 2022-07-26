@@ -2,7 +2,9 @@ import styled from "styled-components";
 import theme from "../../constants/theme";
 import Cell from "../Cell";
 
-export const Wrapper = styled.div<{ isSelectMode: boolean }>`
+export const Wrapper = styled.div<{
+  isSelectMode: boolean;
+}>`
   display: flex;
   flex-wrap: wrap;
   width: 380px;

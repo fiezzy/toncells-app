@@ -25,6 +25,10 @@ export const FieldWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
+
+  pre {
+    white-space: pre-wrap;
+  }
 `;
 
 export const Field = styled.input<{ disabled: boolean }>`

@@ -13,7 +13,8 @@ import { Modal } from "../Modal";
 import CellsArea from "../CellsArea";
 import CellInfoBlock from "./CellInfo";
 import CellEditModal from "../CellEditModal";
-import { CloseOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import { CloseOutlined, LoadingOutlined } from "@ant-design/icons";
 import * as _ from "lodash";
 import { ApiAreaImg } from "../../constants";
 import { StyledComponent } from "styled-components";
@@ -99,6 +100,7 @@ const CellModalDefault: VFC<Props> = (props) => {
   const { width } = useWindowDimensions();
 
   const getAreaImage = useCallback(async () => {
+    setIsAreaImgLoading(true);
     if (id) {
       try {
         const fetchAreaImage = await fetch(ApiAreaImg, {
@@ -115,7 +117,9 @@ const CellModalDefault: VFC<Props> = (props) => {
         const areaImageObjectURL = URL.createObjectURL(req);
 
         setAreaImage(areaImageObjectURL);
+        setIsAreaImgLoading(false);
       } catch (err) {
+        setIsAreaImgLoading(false);
         console.log(err);
       }
     }
@@ -258,100 +262,107 @@ const CellModalDefault: VFC<Props> = (props) => {
         />
       ) : (
         <Modal isVisible={isVisible} onClose={handleCloseModalClick}>
-          {areaImage.length > 0 ? (
-            <>
-              <CellInfo
-                ref={ref}
-                style={{
-                  opacity: opacity,
-                  margin: "-42px -15px 42px 15px",
-                  minWidth: "88px",
-                }}
-              >
-                {nftId[1] ? <img src={nftImgs[nftId[1] - 1]} alt="#" /> : null}
-                {nftId[0] ? <img src={nftImgs[nftId[0] - 1]} alt="#" /> : null}
-                {nftId[2] ? <img src={nftImgs[nftId[2] - 1]} alt="#" /> : null}
-              </CellInfo>
+          <>
+            <CellInfo
+              ref={ref}
+              style={{
+                opacity: opacity,
+                margin: "-42px -15px 42px 15px",
+                minWidth: "88px",
+              }}
+            >
+              {nftId[1] ? <img src={nftImgs[nftId[1] - 1]} alt="#" /> : null}
+              {nftId[0] ? <img src={nftImgs[nftId[0] - 1]} alt="#" /> : null}
+              {nftId[2] ? <img src={nftImgs[nftId[2] - 1]} alt="#" /> : null}
+            </CellInfo>
 
-              <Wrapper>
-                <CloseBtn onClick={handleCloseModalClick}>
-                  {isSelectMode ? "Cancel" : <CloseOutlined />}
-                </CloseBtn>
-                <LabelId>Area #{id}</LabelId>
-                <FlexWrapper>
-                  <CellsArea
-                    currentCells={currentCells}
-                    selectedCells={selectedCells}
-                    isSelectMode={isSelectMode}
-                    handleSelectCellClick={handleSelectCellClick}
-                    activeAreaCollection={activeAreaCollection}
-                    handleCellClick={handleCellClick}
-                    toggleBuyMode={toggleBuyMode}
-                    setnftIdfun={setnftIdfun}
-                    nftId={[locationX, locationY, nftImgs[2]]}
-                    removeSelectCellItem={removeSelectCellItem}
-                    setIsCellInfoShowed={(isShowed: boolean) =>
-                      setIsCellInfoShowed(isShowed)
+            <Wrapper>
+              <CloseBtn onClick={handleCloseModalClick}>
+                {isSelectMode ? "Cancel" : <CloseOutlined />}
+              </CloseBtn>
+              <LabelId>Area #{id}</LabelId>
+              <FlexWrapper>
+                <CellsArea
+                  currentCells={currentCells}
+                  selectedCells={selectedCells}
+                  isSelectMode={isSelectMode}
+                  handleSelectCellClick={handleSelectCellClick}
+                  activeAreaCollection={activeAreaCollection}
+                  handleCellClick={handleCellClick}
+                  toggleBuyMode={toggleBuyMode}
+                  setnftIdfun={setnftIdfun}
+                  nftId={[locationX, locationY, nftImgs[2]]}
+                  removeSelectCellItem={removeSelectCellItem}
+                  setIsCellInfoShowed={(isShowed: boolean) =>
+                    setIsCellInfoShowed(isShowed)
+                  }
+                  onMouseOver={(e: any) => {
+                    if (width > DisplaySize.Tablet) {
+                      setOp(e);
+
+                      return;
                     }
-                    onMouseOver={(e: any) => {
-                      if (width > DisplaySize.Tablet) {
-                        setOp(e);
-
-                        return;
-                      }
-                    }}
-                    checkForEditability={checkForEditability}
-                    areaImage={areaImage}
-                  />
-                  {isCellInfoShowed ? (
-                    <ColumnWrapper>
-                      <CellInfoBlock
-                        actualCellData={actualCellData[0]}
-                        locationX={locationX}
-                        locationY={locationY}
-                        locationZ={locationZ}
-                        ownerData={getOwnerData()}
-                        status={
-                          cellsData && cellsData.status[activeCellId - 1].Status
+                  }}
+                  checkForEditability={checkForEditability}
+                  areaImage={areaImage}
+                  isAreaImgLoading={isAreaImgLoading}
+                />
+                {isCellInfoShowed ? (
+                  <ColumnWrapper>
+                    {actualCellData[0] !== null || undefined ? (
+                      <>
+                        <CellInfoBlock
+                          actualCellData={actualCellData[0]}
+                          locationX={locationX}
+                          locationY={locationY}
+                          locationZ={locationZ}
+                          status={
+                            cellsData &&
+                            cellsData.status[activeCellId - 1].Status
+                          }
+                        />
+                        {canEditCell ? (
+                          <BtnWrapper>
+                            <BuyFewBtn onClick={handleBuyBtnClick}>
+                              {isSelectMode ? "Buy cells" : "Select cells"}
+                            </BuyFewBtn>
+                            <BuyFewBtn onClick={toggleCellEditMode}>
+                              Edit
+                            </BuyFewBtn>
+                          </BtnWrapper>
+                        ) : (
+                          <BtnWrapper>
+                            <BuyFewBtn onClick={handleBuyBtnClick}>
+                              {isSelectMode ? "Buy cells" : "Select cells"}
+                            </BuyFewBtn>
+                          </BtnWrapper>
+                        )}
+                      </>
+                    ) : (
+                      <Spin
+                        indicator={
+                          <LoadingOutlined style={{ color: "#000" }} />
                         }
                       />
-                      {canEditCell ? (
-                        <BtnWrapper>
-                          <BuyFewBtn onClick={handleBuyBtnClick}>
-                            {isSelectMode ? "Buy cells" : "Select cells"}
-                          </BuyFewBtn>
-                          <BuyFewBtn onClick={toggleCellEditMode}>
-                            Edit
-                          </BuyFewBtn>
-                        </BtnWrapper>
-                      ) : (
-                        <BtnWrapper>
-                          <BuyFewBtn onClick={handleBuyBtnClick}>
-                            {isSelectMode ? "Buy cells" : "Select cells"}
-                          </BuyFewBtn>
-                        </BtnWrapper>
-                      )}
-                    </ColumnWrapper>
-                  ) : (
-                    <InfoBlock>
-                      <InfoLabel>
-                        Area cells: from #{firstCellId} to #{lastCellId}
-                      </InfoLabel>
-                      <InfoText>
-                        Area coordinations: X<span>{locationY}</span>; Y
-                        <span>{locationX}</span>
-                      </InfoText>
-                      <BuyFewBtn onClick={handleBuyBtnClick}>
-                        {isSelectMode ? "Buy cells" : "Select cells"}
-                      </BuyFewBtn>
-                    </InfoBlock>
-                  )}
-                </FlexWrapper>
-              </Wrapper>
-            </>
-          ) : (
-            <div>Loading...</div>
-          )}
+                    )}
+                  </ColumnWrapper>
+                ) : (
+                  <InfoBlock>
+                    <InfoLabel>
+                      Area cells: from #{firstCellId} to #{lastCellId}
+                    </InfoLabel>
+                    <InfoText>
+                      Area coordinations: X<span>{locationY}</span>; Y
+                      <span>{locationX}</span>
+                    </InfoText>
+                    <BuyFewBtn onClick={handleBuyBtnClick}>
+                      {isSelectMode ? "Buy cells" : "Select cells"}
+                    </BuyFewBtn>
+                  </InfoBlock>
+                )}
+              </FlexWrapper>
+            </Wrapper>
+          </>
         </Modal>
       )}
     </>

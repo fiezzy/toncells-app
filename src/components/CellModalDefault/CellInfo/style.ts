@@ -45,7 +45,7 @@ export const InfoText = styled.div`
   font-size: 16px;
   line-height: 22px;
   text-align: left;
-  overflow: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   height: 242px;
   color: rgba(0, 0, 0, 0.6);
@@ -54,6 +54,10 @@ export const InfoText = styled.div`
   span {
     font-weight: 900;
     color: #000;
+  }
+
+  pre {
+    white-space: pre-wrap;
   }
 
   @media screen and ${theme.device.mobile} {
