@@ -87,7 +87,15 @@ const CellEditInfoBlock: VFC<Props> = (props) => {
                     onChange={handleInputsChange}
                   />
                 ) : (
-                  <pre>{value}</pre>
+                  <>
+                    {value === "" ? (
+                      <div style={{ opacity: 0.6 }}>
+                        **click on edit button to write your info**
+                      </div>
+                    ) : (
+                      <pre>{value}</pre>
+                    )}
+                  </>
                 )}
               </FieldWrapper>
             );
@@ -107,13 +115,19 @@ const CellEditInfoBlock: VFC<Props> = (props) => {
                 />
               ) : (
                 <div>
-                  <FieldValueLabel
-                    href={currentLink}
-                    target="_blank"
-                    rel="noreferrel"
-                  >
-                    {id === "tgName" ? `@${value}` : value}
-                  </FieldValueLabel>
+                  {value === "" ? (
+                    <div style={{ opacity: 0.6 }}>
+                      **click on edit button to write your info**
+                    </div>
+                  ) : (
+                    <FieldValueLabel
+                      href={currentLink}
+                      target="_blank"
+                      rel="noreferrel"
+                    >
+                      {id === "tgName" ? `@${value}` : value}
+                    </FieldValueLabel>
+                  )}
                 </div>
               )}
             </FieldWrapper>
