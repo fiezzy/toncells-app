@@ -4,7 +4,14 @@ import { Wrapper, Label } from "./style";
 const OpenOnDesktop: VFC = () => {
 	return (
 		<Wrapper>
-			<Label>Please, open the app on desktop.</Label>
+			<Label>
+				We apologize for the inconvenience. The site is being worked on.
+				Estimated launch time of the site is 08/01/2022.
+				<br />
+				<br />
+				While work is underway, you can go to our{" "}
+				<a href={"https://twitter.com/tonanadao"}>twitter</a>.
+			</Label>
 		</Wrapper>
 	);
 };
