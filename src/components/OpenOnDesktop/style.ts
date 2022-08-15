@@ -12,4 +12,5 @@ export const Label = styled.span`
   font-weight: 900;
   color: #000;
   font-size: 20px;
+  max-width: 80%;
 `;
