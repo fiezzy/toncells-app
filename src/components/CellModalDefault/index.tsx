@@ -212,7 +212,7 @@ const CellModalDefault: VFC<Props> = (props) => {
         if (cellsData) {
           let currentOwner = cellsData.status[activeCell - 1];
 
-          console.log(currentOwner);
+          //console.log(currentOwner);
 
           if (
             currentOwner.Status === "Minted" &&
@@ -224,9 +224,9 @@ const CellModalDefault: VFC<Props> = (props) => {
           }
         }
 
-        console.log(`Cell #${activeCell} is editable: ${canEditCell}`);
+        //console.log(`Cell #${activeCell} is editable: ${canEditCell}`);
 
-        console.log("checking");
+        //console.log("checking");
       }
     },
     [canEditCell, cellsData, isSigned, tonWalletAddress]

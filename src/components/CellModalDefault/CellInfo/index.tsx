@@ -12,7 +12,7 @@ type Props = {
 const CellInfo: VFC<Props> = (props) => {
   const { locationX, locationY, locationZ, status, actualCellData } = props;
 
-  console.log(actualCellData);
+  //console.log(actualCellData);
 
   return (
     <InfoBlock>

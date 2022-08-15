@@ -74,7 +74,7 @@ const CellEditInfoBlock: VFC<Props> = (props) => {
           const currentLink =
             id === "tgName" ? PRE_TG_LINK + value : getDefaultLink(value);
 
-          console.log(currentLink);
+          //console.log(currentLink);
 
           if (id === "description") {
             return (

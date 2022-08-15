@@ -10,7 +10,7 @@ export const MakeTrx = async (
   const ton = (window as any).ton;
 
   if (ton) {
-    console.log(cellIds.length * NFTcost);
+    //console.log(cellIds.length * NFTcost);
     ton.send("ton_sendTransaction", [
       {
         to: process.env.REACT_APP_BACK_TON_WALLET,
@@ -39,14 +39,14 @@ export const listener = (
       )
         .then((e: any) => e.json())
         .then((e: any) => {
-          console.log(e);
-          console.log(`${hexString}${cellIds.join(".")}`);
+          //console.log(e);
+          //console.log(`${hexString}${cellIds.join(".")}`);
           const data = e.result.filter(
             (e: any) => e.in_msg.message === `${hexString}${cellIds.join(".")}`
           );
           if (data[0]) {
-            console.log(data[0]);
-            console.log(data[0].transaction_id.hash);
+            //console.log(data[0]);
+            //console.log(data[0].transaction_id.hash);
             clearInterval(int);
             message.success("Done trx!", 10);
             setIsload(false);
@@ -87,7 +87,7 @@ const MintNFTs = (
     })
       .then((e: any) => e.json())
       .then((e: any) => {
-        console.log(e);
+        //console.log(e);
 
         if (e.status === "ok") {
           message.success("Done paying!", 10);

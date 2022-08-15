@@ -34,6 +34,7 @@ for (let i = 1; i < 26; i++) {
 }
 
 const App: VFC = () => {
+<<<<<<< HEAD
 	// return <OpenOnDesktop />;
 	const [bigArr, setBigArr] = useState();
 	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
@@ -159,6 +160,132 @@ const App: VFC = () => {
 	));
 
 	const GlobalStyle = createGlobalStyle`
+=======
+  const [bigArr, setBigArr] = useState();
+  const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
+  const [isZoomMode, setIsZoomMode] = useState<boolean>(false);
+  const [onSideBar, setonSideBar] = useState<boolean>(false);
+  const [mapVersion, setMapVersion] = useState<number>(0);
+  const [isDescMode, toggleDescMode] = useState<boolean>(false);
+  const [hex, setHex] = useState<string>("");
+  const [isInvoiceMode, setIsInvoiceMode] = useState<boolean>(false);
+  const [selectedCells, updateSelectedCells] = useState<number[]>([]);
+  const [isBuyALotMode, setBuyALotMode] = useState<boolean>(false);
+  const [cellsAreaData, setSelectedAreas] = useState<any[]>([]);
+  const [isConnectWalletMode, setIsConnectWalletMode] =
+    useState<boolean>(false);
+  const [isUserModalMode, setIsUserModalMode] = useState<boolean>(false);
+
+  const [actualMaps, setActualMaps] = useState<string[]>([
+    ApiMaps.Default,
+    ApiMaps.Edit,
+  ]);
+
+  const cellsCollection = generateCellsCollection();
+
+  // TODO - ПРИВЕСТИ ЭТО ВСЕ В НОРМАЛЬНЫЙ ВИД
+  const getMaps = useCallback(async () => {
+    try {
+      const fetchDefaultMap = await fetch(ApiMaps.Default);
+      const fetchEditMap = await fetch(ApiMaps.Edit);
+
+      const requestDefaultMap = await fetchDefaultMap.blob();
+      const requestEditMap = await fetchEditMap.blob();
+
+      const defaultMapImageObjectURL = URL.createObjectURL(requestDefaultMap);
+      const editMapImageObjectURL = URL.createObjectURL(requestEditMap);
+
+      setActualMaps([defaultMapImageObjectURL, editMapImageObjectURL]);
+    } catch (error) {
+      message.error(`${error}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    setTimeout(function fetchMaps() {
+      getMaps();
+      setTimeout(fetchMaps, 30000);
+    }, 30000);
+  }, [getMaps]);
+
+  useEffect(() => {
+    (async () => {
+      setBigArr(await GetStatus());
+
+      setTimeout(async function fetchBigArr() {
+        setBigArr(await GetStatus());
+
+        setTimeout(fetchBigArr, 30000);
+      }, 30000);
+    })();
+  }, []);
+
+  const toggleBuyALotMode = useCallback(() => {
+    if (isBuyALotMode) {
+      updateSelectedCells([]);
+      setSelectedAreas([]);
+    }
+    if (!hex) {
+      setBuyALotMode((prev) => !prev);
+    } else {
+      message.error("Finish last invoice!", 10);
+    }
+  }, [isBuyALotMode, hex]);
+
+  const buyAreas = () => {
+    setIsInvoiceMode((prev) => !prev);
+    setBuyALotMode((prev) => !prev);
+    setSelectedAreas([]);
+  };
+
+  const setSelectedCells = (e: any) => {
+    updateSelectedCells(e);
+  };
+
+  const { isCellModalActive } = useContext(CellModalContext);
+
+  const toggleBuyMode = useCallback(() => {
+    setIsBuyMode((prev) => !prev);
+  }, []);
+
+  const toggleMap = (mapold: any) => {
+    let newMap = mapold + 1;
+    if (newMap === 2) newMap = 0;
+
+    setMapVersion(newMap);
+  };
+
+  useEffect(() => {
+    const saved = localStorage.getItem("invoiceData");
+    if (!!saved) {
+      const initialValue = JSON.parse(saved);
+      if (!!initialValue.hex) {
+        setHex(initialValue.hex);
+        setSelectedCells(initialValue.ids);
+      }
+    }
+  }, []);
+
+  //console.log(bigArr);
+
+  const toggleInvoiceMode = useCallback(() => {
+    setIsInvoiceMode((prev) => !prev);
+  }, []);
+
+  const toggleConnectWalletMode = useCallback(() => {
+    setIsConnectWalletMode((prev) => !prev);
+  }, []);
+
+  const toggleUserModalMode = useCallback(() => {
+    setIsUserModalMode((prev) => !prev);
+  }, []);
+
+  const nftItems = nftIcons.map((src) => (
+    <NftIcon key={src} src={src} alt="#" />
+  ));
+
+  const GlobalStyle = createGlobalStyle`
+>>>>>>> d6927110faa0e067f09eb4e8ce53a6047cc7d8fd
   	body {
 	    overflow: ${isCellModalActive ? "hidden" : "scroll"};
       overflow-x: hidden;

@@ -50,7 +50,7 @@ const UserModal: VFC<Props> = (props) => {
     );
   }
 
-  console.log(ownerItems);
+  //console.log(ownerItems);
 
   const handleNftItemClick = (cellId: number) => {
     navigate(`/${cellId}`);

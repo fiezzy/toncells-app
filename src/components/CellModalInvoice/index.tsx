@@ -49,7 +49,7 @@ const CellModalBuy: VFC<any> = memo((props) => {
   const [reserved, setReserved] = useState<boolean>(false);
   const [isLoad, setIsload] = useState<boolean>(false);
 
-  console.log(cellIds);
+  //console.log(cellIds);
   const NFTcost = 5;
   const link = `ton://transfer/${
     process.env.REACT_APP_BACK_TON_WALLET
@@ -74,7 +74,7 @@ const CellModalBuy: VFC<any> = memo((props) => {
             .then((e: any) => e.json())
             .then((e: any) => {
               setIsload(false);
-              console.log(e);
+              //console.log(e);
 
               if (e.status === "ok") {
                 message.success("Reserved!", 10);
@@ -98,7 +98,7 @@ const CellModalBuy: VFC<any> = memo((props) => {
             });
         } catch (error) {
           message.error("Something went wrong", 10);
-          console.log(error);
+          //console.log(error);
         }
       }
     } else {
