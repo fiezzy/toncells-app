@@ -1,12 +1,14 @@
 import styled from "styled-components";
 import theme from "../../constants/theme";
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isEdit: boolean }>`
   width: 920px;
   background-color: #fff;
   border-radius: 12px;
   padding: 38px 50px 50px 50px;
   position: relative;
+  max-height: ${({ isEdit }) => (isEdit ? "700px" : "536px")};
+  transition: height 2s ease-out;
 
   @media screen and ${theme.device.tablet} {
     width: 95vw;

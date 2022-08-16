@@ -1,4 +1,5 @@
 import { VFC } from "react";
+import { Color } from "react-color-palette";
 import { PixelType } from "../../types";
 import { Wrapper, EditablePixel } from "./style";
 

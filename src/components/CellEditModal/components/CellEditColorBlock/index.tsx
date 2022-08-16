@@ -1,5 +1,6 @@
 import { VFC } from "react";
-import { colorsArr } from "../../colors";
+import { Color, ColorPicker, useColor } from "react-color-palette";
+import { colorsArrV2 } from "../../colors";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import {
@@ -8,50 +9,68 @@ import {
   Label,
   SaveBtn,
   CurrentColorWrapper,
+  CurrentColorBlock,
 } from "./style";
 
 type Props = {
   isEdit: boolean;
-  handleColorClick: (hex: string) => void;
   currentHex: string;
   handleSavePixelsData: () => void;
   isGettingSignature: boolean;
+  setCurrentHex: (hex: any) => void;
 };
 
 const CellEditColorBlock: VFC<Props> = (props) => {
   const {
     isEdit,
-    handleColorClick,
     currentHex,
     handleSavePixelsData,
     isGettingSignature,
+    setCurrentHex,
   } = props;
+
+  const [color, setColor] = useColor("hex", currentHex);
+
+  // console.log(color);
 
   return (
     <>
-      <ColorsWrapper isEdit={isEdit}>
-        {colorsArr.map(({ id, hex }) => (
-          <ColorBlock
-            isEdit={isEdit}
-            key={id}
-            color={hex}
-            onClick={() => {
-              if (isEdit) {
-                handleColorClick(hex);
+      <div>
+        <ColorsWrapper isEdit={isEdit}>
+          {isEdit ? (
+            <ColorPicker
+              width={322}
+              height={150}
+              color={color}
+              onChange={isEdit ? setColor : () => {}}
+              onChangeComplete={
+                isEdit ? (color) => setCurrentHex(color.hex) : () => {}
               }
-            }}
-          />
-        ))}
-      </ColorsWrapper>
-      {isEdit && (
-        <CurrentColorWrapper>
-          <Label>CURRENT COLOR:</Label>
-          <ColorBlock
-            color={currentHex}
-            style={{ width: "20px", height: "20px" }}
-          />
-        </CurrentColorWrapper>
-      )}
+              hideRGB
+              hideHSV
+            />
+          ) : (
+            <ColorPicker
+              width={322}
+              height={150}
+              color={color}
+              onChange={isEdit ? setColor : () => {}}
+              onChangeComplete={
+                isEdit ? (color) => setCurrentHex(color.hex) : () => {}
+              }
+              hideRGB
+              hideHSV
+              hideHEX
+            />
+          )}
+        </ColorsWrapper>
+        {isEdit && (
+          <CurrentColorWrapper>
+            <CurrentColorBlock color={currentHex} />
+          </CurrentColorWrapper>
+        )}
+      </div>
+
       {isGettingSignature ? (
         <SaveBtn>
           <Spin indicator={<LoadingOutlined />} style={{ color: "#fff" }} />
