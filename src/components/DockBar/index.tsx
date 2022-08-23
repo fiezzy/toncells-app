@@ -122,7 +122,7 @@ const DockBar: VFC<Props> = (props) => {
 
       <Available>
         Version: <br />
-        0.4.9 beta
+        0.8.9 beta
       </Available>
     </Wrapper>
   );

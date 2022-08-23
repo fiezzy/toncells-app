@@ -1,7 +1,11 @@
 import { VFC } from "react";
 import { ColorPicker, useColor } from "react-color-palette";
 import { Spin } from "antd";
-import { LoadingOutlined, ClearOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  ClearOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import {
   ColorsWrapper,
   SaveBtn,
@@ -90,6 +94,13 @@ const CellEditColorBlock: VFC<Props> = (props) => {
         </SaveBtn>
       ) : (
         <>
+          {!isEdit && (
+            <SaveBtn disabled={true} color={currentHex}>
+              <UploadOutlined />
+              UPLOAD IMAGE
+            </SaveBtn>
+          )}
+
           {!isEdit && (
             <SaveBtn
               color={currentHex}

@@ -59,6 +59,7 @@ export const ColorBlock = styled.div<{ color: any; isEdit?: boolean }>`
 export const SaveBtn = styled.div<{
   color: string;
   isGettingSignature?: boolean;
+  disabled?: boolean;
 }>`
   border: none;
   outline: none;
@@ -70,9 +71,15 @@ export const SaveBtn = styled.div<{
   background-color: ${({ isGettingSignature, color }) =>
     isGettingSignature ? hexToRgbA(color) : "#fff"};
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   transition: 0.3s;
   border: 2px solid rgba(0, 0, 0, 0.1);
+
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+
+  svg {
+    margin-right: 10px;
+  }
 
   &:hover {
     background-color: ${({ color }) => hexToRgbA(color)};
