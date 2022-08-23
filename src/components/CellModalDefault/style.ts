@@ -87,21 +87,22 @@ export const InfoText = styled.p`
 `;
 
 export const BuyFewBtn = styled.button`
-  /* /* margin-top: 50px; * */
   border: none;
   outline: none;
   padding: 10px 65px;
-  color: #fff;
+  color: #000;
   font-size: 16px;
-  /* font-weight: 400; */
   background-color: #000;
-  border-radius: 20px;
+  border-radius: 10px;
   cursor: pointer;
   transition: 0.3s;
+  background: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.2);
 
   &:hover {
     transform: scale(0.95);
-    opacity: 0.6;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(0, 0, 0, 0.5);
   }
 `;
 
