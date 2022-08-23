@@ -6,7 +6,7 @@ import CellEditInfoBlock from "./components/CellEditInfoBlock";
 import { ApiUpdateCellData } from "../../constants/index";
 import { asciiToHex } from "../../utils/asciiToHex";
 import { message } from "antd";
-import { useColor } from "react-color-palette";
+import WarningBlock from "../WarningBlock";
 import {
   Wrapper,
   Title,
@@ -16,6 +16,8 @@ import {
   SubEditMenu,
   SubMenuItem,
   EditBlockWrapper,
+  WarningWrapper,
+  DiscardChangesBtn,
 } from "./style";
 import "react-color-palette/lib/css/styles.css";
 
@@ -71,12 +73,14 @@ const getInitialInfoData = (
 
 const getEditablePixels = (hexColorsString: string) => {
   const editablePixels: any[] = [];
+
   const minted =
     "#1AB90C#1AB90C#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#1AB90C#1AB90C#1AB90C#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#1AB90C#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#1AB90C#1AB90C#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#1AB90C#1AB90C#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#1AB90C#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#1AB90C#1AB90C#1AB90C#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#1AB90C#1AB90C";
   const payed =
     "#00AEE9#00AEE9#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#00AEE9#00AEE9#00AEE9#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#00AEE9#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#00AEE9#00AEE9#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#00AEE9#00AEE9#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#00AEE9#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#00AEE9#00AEE9#00AEE9#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#00AEE9#00AEE9";
   const reserve =
     "#DD0202#DD0202#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#DD0202#DD0202#DD0202#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#DD0202#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#DD0202#DD0202#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#DD0202#DD0202#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#DD0202#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#DD0202#DD0202#DD0202#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#FFFFFF#DD0202#DD0202";
+
   if (
     hexColorsString &&
     hexColorsString.length > 1 &&
@@ -110,11 +114,10 @@ const CellEditModal: VFC<Props> = (props) => {
   const { isVisible, onClose, activeCellId, tonWalletAddress, actualCellData } =
     props;
 
+  const imageInLocalStorage = localStorage.getItem("image");
+
   const [isPixelsEdit, setPixelsIsEdit] = useState<boolean>(false);
   const [isInfoEdit, setIsInfoEdit] = useState<boolean>(false);
-  const [editablePixelsData, setEditablePixelsData] = useState(
-    actualCellData && getEditablePixels(actualCellData.Image)
-  );
   const [isColorModeActive, setIsColorModeActive] = useState<boolean>(true);
   const [editableInfoData, setEditableInfoData] = useState(
     actualCellData &&
@@ -124,14 +127,7 @@ const CellEditModal: VFC<Props> = (props) => {
         actualCellData.Text
       )
   );
-
-  // const pixelsInLocalStorage = localStorage.getItem("image");
-
   const [currentHex, setCurrentHex] = useState("#000000");
-  console.log(currentHex);
-
-  // const [hexPixelsData, setHexPixelsData] = useState<string>(initialHexData);
-
   const [fullEditData, setFullEditData] = useState<any>(
     actualCellData && {
       ids: [activeCellId],
@@ -144,6 +140,50 @@ const CellEditModal: VFC<Props> = (props) => {
       publicKey: "",
     }
   );
+  const [isHaveLocalChanges, setIsHaveLocalChanges] = useState<boolean>(false);
+
+  const [editablePixelsData, setEditablePixelsData] = useState(
+    actualCellData && getEditablePixels(actualCellData.Image)
+  );
+
+  useEffect(() => {
+    if (imageInLocalStorage !== undefined && imageInLocalStorage !== null) {
+      if (imageInLocalStorage === actualCellData.Image) {
+        setIsHaveLocalChanges(false);
+
+        return;
+      }
+
+      const idImageInLocalStorage = localStorage.getItem("imageId");
+
+      if (+idImageInLocalStorage! === activeCellId) {
+        setIsHaveLocalChanges(true);
+
+        const finishedImgInStore: any[] = [];
+
+        const imageColorsArr = imageInLocalStorage.match(/.{1,7}/g);
+
+        for (let i = 0; i < imageColorsArr!.length; i++) {
+          finishedImgInStore.push({
+            id: i + 1,
+            hex: imageColorsArr![i],
+          });
+        }
+
+        setEditablePixelsData(finishedImgInStore);
+
+        return;
+      }
+
+      console.log(`${idImageInLocalStorage}, ${activeCellId}`);
+
+      setIsHaveLocalChanges(false);
+
+      return;
+    }
+
+    setIsHaveLocalChanges(false);
+  }, [activeCellId, imageInLocalStorage]);
 
   // console.log(actualCellData);
 
@@ -222,6 +262,10 @@ const CellEditModal: VFC<Props> = (props) => {
         pixelsDataForBackend += editablePixelsData[i].hex;
       }
 
+      localStorage.setItem("imageId", activeCellId.toString());
+      localStorage.setItem("image", pixelsDataForBackend);
+      // setIsHaveLocalChanges(true);
+
       if (pixelsDataForBackend === actualCellData.Image) {
         toggleIsPixelsEdit();
 
@@ -259,6 +303,11 @@ const CellEditModal: VFC<Props> = (props) => {
           const { status } = await createUpdateCellDataRequest(fullEditData);
 
           if (status === "ok") {
+            localStorage.removeItem("imageId");
+            localStorage.removeItem("image");
+
+            setIsHaveLocalChanges(false);
+
             toggleIsPixelsEdit();
             message.success("Successful editing!");
           }
@@ -320,6 +369,7 @@ const CellEditModal: VFC<Props> = (props) => {
         setIsGettingSignature(false);
         toggleIsPixelsEdit();
         message.error("Whoops, try sign the signature again");
+        setIsHaveLocalChanges(true);
       }
 
       toggleIsPixelsEdit();
@@ -382,6 +432,48 @@ const CellEditModal: VFC<Props> = (props) => {
     }
   };
 
+  const handleDiscadLocalChangesClick = () => {
+    setIsHaveLocalChanges(false);
+
+    localStorage.removeItem("imageId");
+    localStorage.removeItem("image");
+
+    setEditablePixelsData(
+      actualCellData && getEditablePixels(actualCellData.Image)
+    );
+  };
+
+  const handleClearAllBtnClick = useCallback(() => {
+    const clearedImage = [];
+
+    for (let i = 0; i < 256; i++) {
+      clearedImage.push({
+        id: i + 1,
+        hex: "#FFFFFF",
+      });
+    }
+
+    setEditablePixelsData(clearedImage);
+  }, []);
+
+  const copiedImage = localStorage.getItem("copiedImage");
+
+  const handleCopyImageClick = useCallback(() => {
+    localStorage.setItem("copiedImage", actualCellData.Image);
+    message.success("You have successfully copied the image!");
+  }, []);
+
+  const handlePasteImageClick = useCallback(() => {
+    if (copiedImage !== null && copiedImage !== undefined) {
+      toggleIsPixelsEdit();
+      setEditablePixelsData(getEditablePixels(copiedImage));
+      localStorage.removeItem("copiedImage");
+      return;
+    }
+  }, []);
+
+  console.log(isHaveLocalChanges);
+
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
       <Wrapper isEdit={isPixelsEdit || isInfoEdit}>
@@ -390,12 +482,22 @@ const CellEditModal: VFC<Props> = (props) => {
           EDIT MODE <span>(Cell: #{activeCellId})</span>
         </Title>
         <FlexWrapper>
-          <CellEditPixels
-            isEdit={isPixelsEdit}
-            currentHex={currentHex}
-            editablePixelsData={editablePixelsData}
-            setEditablePixelsData={setEditablePixelsData}
-          />
+          <EditBlockWrapper>
+            <CellEditPixels
+              isEdit={isPixelsEdit}
+              currentHex={currentHex}
+              editablePixelsData={editablePixelsData}
+              setEditablePixelsData={setEditablePixelsData}
+            />
+            {isHaveLocalChanges && (
+              <WarningWrapper>
+                <WarningBlock label="You have local changes, resave to update the image on the server or discard them." />
+                <DiscardChangesBtn onClick={handleDiscadLocalChangesClick}>
+                  Discard local changes
+                </DiscardChangesBtn>
+              </WarningWrapper>
+            )}
+          </EditBlockWrapper>
           <EditBlockWrapper>
             <SubEditMenu>
               <SubMenuItem
@@ -419,6 +521,9 @@ const CellEditModal: VFC<Props> = (props) => {
                   handleSavePixelsData={handleSavePixelsData}
                   isGettingSignature={isGettingSignature}
                   setCurrentHex={handleSetCurrentHex}
+                  clearAllImage={handleClearAllBtnClick}
+                  copyImage={handleCopyImageClick}
+                  pasteImage={handlePasteImageClick}
                 />
               ) : (
                 <CellEditInfoBlock

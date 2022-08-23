@@ -160,10 +160,11 @@ const App: VFC = () => {
   const GlobalStyle = createGlobalStyle`
 
   	body {
-	    overflow: ${isCellModalActive ? "hidden" : "scroll"};
-      overflow-x: hidden;
+	    overflow: ${isCellModalActive ? "hidden" : "auto"};
 	  }
   `;
+
+  console.log(isCellModalActive);
 
   const OffScroll = createGlobalStyle<{ isOff: boolean }>`
       body {

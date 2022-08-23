@@ -15,5 +15,5 @@ export const Wrapper = styled.div`
   backdrop-filter: blur(4px);
   animation-name: appear;
   animation-duration: 300ms;
-  transition: all 2s;
+  transition: all 0.4s;
 `;

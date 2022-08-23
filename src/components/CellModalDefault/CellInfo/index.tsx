@@ -16,16 +16,18 @@ const CellInfo: VFC<Props> = (props) => {
 
   return (
     <InfoBlock>
-      <InfoLabel status={status}>
-        TONCELL #{actualCellData.ID}
-        <br />
-        X: {locationY} | Y: {locationX} | Z: {locationZ}
-        <br />
-        Status:
-        <span> {status.toUpperCase()}</span>
-      </InfoLabel>
+      {actualCellData && status && (
+        <InfoLabel status={status}>
+          TONCELL #{actualCellData.ID}
+          <br />
+          X: {locationY} | Y: {locationX} | Z: {locationZ}
+          <br />
+          Status:
+          <span> {status.toUpperCase()}</span>
+        </InfoLabel>
+      )}
 
-      {actualCellData.Status === "Minted" ? (
+      {actualCellData && actualCellData.Status === "Minted" ? (
         <InfoText>
           <span>Owner: </span>
           <br />

@@ -1,15 +1,13 @@
 import { VFC } from "react";
-import { Color, ColorPicker, useColor } from "react-color-palette";
-import { colorsArrV2 } from "../../colors";
+import { ColorPicker, useColor } from "react-color-palette";
 import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, ClearOutlined } from "@ant-design/icons";
 import {
   ColorsWrapper,
-  ColorBlock,
-  Label,
   SaveBtn,
   CurrentColorWrapper,
   CurrentColorBlock,
+  ClearAllBtn,
 } from "./style";
 
 type Props = {
@@ -18,6 +16,9 @@ type Props = {
   handleSavePixelsData: () => void;
   isGettingSignature: boolean;
   setCurrentHex: (hex: any) => void;
+  clearAllImage: () => void;
+  copyImage: () => void;
+  pasteImage: () => void;
 };
 
 const CellEditColorBlock: VFC<Props> = (props) => {
@@ -27,11 +28,20 @@ const CellEditColorBlock: VFC<Props> = (props) => {
     handleSavePixelsData,
     isGettingSignature,
     setCurrentHex,
+    clearAllImage,
+    copyImage,
+    pasteImage,
   } = props;
 
   const [color, setColor] = useColor("hex", currentHex);
 
   // console.log(color);
+
+  const hasCopiedImage =
+    localStorage.getItem("copiedImage") !== null &&
+    localStorage.getItem("copiedImage") !== undefined;
+
+  console.log(hasCopiedImage);
 
   return (
     <>
@@ -67,18 +77,32 @@ const CellEditColorBlock: VFC<Props> = (props) => {
         {isEdit && (
           <CurrentColorWrapper>
             <CurrentColorBlock color={currentHex} />
+            <ClearAllBtn onClick={clearAllImage}>
+              <ClearOutlined />
+            </ClearAllBtn>
           </CurrentColorWrapper>
         )}
       </div>
 
       {isGettingSignature ? (
-        <SaveBtn>
-          <Spin indicator={<LoadingOutlined />} style={{ color: "#fff" }} />
+        <SaveBtn color={currentHex} isGettingSignature={isGettingSignature}>
+          <Spin indicator={<LoadingOutlined />} style={{ color: "#000" }} />
         </SaveBtn>
       ) : (
-        <SaveBtn onClick={handleSavePixelsData}>
-          {isEdit ? "SAVE" : "EDIT"}
-        </SaveBtn>
+        <>
+          {!isEdit && (
+            <SaveBtn
+              color={currentHex}
+              onClick={hasCopiedImage ? pasteImage : copyImage}
+            >
+              {hasCopiedImage ? "PASTE" : "COPY"}
+            </SaveBtn>
+          )}
+
+          <SaveBtn onClick={handleSavePixelsData} color={currentHex}>
+            {isEdit ? "SAVE" : "EDIT"}
+          </SaveBtn>
+        </>
       )}
     </>
   );

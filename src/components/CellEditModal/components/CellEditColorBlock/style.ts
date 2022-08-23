@@ -1,5 +1,18 @@
 import styled from "styled-components";
-import { Color } from "react-color-palette";
+
+function hexToRgbA(hex: string) {
+  let c: any;
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    c = hex.substring(1).split("");
+    if (c.length == 3) {
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+    }
+    c = "0x" + c.join("");
+    return (
+      "rgba(" + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") + ",0.4)"
+    );
+  }
+}
 
 export const Label = styled.span`
   font-weight: 700;
@@ -43,32 +56,39 @@ export const ColorBlock = styled.div<{ color: any; isEdit?: boolean }>`
   }
 `;
 
-export const SaveBtn = styled.div`
+export const SaveBtn = styled.div<{
+  color: string;
+  isGettingSignature?: boolean;
+}>`
   border: none;
   outline: none;
+  width: 282px;
+  text-align: center;
   padding: 10px 65px;
-  color: #fff;
+  color: #000;
   font-size: 16px;
-  background-color: #000;
-  border-radius: 20px;
+  background-color: ${({ isGettingSignature, color }) =>
+    isGettingSignature ? hexToRgbA(color) : "#fff"};
+  border-radius: 10px;
   cursor: pointer;
   transition: 0.3s;
+  border: 2px solid rgba(0, 0, 0, 0.1);
 
   &:hover {
-    transform: scale(0.95);
-    opacity: 0.6;
+    background-color: ${({ color }) => hexToRgbA(color)};
+    border: 2px solid rgba(0, 0, 0, 0.3);
   }
 `;
 
 export const CurrentColorWrapper = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
-  flex-direction: column;
+  justify-content: center;
 `;
 
 export const CurrentColorBlock = styled.div<{ color: any }>`
-  width: 282px;
+  width: 222px;
   border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   padding: 20px;
@@ -76,4 +96,30 @@ export const CurrentColorBlock = styled.div<{ color: any }>`
   background-color: ${({ color }) => color};
   margin-top: -15px;
   transition: all 0.3s;
+`;
+
+export const ClearAllBtn = styled.div`
+  width: 52px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  // padding: 20px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: #ff5555;
+  margin-top: -15px;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background-color: #ffa6a6;
+    border: 2px solid #ff5555;
+  }
 `;

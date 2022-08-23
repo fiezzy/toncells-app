@@ -7,8 +7,7 @@ export const Wrapper = styled.div<{ isEdit: boolean }>`
   border-radius: 12px;
   padding: 38px 50px 50px 50px;
   position: relative;
-  max-height: ${({ isEdit }) => (isEdit ? "700px" : "536px")};
-  transition: height 2s ease-out;
+  transition: all 0.2s ease-out;
 
   @media screen and ${theme.device.tablet} {
     width: 95vw;
@@ -70,6 +69,11 @@ export const EditBlockWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 50%;
+
+  &:first-child {
+    width: 47%;
+    gap: 20px;
+  }
 `;
 
 export const EditBlock = styled.div`
@@ -98,5 +102,30 @@ export const SubMenuItem = styled.div<{ isActive: boolean }>`
 
   &:hover {
     opacity: 0.6;
+  }
+`;
+
+export const WarningWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+export const DiscardChangesBtn = styled.button`
+  width: 100%;
+  outline: none;
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #FF7E7E;
+  cursor: pointer;
+  padding: 5px;
+  text-align: center;
+  color: #FF7E7E;
+  transition: .3s;
+
+  &:hover {
+    background-color: #FF7E7E;
+    color: #fff;s
   }
 `;
