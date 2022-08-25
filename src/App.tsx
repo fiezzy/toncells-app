@@ -1,5 +1,5 @@
 import { VFC, useEffect, useState, useCallback, useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
 import Cells from "./components/Cells";
 import { CellModalContext } from "./context";
 import Container from "./components/Container";
@@ -11,10 +11,11 @@ import { generateCellsCollection } from "./utils/generateCellsCollection";
 import DescModeModal from "./components/DescModeModal";
 import NftViewer from "./components/NftViewer";
 import { createGlobalStyle } from "styled-components";
+import { useWindowDimensions } from "./hooks/useWindowDimensions";
 import CellModalInvoice from "./components/CellModalInvoice";
 import ConnectWalletModal from "./components/ConnectWalletModal";
 import UserModal from "./components/UserModal";
-import OpenOnDesktop from "./components/OpenOnDesktop";
+import SomethingWentWrong from "./components/SomethingWentWrong";
 import { message } from "antd";
 import {
   NftIcon,
@@ -25,7 +26,6 @@ import {
   ZoomWrapper,
   RootContainer,
 } from "./style";
-import CellModalDefault from "./components/CellModalDefault";
 
 export const nftIcons: string[] = [];
 
@@ -48,6 +48,8 @@ const App: VFC = () => {
   const [isConnectWalletMode, setIsConnectWalletMode] =
     useState<boolean>(false);
   const [isUserModalMode, setIsUserModalMode] = useState<boolean>(false);
+
+  const { width } = useWindowDimensions();
 
   const [actualMaps, setActualMaps] = useState<string[]>([
     ApiMaps.Default,
@@ -158,7 +160,6 @@ const App: VFC = () => {
   ));
 
   const GlobalStyle = createGlobalStyle`
-
   	body {
 	    overflow: ${isCellModalActive ? "hidden" : "auto"};
 	  }
@@ -173,7 +174,7 @@ const App: VFC = () => {
   `;
 
   return (
-    <>
+    <ErrorBoundary fallback={<SomethingWentWrong />}>
       <GlobalStyle />
       <Container>
         <DockBar
@@ -277,10 +278,13 @@ const App: VFC = () => {
                 />
               </CellsWrapperY>
             </CellsWrapperX>
+            {width < 1024 && isZoomMode && (
+              <div style={{ height: "86px" }}></div>
+            )}
           </ZoomWrapper>
         </RootContainer>
       </Container>
-    </>
+    </ErrorBoundary>
   );
 };
 
