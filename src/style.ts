@@ -51,7 +51,7 @@ export const ZoomWrapper = styled.div<{ isZoomMode: boolean }>`
 
   @media screen and ${theme.device.tablet} {
     transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.30)" : "")};
-    height: 375px;
+    height: ${({ isZoomMode }) => (isZoomMode ? "507px" : "375px")};
   }
 
   @media screen and ${theme.device.mobile} {
@@ -62,10 +62,12 @@ export const ZoomWrapper = styled.div<{ isZoomMode: boolean }>`
 export const RootContainer = styled.div<{ isZoomMode: boolean }>`
   display: flex;
   justify-content: ${({ isZoomMode }) => (!isZoomMode ? "center" : "")};
+  align-items: center;
   width: ${({ isZoomMode }) => (!isZoomMode ? "100vw" : "")};
+  transition: all 0.3s ease-out;
 
   @media screen and ${theme.device.tablet} {
-    height: 40vh;
+    height: ${({ isZoomMode }) => (isZoomMode ? "40vh" : "60vh")};
     align-items: center;
   }
 `;

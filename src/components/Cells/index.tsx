@@ -12,6 +12,7 @@ import { DisplaySize } from "../../constants";
 import { CellModalContext } from "../../context";
 import CellModalDefault from "../CellModalDefault";
 import CellAreaSmall from "./CellsAreaSmall";
+import CenteredBlock from "./CenteredBlock";
 import { getAreaByCellId } from "../../utils/getAreaByCellId";
 import { App } from "../../typings";
 import * as _ from "lodash";
@@ -280,7 +281,7 @@ const Cells: VFC<Props> = (props) => {
 
         <img src={map} alt="#" />
 
-        <Text>coming soon...</Text>
+        <CenteredBlock />
         {cellsCollection.map(({ id, x, y, firstCellId, lastCellId }) => (
           <div
             key={id}
