@@ -5,6 +5,7 @@ import CellEditColorBlock from "./components/CellEditColorBlock";
 import CellEditInfoBlock from "./components/CellEditInfoBlock";
 import { ApiUpdateCellData } from "../../constants/index";
 import { asciiToHex } from "../../utils/asciiToHex";
+import { rgbToHex } from "../../utils/rgbToHex";
 import { message } from "antd";
 import WarningBlock from "../WarningBlock";
 import {
@@ -146,6 +147,8 @@ const CellEditModal: VFC<Props> = (props) => {
     actualCellData && getEditablePixels(actualCellData.Image)
   );
 
+  const [uploadedImage, setUploadedImage] = useState();
+
   useEffect(() => {
     if (imageInLocalStorage !== undefined && imageInLocalStorage !== null) {
       if (imageInLocalStorage === actualCellData.Image) {
@@ -184,8 +187,6 @@ const CellEditModal: VFC<Props> = (props) => {
 
     setIsHaveLocalChanges(false);
   }, [activeCellId, imageInLocalStorage]);
-
-  // console.log(actualCellData);
 
   const [isGettingSignature, setIsGettingSignature] = useState<boolean>(false);
 
@@ -472,7 +473,15 @@ const CellEditModal: VFC<Props> = (props) => {
     }
   }, []);
 
-  console.log(isHaveLocalChanges);
+  const handleUploadImageClick = useCallback(
+    (image) => {
+      if (image) {
+        toggleIsPixelsEdit();
+        setEditablePixelsData(getEditablePixels(image + "#333333"));
+      }
+    },
+    [toggleIsPixelsEdit]
+  );
 
   return (
     <Modal isVisible={isVisible} onClose={onClose}>
@@ -524,6 +533,7 @@ const CellEditModal: VFC<Props> = (props) => {
                   clearAllImage={handleClearAllBtnClick}
                   copyImage={handleCopyImageClick}
                   pasteImage={handlePasteImageClick}
+                  uploadImage={handleUploadImageClick}
                 />
               ) : (
                 <CellEditInfoBlock

@@ -130,3 +130,7 @@ export const ClearAllBtn = styled.div`
     border: 2px solid #ff5555;
   }
 `;
+
+export const HiddenInput = styled.input`
+  display: none;
+`;

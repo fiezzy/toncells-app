@@ -1,5 +1,6 @@
-import { VFC } from "react";
+import { VFC, useRef, useState } from "react";
 import { ColorPicker, useColor } from "react-color-palette";
+import { rgbToHex } from "../../../../utils/rgbToHex";
 import { Spin } from "antd";
 import {
   LoadingOutlined,
@@ -12,6 +13,7 @@ import {
   CurrentColorWrapper,
   CurrentColorBlock,
   ClearAllBtn,
+  HiddenInput,
 } from "./style";
 
 type Props = {
@@ -23,6 +25,7 @@ type Props = {
   clearAllImage: () => void;
   copyImage: () => void;
   pasteImage: () => void;
+  uploadImage: (image: string) => void;
 };
 
 const CellEditColorBlock: VFC<Props> = (props) => {
@@ -35,17 +38,53 @@ const CellEditColorBlock: VFC<Props> = (props) => {
     clearAllImage,
     copyImage,
     pasteImage,
+    uploadImage,
   } = props;
 
   const [color, setColor] = useColor("hex", currentHex);
+  const [uploadedImageInHex, setUploadedImageInHex] = useState<string>("");
 
-  // console.log(color);
+  const hiddenInput = useRef<HTMLInputElement>(null);
 
   const hasCopiedImage =
     localStorage.getItem("copiedImage") !== null &&
     localStorage.getItem("copiedImage") !== undefined;
 
   console.log(hasCopiedImage);
+
+  const handleFileInputChange = (uploadedImage: File) => {
+    // let uploadedImageInHexStr;
+
+    let img = new Image();
+    img.src = uploadedImage ? URL.createObjectURL(uploadedImage) : "";
+
+    let canvas = document.getElementById("canvas") as any;
+    let ctx = canvas.getContext("2d");
+
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0);
+      console.log("let pixel = : ", ctx.getImageData(16, 16, 1, 1));
+      let data = [] as any;
+
+      for (let i = 0; i < 255; i++) {
+        let pixel = ctx.getImageData(i % 16, Math.floor(i / 16), 1, 1);
+
+        data = [...data, pixel.data];
+
+        if (i === 254) {
+          const hexStr = data
+            .map((e: any) => rgbToHex(e[0], e[1], e[2]))
+            .join("");
+
+          uploadImage(hexStr);
+        }
+      }
+    };
+  };
+
+  const handleUploadClick = () => {
+    hiddenInput.current!.click();
+  };
 
   return (
     <>
@@ -94,8 +133,16 @@ const CellEditColorBlock: VFC<Props> = (props) => {
         </SaveBtn>
       ) : (
         <>
+          <HiddenInput
+            ref={hiddenInput}
+            type="file"
+            name="myImage"
+            onChange={(event: any) => {
+              handleFileInputChange(event.target.files[0]);
+            }}
+          />
           {!isEdit && (
-            <SaveBtn disabled={true} color={currentHex}>
+            <SaveBtn color={currentHex} onClick={handleUploadClick}>
               <UploadOutlined />
               UPLOAD IMAGE
             </SaveBtn>
