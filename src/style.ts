@@ -20,7 +20,7 @@ export const IconsX = styled.div`
   width: 60px;
   user-select: none;
   height: 1600px;
-  background-color: #fff;
+  /* background-color: #fff; */
   margin-top: 70px;
   display: flex;
   align-items: center;

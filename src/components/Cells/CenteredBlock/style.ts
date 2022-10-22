@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   color: white;
   user-select: none;
   backdrop-filter: blur(6px);
-  padding 25px 70px 80px 70px;
+  padding: 25px 70px 80px 70px;
   border-radius: 40px;
 
   span {
@@ -30,9 +30,10 @@ export const LinksWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 8px auto 0 auto;
   gap: 80px;
   position: absolute;
-  left: 115px;
+  /* left: 115px; */
 
   a {
     img {
