@@ -10,7 +10,7 @@ import "antd/dist/antd.css";
 
 const GlobalStyle = createGlobalStyle`
   * {
-    font-family: "Roboto", sans-serif !important;
+    /* font-family: "Roboto", sans-serif !important; */
     margin: 0;
     padding: 0;
   }
@@ -21,17 +21,17 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Router>
-      <CellModalProvider>
-        <AuthProvider>
-          <GlobalStyle />
-          <App />
-        </AuthProvider>
-      </CellModalProvider>
-    </Router>
-  </React.StrictMode>,
-  document.getElementById("root")
+	<React.StrictMode>
+		<Router>
+			<CellModalProvider>
+				<AuthProvider>
+					<GlobalStyle />
+					<App />
+				</AuthProvider>
+			</CellModalProvider>
+		</Router>
+	</React.StrictMode>,
+	document.getElementById("root")
 );
 
 reportWebVitals();

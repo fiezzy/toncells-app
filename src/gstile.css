@@ -4,3 +4,11 @@
   position: fixed;
   z-index: 1;
 }
+@font-face {
+  font-family: 'silka';
+  src: url('./constants/Silka/regular.ttf');
+}
+
+* {
+  font-family: 'silka' !important;
+}

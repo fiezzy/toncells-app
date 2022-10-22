@@ -15,7 +15,7 @@ import { CloseOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
-const SEPEZHO_LINK = "https://t.me/toncells_technical_support";
+const SEPEZHO_LINK = "https://t.me/sepezho";
 
 const columns = [
   {
