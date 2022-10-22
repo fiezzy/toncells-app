@@ -2,7 +2,7 @@ import { VFC, useEffect, useState, useCallback, useContext } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Cells from "./components/Cells";
 import { CellModalContext } from "./context";
-import Container from "./components/Container";
+import ContainerA from "./components/Container";
 import DockBar from "./components/DockBar";
 import { ApiMaps } from "./constants";
 import { NFT_ICONS } from "./constants/images";
@@ -17,6 +17,9 @@ import ConnectWalletModal from "./components/ConnectWalletModal";
 import UserModal from "./components/UserModal";
 import SomethingWentWrong from "./components/SomethingWentWrong";
 import { message } from "antd";
+import type { Container, Engine } from "tsparticles-engine";
+import Particles from "react-particles";
+import { loadFull } from "tsparticles";
 import {
 	NftIcon,
 	CellsWrapperX,
@@ -26,6 +29,7 @@ import {
 	ZoomWrapper,
 	RootContainer,
 } from "./style";
+import "./gstile.css";
 import CellModalDefault from "./components/CellModalDefault";
 import imga from "./nftitems/1.png";
 
@@ -40,6 +44,7 @@ for (let i = 1; i < 26; i++) {
 	nftIcons.push(`${NFT_ICONS + i}.png`);
 }
 
+const Particlesas = Particles as any;
 const App: VFC = () => {
 	const [bigArr, setBigArr] = useState();
 	const [isBuyMode, setIsBuyMode] = useState<boolean>(false);
@@ -81,6 +86,22 @@ const App: VFC = () => {
 		}
 	}, []);
 	const [selectedImage, setSelectedImage] = useState(null);
+
+	const particlesInit = useCallback(async (engine: Engine) => {
+		console.log(engine);
+
+		// you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
+		// this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+		// starting from v2 you can add only the features you need reducing the bundle size
+		await loadFull(engine);
+	}, []);
+
+	const particlesLoaded = useCallback(
+		async (container: Container | undefined) => {
+			await console.log(container);
+		},
+		[]
+	);
 
 	useEffect(() => {
 		setTimeout(function fetchMaps() {
@@ -172,6 +193,86 @@ const App: VFC = () => {
 	  }
   `;
 
+	const ParticlesApp: JSX.Element = (
+		<Particlesas
+			className="tsparticles"
+			key="adf"
+			init={particlesInit}
+			loaded={particlesLoaded}
+			options={{
+				background: {
+					color: {
+						value: "#ffffff",
+					},
+				},
+				fpsLimit: 60,
+				interactivity: {
+					events: {
+						onClick: {
+							enable: false,
+							mode: "push",
+						},
+						onHover: {
+							enable: false,
+							mode: "repulse",
+						},
+						resize: false,
+					},
+					modes: {
+						push: {
+							quantity: 4,
+						},
+						repulse: {
+							distance: 200,
+							duration: 0.4,
+						},
+					},
+				},
+				particles: {
+					color: {
+						value: "#000",
+					},
+					links: {
+						color: "#000",
+						distance: 150,
+						enable: true,
+						opacity: 0.5,
+						width: 1,
+					},
+					collisions: {
+						enable: true,
+					},
+					move: {
+						direction: "none",
+						enable: true,
+						outModes: {
+							default: "bounce",
+						},
+						random: false,
+						speed: 0.5,
+						straight: false,
+					},
+					number: {
+						density: {
+							enable: true,
+							area: 800,
+						},
+						value: 40,
+					},
+					opacity: {
+						value: 0.5,
+					},
+					shape: {
+						type: "circle",
+					},
+					size: {
+						value: { min: 1, max: 5 },
+					},
+				},
+				detectRetina: true,
+			}}
+		/>
+	);
 	console.log(isCellModalActive);
 
 	const OffScroll = createGlobalStyle<{ isOff: boolean }>`
@@ -211,7 +312,7 @@ const App: VFC = () => {
 				}}
 			/>
 
-			<Container>
+			<ContainerA>
 				<DockBar
 					bigArr={bigArr}
 					toggleBuyMode={toggleBuyMode}
@@ -315,7 +416,8 @@ const App: VFC = () => {
 						</CellsWrapperX>
 					</ZoomWrapper>
 				</RootContainer>
-			</Container>
+				{ParticlesApp}
+			</ContainerA>
 		</>
 	);
 };

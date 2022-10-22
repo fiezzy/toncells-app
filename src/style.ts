@@ -48,6 +48,7 @@ export const ZoomWrapper = styled.div<{ isZoomMode: boolean }>`
   transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.45)" : "")};
   min-width: ${({ isZoomMode }) => (!isZoomMode ? "1720px" : "1830px")};
   height: 10px;
+  z-index: 3;
 
   @media screen and ${theme.device.tablet} {
     transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.30)" : "")};
