@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   right: 10px;
   border-radius: 10px;
   background-color: #fff;
-  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   display: flex;
   align-items: center;
   justify-content: center;

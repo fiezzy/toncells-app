@@ -13,9 +13,10 @@ export const Wrapper = styled.div`
   border-radius: 40px;
 
   span {
-    font-size: 55px;
-    font-weight: 900;
-    -webkit-text-stroke: 0.7px rgba(0, 0, 0, 0.3);
+    /* font-family: "Roboto", sans-serif !important; */
+    font-size: 50px;
+    /* font-weight: 900; */
+    /* -webkit-text-stroke: 0.7px rgba(0, 0, 0, 0.3); */
   }
 `;
 
@@ -28,12 +29,12 @@ export const Line = styled.div`
 
 export const LinksWrapper = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
   margin: 8px auto 0 auto;
-  gap: 80px;
-  position: absolute;
-  /* left: 115px; */
+  gap: 96px;
+  /* position: absolute; */
+  /* left: 15px; */
 
   a {
     img {

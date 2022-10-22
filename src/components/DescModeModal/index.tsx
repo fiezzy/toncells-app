@@ -25,9 +25,11 @@ const DescModeModal = (props: any) => {
 				<LabelId>About toncells </LabelId>
 
 				<SearchBox>
-					Toncells - NFT project built on TON blockchain. The main idea is that
-					each cell is linked to a specific NFT from the collection. You can
-					mint NFT on this site (or buy from the secon-hend market).
+					Toncells is an NFT project built on blockchain TON. The main idea is
+					that each cell is linked to a specific NFT from the collection. NFT
+					owners can customize (upload pictures / draw / add links / tg
+					usernames / change description) their cells. You can mint NFT on this
+					site or buy from the secon-hend market.
 					<br />
 					--------
 					<br />* our landing page:{" "}

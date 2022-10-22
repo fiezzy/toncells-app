@@ -17,7 +17,9 @@ const getgemsLink =
 const CenteredBlock: VFC = () => {
 	return (
 		<Wrapper>
-			<span>@toncells</span>
+			<span style={{ fontFamily: `"Roboto", sans-serif !important` }}>
+				@toncells
+			</span>
 			<Line />
 			<LinksWrapper>
 				<a href={tgLink} target="_blank" rel="noreferrer">
