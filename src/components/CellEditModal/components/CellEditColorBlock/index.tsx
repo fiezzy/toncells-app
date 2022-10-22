@@ -66,12 +66,13 @@ const CellEditColorBlock: VFC<Props> = (props) => {
 			console.log("let pixel = : ", ctx.getImageData(16, 16, 1, 1));
 			let data = [] as any;
 
-			for (let i = 0; i < 255; i++) {
+			for (let i = 0; i < 256; i++) {
 				let pixel = ctx.getImageData(i % 16, Math.floor(i / 16), 1, 1);
 
 				data = [...data, pixel.data];
 
-				if (i === 254) {
+				if (i === 255) {
+					console.log(data.length);
 					const hexStr = data
 						.map((e: any) => rgbToHex(e[0], e[1], e[2]))
 						.join("");

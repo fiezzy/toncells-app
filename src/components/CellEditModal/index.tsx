@@ -477,7 +477,7 @@ const CellEditModal: VFC<Props> = (props) => {
     (image) => {
       if (image) {
         toggleIsPixelsEdit();
-        setEditablePixelsData(getEditablePixels(image + "#333333"));
+        setEditablePixelsData(getEditablePixels(image));
       }
     },
     [toggleIsPixelsEdit]
