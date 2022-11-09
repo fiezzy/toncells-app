@@ -53,10 +53,13 @@ export const ZoomWrapper = styled.div<{ isZoomMode: boolean }>`
   @media screen and ${theme.device.tablet} {
     transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.30)" : "")};
     height: ${({ isZoomMode }) => (isZoomMode ? "507px" : "375px")};
+    margin: ${({ isZoomMode }) => (isZoomMode ? "0" : "-200px 0 200px 0")};
   }
 
   @media screen and ${theme.device.mobile} {
     transform: ${({ isZoomMode }) => (!isZoomMode ? "scale(0.20)" : "")};
+    margin: ${({ isZoomMode }) => (isZoomMode ? "0" : "-200px 0 200px 0")};
+    
   }
 `;
 
