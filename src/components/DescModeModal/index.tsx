@@ -22,9 +22,12 @@ const DescModeModal = (props: any) => {
 				<CloseBtn onClick={props.toggleDescMode}>
 					<CloseOutlined />
 				</CloseBtn>
-				<LabelId>About toncells </LabelId>
+				<LabelId>About old toncells </LabelId>
 
 				<SearchBox>
+use
+					<a href="https://app.toncells.org">toncells v2!</a>	
+<br />
 					Toncells is an NFT project built on blockchain TON. The main idea is
 					that each cell is linked to a specific NFT from the collection. NFT
 					owners can customize (upload pictures / draw / add links / tg

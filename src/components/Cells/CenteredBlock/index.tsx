@@ -16,22 +16,36 @@ const getgemsLink =
 
 const CenteredBlock: VFC = () => {
 	return (
-		<Wrapper>
-			<span style={{ fontFamily: `"Roboto", sans-serif !important` }}>
-				@toncells
-			</span>
-			<Line />
-			<LinksWrapper>
-				<a href={tgLink} target="_blank" rel="noreferrer">
-					<Icon src={TG_ICON} alt="" />
-				</a>
-				<a href={getgemsLink} target="_blank" rel="noreferrer">
-					<Icon src={GETGEMS_ICON} alt="" />
-				</a>
-				<a href={twitterLink} target="_blank" rel="noreferrer">
-					<Icon src={TWITTER_ICON} alt="" />
-				</a>
-			</LinksWrapper>
+<Wrapper style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+  <span style={{
+    fontFamily: `'Roboto', sans-serif`,
+    fontWeight: 'bold',
+    fontSize: '50px', // Устанавливаем размер текста
+    lineHeight: '1',
+    width: 'fit-content' // Подгоняет ширину под контент
+  }}>
+    this is toncells v1
+  </span>
+  <br />
+  <span style={{
+    fontFamily: `'Roboto', sans-serif`,
+    fontWeight: 'bold',
+    fontSize: '40px', // Совпадает с первым текстом
+    lineHeight: '1',
+    width: 'fit-content', // Подгоняет ширину под контент
+  }}>
+    new version is <a href={'https://app.toncells.org'} style={{textDecoration: "underline" }}>here</a>
+  </span>
+  <br />
+  <span style={{
+    fontFamily: `'Roboto', sans-serif`,
+    fontWeight: 'bold',
+    fontSize: '30px', // Совпадает с первым текстом
+    lineHeight: '1',
+    width: 'fit-content', // Подгоняет ширину под контент
+  }}>
+    more <a href={'https://toncells.org'} style={{textDecoration: "underline" }}>info</a>
+  </span>
 		</Wrapper>
 	);
 };

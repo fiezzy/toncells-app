@@ -10,7 +10,6 @@ const OpenOnDesktop: VFC = () => {
 				<br />
 				<br />
 				While work is underway, you can go to our{" "}
-				<a href={"https://twitter.com/tonanadao"}>twitter</a>.
 			</Label>
 		</Wrapper>
 	);
