@@ -1,5 +1,10 @@
-const GetStatus = async () => await fetch(`https://app.toncells.org:9917/API/getStatus`, {
-    method: "get",
-  }).then((e: any) => e.json())
+import data from './getStatus.json';
+
+const GetStatus = async (): Promise<any> => {
+  return new Promise((resolve) => {
+    resolve(data as any);
+  });
+};
 
 export default GetStatus;
+

@@ -72,8 +72,9 @@ const App: VFC = () => {
 	const getMaps = useCallback(async () => {
 		try {
 			const fetchDefaultMap = await fetch(ApiMaps.Default);
+console.log(fetchDefaultMap);
 			const fetchEditMap = await fetch(ApiMaps.Edit);
-
+console.log(fetchEditMap);
 			const requestDefaultMap = await fetchDefaultMap.blob();
 			const requestEditMap = await fetchEditMap.blob();
 

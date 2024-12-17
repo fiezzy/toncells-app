@@ -10,14 +10,14 @@ export const MakeTrx = async (
   const ton = (window as any).ton;
 
   if (ton) {
-    //console.log(cellIds.length * NFTcost);
-    ton.send("ton_sendTransaction", [
-      {
-        to: process.env.REACT_APP_BACK_TON_WALLET,
-        value: TonWeb.utils.toNano(cellIds.length * NFTcost),
-        data: `${hexString}${cellIds.join(".")}`,
-      },
-    ]);
+//    //console.log(cellIds.length * NFTcost);
+//    ton.send("ton_sendTransaction", [
+//      {
+//        to: process.env.REACT_APP_BACK_TON_WALLET,
+//        value: TonWeb.utils.toNano(cellIds.length * NFTcost),
+//        data: `${hexString}${cellIds.join(".")}`,
+//      },
+//    ]);
   } else {
     message.error("Install tonweb!", 10);
   }

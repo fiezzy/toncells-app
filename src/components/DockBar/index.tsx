@@ -73,33 +73,23 @@ const DockBar: VFC<Props> = (props) => {
 				{isZoomMode ? <FullscreenOutlined /> : <FullscreenExitOutlined />}
 			</Search>
 
-			<Search onClick={toggleConnectWalletMode}>
+			<Search style={{ filter: 'grayscale(100%) brightness(90%)' }} onClick={()=>alert('use toncells v2!')}
+>
 				<WalletTwoTone />
 			</Search>
 
-			<Search onClick={toggleUserModalMode}>
+			<Search style={{ filter: 'grayscale(100%) brightness(90%)' }} onClick={()=>alert('use toncells v2!')}
+>
 				<UserOutlined />
 			</Search>
 
-			<Search
-				onClick={() => (isBuyALotMode ? buyAreas() : toggleBuyALotMode())}>
-				{/* <LinkOutlined /> */}
-				{isBuyALotMode ? "Mint IDs!" : <AppstoreAddOutlined />}
+			<Search style={{ filter: 'grayscale(100%) brightness(90%)' }} onClick={()=>alert('use toncells v2!')}>
+				 <AppstoreAddOutlined />
 			</Search>
 
-			{isBuyALotMode ? (
-				<Search onClick={toggleBuyALotMode}>
-					{/* <LinkOutlined /> */}
-					Cancel!
-				</Search>
-			) : null}
 
 			<Search onClick={toggleBuyMode}>
 				<SearchOutlined />
-			</Search>
-
-			<Search onClick={toggleMap}>
-				<MenuOutlined />
 			</Search>
 
 			<Search onClick={props.toggleDescMode}>

@@ -4,10 +4,10 @@ export enum DisplaySize {
 }
 
 export enum ApiMaps {
-  Default = "https://app.toncells.org:9917/API/getMAP",
-  Minted = "https://app.toncells.org:9917/API/getMAPMINTED",
-  Free = "https://app.toncells.org:9917/API/getMAPFREE",
-  Edit = "https://app.toncells.org:9917/API/getMAPEDIT",
+  Default = "./MAP.png",
+  Minted = "./MAP.png",
+  Free = "./MAP.png",
+  Edit = "./MAP.png",
 }
 
 export const ApiAreaImg = "https://app.toncells.org:9917/API/getArea";

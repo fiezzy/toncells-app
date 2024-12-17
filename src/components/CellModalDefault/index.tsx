@@ -119,13 +119,8 @@ const CellModalDefault: VFC<Props> = (props) => {
 		setIsAreaImgLoading(true);
 		if (id) {
 			try {
-				const fetchAreaImage = await fetch(ApiAreaImg, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ areaId: id - 1 }),
-				});
+				const fetchAreaImage = await fetch(`./areas/out${id-1}.png`
+				);
 				const req = await fetchAreaImage.blob();
 
 				// console.log(req);
@@ -339,7 +334,10 @@ const CellModalDefault: VFC<Props> = (props) => {
 												/>
 												{canEditCell ? (
 													<BtnWrapper>
-														<BuyFewBtn onClick={handleBuyBtnClick}>
+														<BuyFewBtn 
+onClick={()=>isSelectMode ? alert('use toncells v2!') : handleBuyBtnClick()}
+			 style={isSelectMode  ? { filter: 'grayscale(100%) brightness(90%)' }: {} } 
+>
 															{isSelectMode ? "Buy cells" : "Select cells"}
 														</BuyFewBtn>
 														<BuyFewBtn onClick={toggleCellEditMode}>
@@ -348,7 +346,11 @@ const CellModalDefault: VFC<Props> = (props) => {
 													</BtnWrapper>
 												) : (
 													<BtnWrapper>
-														<BuyFewBtn onClick={handleBuyBtnClick}>
+														<BuyFewBtn 
+onClick={()=>isSelectMode ? alert('use toncells v2!') : handleBuyBtnClick()}
+			 style={isSelectMode  ? { filter: 'grayscale(100%) brightness(90%)' }: {} } 
+
+>
 															{isSelectMode ? "Buy cells" : "Select cells"}
 														</BuyFewBtn>
 													</BtnWrapper>
@@ -371,7 +373,11 @@ const CellModalDefault: VFC<Props> = (props) => {
 											Area coordinations: X<span>{locationY}</span>; Y
 											<span>{locationX}</span>
 										</InfoText>
-										<BuyFewBtn onClick={handleBuyBtnClick}>
+
+										<BuyFewBtn 
+onClick={()=>isSelectMode ? alert('use toncells v2!') : handleBuyBtnClick()}
+			 style={isSelectMode  ? { filter: 'grayscale(100%) brightness(90%)' }: {} } 
+>
 											{isSelectMode ? "Buy cells" : "Select cells"}
 										</BuyFewBtn>
 									</InfoBlock>
